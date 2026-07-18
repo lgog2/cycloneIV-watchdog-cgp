@@ -1,0 +1,18 @@
+# Quartus
+db/
+incremental_db/
+output_files/
+*.qws
+*.bak
+*.rpt
+.qsys_edit/
+
+# ModelSim / Questa
+simulation/
+work/
+transcript
+*.wlf
+modelsim.ini
+
+# inne
+*.swp
