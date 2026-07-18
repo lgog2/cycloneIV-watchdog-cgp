@@ -29,6 +29,9 @@ The physical hardware interface is fully operational. A wrapper FSM bridges the 
 
 > *Note: Detailed schematics of the external analog circuit are available in the [iCE40 repository](LINK).*
 
-https://github.com/user-attachments/assets/a4fdf913-84a4-4ff1-b4ef-7979d37b7a0b
+
+https://github.com/user-attachments/assets/d484a216-dc1b-479f-acab-ee73b231c612
+
+
 
 
