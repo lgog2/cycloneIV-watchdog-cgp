@@ -5,7 +5,7 @@ A hardware-based, self-healing watchdog implemented on an Intel Cyclone IV FPGA 
 The core logic runs on a **Virtual Reconfigurable Circuit (VRC)** — an unclocked, combinational matrix of 30 custom `LUT4Cell` nodes. Cartesian Genetic Programming (CGP) algorithm dynamically reconfigures this matrix to autonomously bypass physical hardware faults.
 
 ### Key Architecture
-* **Hardware-In-The-Loop (HIL):** A direct VHDL continuation of the [previous iCE40 VERILOG project](LINK), moving from software-simulated faults to on-chip fault injection.
+* **Hardware-In-The-Loop (HIL):** A direct VHDL continuation of the [previous iCE40 VERILOG project](https://github.com/lgog2/icesugar-watchdog-cgp), moving from software-simulated faults to on-chip fault injection.
 * **16.6M Cycle Evolution Window:** The FPGA runs at 50 MHz, but the external RC analog timebase operates at 3 Hz. This decoupling provides 16.6-million-cycle window for background evaluation and reconfiguration without blocking the watchdog operations.
 * **Massive Search Space:** Besides rerouting flexibility, each of the 30 `LUT4Cell` nodes can be dynamically reprogrammed with any of the 65,536 ($2^{16}$) 4-input Boolean functions. That allows discovery of highly unconventional logic structures and theoretically provides a mechanism for autonomous healing of not only VRC faults, but also actual faults occurring in the underlying FPGA structure.
 
@@ -27,7 +27,7 @@ The physical hardware interface is fully operational. A wrapper FSM bridges the 
 * **Power Isolation:** An AQV252G solid-state relay safely cuts the 5V power supply to the target device using 3.3V FPGA logic.
 * **Live Demonstration - video:** An external yellow LED simulates the target. A manually triggered wire simulates its heartbet. Two onboard red LEDs indicate the 3 Hz operational cycle and hearbeat registration, while 4 other green LEDS indicate I/O states.
 
-> *Note: Detailed schematics of the external analog circuit are available in the [iCE40 repository](LINK).*
+> *Note: Detailed schematics of the external analog circuit are available in the [iCE40 repository](https://github.com/lgog2/icesugar-watchdog-cgp).*
 
 
 https://github.com/user-attachments/assets/d484a216-dc1b-479f-acab-ee73b231c612
