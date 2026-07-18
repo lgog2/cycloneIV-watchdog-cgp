@@ -28,3 +28,7 @@ The physical hardware interface is fully operational. A wrapper FSM bridges the 
 * **Live Demonstration - video:** An external yellow LED simulates the target. A manually triggered wire simulates its heartbet. Two onboard red LEDs indicate the 3 Hz operational cycle and hearbeat registration, while 4 other green LEDS indicate I/O states.
 
 > *Note: Detailed schematics of the external analog circuit are available in the [iCE40 repository](LINK).*
+
+https://github.com/user-attachments/assets/a4fdf913-84a4-4ff1-b4ef-7979d37b7a0b
+
+
