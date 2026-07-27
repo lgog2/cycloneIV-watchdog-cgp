@@ -19,8 +19,8 @@ The physical hardware interface is fully operational. A wrapper FSM bridges the 
 * Upgrading the static DAG with memory-mapped control registers for dynamic reconfiguration and hardware fault injection.
 * Integrating the Nios II softcore to run the CGP algorithm directly on-chip.
 
-**Final goal: Autonomous Healing & TMR**
-* Replacing the hardcoded truth-table evaluator with the Triple Modular Redundancy (TMR) algorithm. Three identical VRCs will run in parallel. A faulty graph will be isolated using majority voting and healed in the background via CGP.
+**Future Exploration : Hierarchical Fault Tolerance (TMR + CGP)**
+* Augmenting the hardcoded truth-table evaluator with the Triple Modular Redundancy (TMR) layer. Three identical VRCs will run in parallel. A faulty graph will be isolated using majority voting and healed in the background via CGP.
 
 ### Physical Setup
 * **Dual RC Circuit:** Two analog 'hourglasses' measure the heartbeat timeout and reset duration (verified via oscilloscope).
