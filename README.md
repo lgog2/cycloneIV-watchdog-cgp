@@ -12,15 +12,24 @@ The core logic runs on a **Virtual Reconfigurable Circuit (VRC)** — an unclock
 
 ### Roadmap & Status
 
-**Phase 1: Static Prototype (v1.0 - Current)**
-The physical hardware interface is fully operational. A wrapper FSM bridges the fast 50 MHz system clock with the slow 3 Hz analog domain. Currently, the VRC uses a static, hardcoded logic (3 LUTs out of 30) simply to prove the external Watchdog functionality.
+**Current**
+* Physical hardware interface operational (50 MHz system clock bridged to 3 Hz analog domain via wrapper FSM).
+* Initial static validation completed using a hardcoded DAG logic (3 LUTs out of 30) to prove external Watchdog functionality.
+* Memory-mapped control registers for dynamic reconfiguration implemented.
+* Nios II softcore integrated with custom BSP.
+* Basic C-language test routines verifying Nios II communication with the Watchdog System and DAG dynamic reconfiguration.
 
 **TODO**
-* Upgrading the static DAG with memory-mapped control registers for dynamic reconfiguration and hardware fault injection.
-* Integrating the Nios II softcore to run the CGP algorithm directly on-chip.
+* Implementing the CGP evolutionary algorithm on Nios II (porting the C++ model from a [previous project](https://github.com/lgog2/icesugar-watchdog-cgp)).
+* Testing unseeded evolution: assessing if the system can build functional logic from absolute randomness or some seeded initialstate is needed.
+* Implementing an on-chip fault injection network (internal logic with an external control interface).
+* Testing the hardware self-healing capabilities and fault recovery functionality.
 
-**Future Exploration : Hierarchical Fault Tolerance (TMR + CGP)**
-* Augmenting the hardcoded truth-table evaluator with the Triple Modular Redundancy (TMR) layer. Three identical VRCs will run in parallel. A faulty graph will be isolated using majority voting and healed in the background via CGP.
+**Future Exploration**
+* Hardware-level Pseudo-Random Number Generator (PRNG) module to accelerate software-level evolution.
+* Full hardware implementation of the evolutionary algorithm (completely replacing the Nios II core).
+* Dual Fault Tolerance (combining CGP with TMR).
+
 
 ### Physical Setup
 * **Dual RC Circuit:** Two analog 'hourglasses' measure the heartbeat timeout and reset duration (verified via oscilloscope).

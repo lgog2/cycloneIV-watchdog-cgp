@@ -2,9 +2,17 @@
 db/
 incremental_db/
 output_files/
+greybox_tmp/
 *.qws
 *.bak
 *.rpt
+*.smsg
+*.summary
+*.jdi
+*.pin
+*.sof
+*.pof
+*.rbf
 .qsys_edit/
 
 # ModelSim / Questa
@@ -14,5 +22,29 @@ transcript
 *.wlf
 modelsim.ini
 
-# inne
+# Qsys / Nios II generated hardware
+*.sopcinfo
+cgp_watchdog_nios/
+
+# Nios II SBT Template files
+.force_rebuild
+.force_rebuild_all
+create-this-app
+create-this-bsp
+software/**/system/
+
+# Nios II Software build artifacts
+software/*_bsp/
+software/RemoteSystemsTempFiles/
+software/**/.project
+software/**/.cproject
+software/**/.settings/
+software/**/Makefile
+software/**/obj/
+software/**/*.elf
+software/**/*.map
+software/**/*.objdump
+software/.metadata/
+*.a
+# other
 *.swp

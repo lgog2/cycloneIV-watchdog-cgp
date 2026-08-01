@@ -2,6 +2,13 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
+-- ==============================================================================
+-- UWAGA ARCHITEKTONICZNA:
+-- Modul wykrywa spadek napięcia na linii RX UART (kazdy bit startu)
+-- ale dodatkowo w trakcie jednej ramki UART wygenerowac dodakowe impulsy
+-- co nie przeszkadza w jego funkcjonalnosci jako detektora 'sygnalu zycia'
+-- ==============================================================================
+
 entity UART_detector is
 	Port (
 		clk			: in  std_logic; -- 50 MHz
