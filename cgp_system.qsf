@@ -71,17 +71,17 @@ set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 
 
 # ==========================================================
-# ZEGAR I RESET
+# CLOCK & RESET
 # ==========================================================
 
 set_location_assignment PIN_Y2 -to CLOCK
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to CLOCK
 
-# Przypisanie używanego przycisku
+# Active pushbutton assignment
 set_location_assignment PIN_M23 -to KEY[0]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[0]
 
-# Zabezpieczenie pozostałych przycisków sprzętowych na płycie
+# Hardware pushbuttons safety mapping (to prevent floating inputs)
 set_location_assignment PIN_M21 -to KEY[1]
 set_location_assignment PIN_N21 -to KEY[2]
 set_location_assignment PIN_R24 -to KEY[3]
@@ -90,7 +90,7 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[2]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[3]
 
 # ==========================================================
-# DOMENA WYKONAWCZA
+# EXECUTION DOMAIN (RC & UART)
 # ==========================================================
 set_location_assignment PIN_H13 -to EX_I[2]
 set_location_assignment PIN_AE25 -to EX_I[0]
@@ -109,9 +109,9 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to EX_O[2]
 
 
 # ==========================================================
-# DOMENA DIAGNOSTYCZNA (GPIO_0 / JP5 - Z PRAWEJ)
+# DIAGNOSTICS DOMAIN (GPIO_0 - JP5)
 # ==========================================================
-# Przypisanie 24 pierwszych użytecznych pinów z JP5 dla szyny debug_bus
+# Mapping the first 24 usable pins of JP5 for the debug_bus
 set_location_assignment PIN_AB22 -to GPIO[0]
 set_location_assignment PIN_AC15 -to GPIO[1]
 set_location_assignment PIN_AB21 -to GPIO[2]
@@ -137,14 +137,14 @@ set_location_assignment PIN_AD22 -to GPIO[21]
 set_location_assignment PIN_AG25 -to GPIO[22]
 set_location_assignment PIN_AD25 -to GPIO[23]
 
-# Ustawienie standardu napięciowego
+# IO standard assignment
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO[*]
 
 # ==========================================================
-# WIZUALIZACJA: LEDR (Czerwone) i LEDG (Zielone)
+# VISUALIZATION: LEDR (Red) and LEDG (Green)
 # ==========================================================
-# Mimo braku aktywnego sterowania w logice (wymuszenie 0),
-# piny muszą być zmapowane, aby Quartus fizycznie sprowadził je do masy.
+# Even if not actively driven by logic (forced to '0'),
+# pins must be mapped so Quartus physically drives them to ground.
 set_location_assignment PIN_G19 -to LEDR[0]
 set_location_assignment PIN_E19 -to LEDR[1]
 set_location_assignment PIN_F19 -to LEDR[2]
@@ -178,24 +178,24 @@ set_instance_assignment -name IO_STANDARD "2.5 V" -to LEDR[*]
 set_instance_assignment -name IO_STANDARD "2.5 V" -to LEDG[*]
 
 # ==========================================================
-# PARAMETRY ELEKTRYCZNE (DRIVE STRENGTH & SLEW RATE)
+# ELECTRICAL PARAMETERS (DRIVE STRENGTH & SLEW RATE)
 # ==========================================================
 
-# 1. Domena Wykonawcza (Kondensatory) - Prąd 8mA
+# Execution Domain (Capacitors) - 8mA Drive Strength
 set_instance_assignment -name CURRENT_STRENGTH_NEW 8MA -to EX_O[*]
 
-# 2. Domena Diagnostyczna (JP5) - Prąd 8mA
+# Diagnostics Domain (JP5) - 8mA Drive Strength
 set_instance_assignment -name CURRENT_STRENGTH_NEW 8MA -to GPIO[*]
 
-# 3. Wizualizacja (Diody LEDR i LEDG) - Prąd 8mA, Wolne zbocze (Slow Slew Rate = 2)
-# Ustawienie Slew Rate na 2 drastycznie zmniejsza szum EMI na płycie.
+# 3. Visualization (LEDR and LEDG) - 8mA, Slow Slew Rate (2)
+# Setting Slew Rate to 2 reduces EMI noise on the board.
 set_instance_assignment -name CURRENT_STRENGTH_NEW 8MA -to LEDR[*]
 set_instance_assignment -name SLEW_RATE 2 -to LEDR[*]
 
 set_instance_assignment -name CURRENT_STRENGTH_NEW 8MA -to LEDG[*]
 set_instance_assignment -name SLEW_RATE 2 -to LEDG[*]
 
-# wylaczenia pullup na pinach czytajacych napiecie kondensatorow
+# Disable weak pull-up resistors on pins reading capacitor voltages
 set_instance_assignment -name WEAK_PULL_UP_RESISTOR OFF -to EX_I[*]
 
 
