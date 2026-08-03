@@ -13,7 +13,7 @@
 // TEST of dynamic DAG re-configuration from NIOS
 // Expected result:
 // normal work after loading seed
-// state panic after zerooing LUT0 F
+// state panic after zeroing LUT0 F
 // then normal work after correcting it
 // =============================================================================
 
@@ -139,20 +139,21 @@ alt_putstr("Test start\n");
 						0);
 
 	// wait for the interrupt from unconfigured system (stPanic)
-	//while (!irq_triggered);
-	//irq_triggered = 0; // Acknowledge it
+	while (!irq_triggered);
+	irq_triggered = 0; // Acknowledge it
 
 	// restart_cmd to Watchdog FSM (address 61) for FSM to leave stPanic
-	//IOWR_32DIRECT(CGP_WATCHDOG_BASE, 61 * 4, 0x01);
+	IOWR_32DIRECT(CGP_WATCHDOG_BASE, 61 * 4, 0x01);
 
-	// reading from Avalon to ensure FSM is no longer in stRepair or stPanic before re-enabling irqs
+	// waiting for the FSM to fully evaluate the seed (polling eval_done flag)
 	uint32_t local_status = status;
 	do {
 		local_status = IORD_32DIRECT(CGP_WATCHDOG_BASE, 62 * 4);
-	} while (((local_status >> 1) & 0x01) == 1 || (local_status & 0x01) == 1);
+	} while (((local_status >> 2) & 0x01) == 0);
 
 	 // Re-enable interrupts now that the system is stable and quiet
-	//alt_ic_irq_enable(CGP_WATCHDOG_IRQ_INTERRUPT_CONTROLLER_ID, CGP_WATCHDOG_IRQ);
+	alt_ic_irq_enable(CGP_WATCHDOG_IRQ_INTERRUPT_CONTROLLER_ID, CGP_WATCHDOG_IRQ);
+
 	printf("System stabilized with perfect seed.\nAfter delay simple fault will be simulated\n");
 	for(volatile int i=0; i<DELAY; i++);
 
@@ -166,17 +167,11 @@ alt_putstr("Test start\n");
 			irq_triggered = 0;
 			local_status = status;
 			uint32_t panic  = local_status & 0x01;
-			//uint32_t repair = (local_status >> 1) & 0x01;
-			//uint32_t fitness = (local_status >> 8) & 0x1F;
 
 			if (panic == 1)
 			{
 				printf("\nSystem in ST_PANIC\n");
 				print_status(local_status);
-				//printf("Status register: ");
-				//print_binary32(local_status);
-				//printf("\ndecoded parts: Panic: %lx | Repair: %lx | Fitness: %d\n\n",
-				//			panic, repair, (int)fitness);
 
 				for(volatile int i=0; i<DELAY; i++); // delay for osciloscope
 
@@ -186,16 +181,15 @@ alt_putstr("Test start\n");
 				// restart_cmd to Watchdog FSM (address 61)
 				IOWR_32DIRECT(CGP_WATCHDOG_BASE, 61 * 4, 0x01);
 
+				// polling eval_done flag (bit 2 of status)
+				//uint32_t local_status;
 				do {
 					local_status = IORD_32DIRECT(CGP_WATCHDOG_BASE, 62 * 4);
-				} while (((local_status >> 1) & 0x01) == 1 || (local_status & 0x01) == 1);
+				} while (((local_status >> 2) & 0x01) == 0);
+
 
 				printf(">>>simulated repair test passed.\n");
 				print_status(local_status);
-				//printf("Status register: ");
-				//print_binary32(local_status);
-				//printf("\ndecoded parts: Panic: %lx | Repair: %lx | Fitness: %d\n\n",
-				//			panic, repair, (int)fitness);
 			}
 
 			alt_ic_irq_enable(CGP_WATCHDOG_IRQ_INTERRUPT_CONTROLLER_ID, CGP_WATCHDOG_IRQ);

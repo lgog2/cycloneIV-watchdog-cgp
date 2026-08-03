@@ -60,7 +60,7 @@ void cgp_load_initial_seed(void)
 		uint32_t routing_word = 0;
 
 		if (i == 0) {
-			// conf_routing(0) <= "00000" & "00010" & "00001" & "00000"; (I3=0, I2=2, I1=1, I0=0)
+			//conf_routing(0) <= "00000" & "00010" & "00001" & "00000"; (I3=0, I2=2, I1=1, I0=0)
 			routing_word = 0x00820;
 		} else if (i == 1) {
 			//conf_routing(1) <= "00000" & "00000" & "00000" & "00000";
@@ -127,20 +127,18 @@ int main()
 	{
 		if (irq_triggered)
 		{
+
 			uint32_t local_status = status;
 			irq_triggered = 0;
 
 			// restart_cmd to Watchdog FSM (address 61)
 			IOWR_32DIRECT(CGP_WATCHDOG_BASE, 61 * 4, 0x01);
 
-			// reading from Avalon to ensure FSM is no longer in stRepair or stPanic before re-enabling irqs
+			// waiting for the FSM to fully evaluate the seed (polling eval_done flag)
 			uint32_t polling_status;
 			do {
 				polling_status = IORD_32DIRECT(CGP_WATCHDOG_BASE, 62 * 4);
-			} while (((polling_status >> 1) & 0x01) == 1 || (polling_status & 0x01) == 1);
-
-			//volatile uint32_t dummy = IORD_32DIRECT(CGP_WATCHDOG_BASE, 62 * 4);
-			//(void)dummy;// preventing compiler from optimizing it out
+			} while (((polling_status >> 2) & 0x01) == 0);
 
 			alt_ic_irq_enable(CGP_WATCHDOG_IRQ_INTERRUPT_CONTROLLER_ID, CGP_WATCHDOG_IRQ);
 
@@ -154,7 +152,6 @@ int main()
 				print_binary32(local_status);
 				printf("\ndecoded parts: Panic: %lx | Repair: %lx | Fitness: %d\n\n",
 							panic, repair, (int)fitness);
-
 			}
 
 			++counter;

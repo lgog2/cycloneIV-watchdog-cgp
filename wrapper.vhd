@@ -90,6 +90,7 @@ architecture rtl of wrapper is
 	type status_reg_t is record
 		panic_flag	: std_logic;
 		repair_flag	: std_logic;
+		eval_done	: std_logic;
 		fitness		: integer range 0 to MAX_FITNESS; --5 bits
 	end record;
 
@@ -103,7 +104,8 @@ architecture rtl of wrapper is
 	begin
 		v(0) := s.panic_flag;
 		v(1) := s.repair_flag;
-		--bits 2-7 reserved
+		v(2) := s.eval_done;
+		--bits 3-7 reserved
 		v(12 downto 8)  := std_logic_vector(to_unsigned(s.fitness, 5));
 		--bits 13-31 reserved
 		return v;
@@ -118,7 +120,7 @@ architecture rtl of wrapper is
 	end function;
 
 	type state_t is (
-		ST_INIT, 
+		ST_INIT,
 		ST_BACKGROUND_EVAL_SETUP,
 		ST_BACKGROUND_EVAL_WAIT,
 		ST_BACKGROUND_EVAL_READ,
@@ -129,16 +131,16 @@ architecture rtl of wrapper is
 		ST_SERVE_ANALOG_LATCH,
 		ST_PANIC
 	);
-	
+
 	signal current_state : state_t;
-	
+
 	signal state_debug : std_logic_vector(2 downto 0);
-	
+
 	-- metastability synchronizers
 	signal sync_x0 : std_logic_vector(1 downto 0) := "00";
 	signal sync_x1 : std_logic_vector(1 downto 0) := "00";
 	signal final_x: std_logic_vector(1 downto 0);
-	
+
 	-- 10ms debouncer counters for 50MHz capacitor state sampling
 	signal cnt_x0 : integer range 0 to DEBOUNCE_CYCLES := 0;
 	signal cnt_x1 : integer range 0 to DEBOUNCE_CYCLES := 0;
@@ -151,7 +153,11 @@ architecture rtl of wrapper is
 	-- evaluation interface
 	signal eval_vector 				: unsigned(2 downto 0) := (others => '0'); -- inputs combination
 	signal current_fitness			: integer range 0 to MAX_FITNESS := 0; -- forces 5-bit register synthesis
-	
+
+	-- snapshot registers for status_reg
+	signal snapshot_eval_done		: std_logic := '0';
+	signal snapshot_fitness			: integer range 0 to MAX_FITNESS := 0;
+
 	-- expected truth table outputs for fitness evaluation (detailed in 'core.vhd')
 	type truth_table_t is array (0 to 7) of std_logic_vector(2 downto 0);
 	constant EXPECTED_Y : truth_table_t := (
@@ -212,7 +218,8 @@ begin
 
 	status_reg.panic_flag	<= '1' when current_state = ST_PANIC else '0';
 	status_reg.repair_flag	<= '1' when current_state = ST_REPAIR else '0';
-	status_reg.fitness		<= current_fitness;
+	status_reg.fitness		<= snapshot_fitness;
+	status_reg.eval_done	<= snapshot_eval_done;
 
 	reset_timer_3hz 		<= '1' when (current_state = ST_INIT or command_reg.restart_cmd = '1') else '0';
 
@@ -307,8 +314,8 @@ begin
 
 		end if;
 	end process analog_sync_proc;
-	
-		
+
+
 	-- 3Hz tick generator and flag management process
 	timer_3hz_proc : process(clk, rst_n)
 	begin
@@ -345,23 +352,25 @@ begin
 				uart_alive_flag <= '0';
 			end if;
 		end if;
-	
+
 	end process timer_3hz_proc;
-		
-	
+
+
 	-- main FSM process
 	main_fsm_proc : process(clk, rst_n)
 		-- points scored by current input vector (max 3 per truth table row - 1 for each equation)
-		variable match_pts : integer range 0 to 3; 
+		variable match_pts : integer range 0 to 3;
 	begin
 		if rst_n = '0' then
-			current_state	<= ST_INIT;
-			core_x_in		<= (others => '0');
+			current_state		<= ST_INIT;
+			core_x_in			<= (others => '0');
 			-- y(2)='0' [watched system power kept ON], y(1)='1' [5s cap discharge], y(0)='1' [60s cap discharge]
-			latched_y		<= SAFE_OUT;
-			eval_vector		<= (others => '0');
-			current_fitness	<= 0;
-			clear_uart_sig	<= '0';
+			latched_y			<= SAFE_OUT;
+			eval_vector			<= (others => '0');
+			current_fitness		<= 0;
+			clear_uart_sig		<= '0';
+			snapshot_eval_done	<= '0';
+			snapshot_fitness	<= 0;
 		elsif rising_edge(clk) then
 			clear_uart_sig	<= '0';
 
@@ -373,12 +382,14 @@ begin
 
 			case current_state is
 				when ST_INIT =>
+					snapshot_eval_done <= '0';
 					current_state <= ST_BACKGROUND_EVAL_SETUP;
 
 				when ST_BACKGROUND_EVAL_SETUP =>
-					core_x_in     <= std_logic_vector(eval_vector);
-					wait_counter <= 0;
-					current_state <= ST_BACKGROUND_EVAL_WAIT;-- 1 clock cycle latency
+
+					core_x_in		<= std_logic_vector(eval_vector);
+					wait_counter	<= 0;
+					current_state	<= ST_BACKGROUND_EVAL_WAIT;-- 1 clock cycle latency
 
 				when ST_BACKGROUND_EVAL_WAIT =>
 					-- wait remaining cycles to achive 140ns total delay
@@ -387,7 +398,7 @@ begin
 					else
 						wait_counter <= wait_counter + 1;
 					end if;
-					  
+
 				when ST_BACKGROUND_EVAL_READ =>
 					match_pts := 0;
 					if core_y_out(0) = EXPECTED_Y(to_integer(eval_vector))(0) then match_pts := match_pts + 1; end if;
@@ -405,13 +416,17 @@ begin
 					end if;
 
 				when ST_BACKGROUND_EVAL_DECISION =>
-					eval_vector <= (others => '0');
+					eval_vector			<= (others => '0');
+
+					-- snapshot to status register
+					snapshot_fitness	<= current_fitness;
+					snapshot_eval_done	<= '1';
 
 					if current_fitness	< MAX_FITNESS then
 						current_state	<= ST_REPAIR;
 					elsif tick_3Hz_pending_flag = '1' then -- max fitness(24) and tick_pending
-						current_state	<= ST_SERVE_ANALOG_SETUP;
 						current_fitness	<= 0;
+						current_state	<= ST_SERVE_ANALOG_SETUP;
 					else -- max fitness(24) and !tick_pending
 						current_fitness	<= 0;
 						current_state	<= ST_BACKGROUND_EVAL_SETUP;
@@ -426,6 +441,7 @@ begin
 						current_state 		<= ST_PANIC; -- time budget between 3Hz ticks exceeded
 					elsif command_reg.restart_cmd = '1' then
 						current_fitness		<= 0;
+						snapshot_eval_done	<= '0';
 						current_state 		<= ST_BACKGROUND_EVAL_SETUP; -- loop back to evaluation
 					end if;
 
@@ -454,12 +470,13 @@ begin
 					latched_y <= SAFE_OUT;
 
 					if command_reg.restart_cmd = '1' then
-						current_fitness	<= 0;
-						current_state	<= ST_BACKGROUND_EVAL_SETUP;
+						snapshot_eval_done	<= '0';
+						current_fitness		<= 0;
+						current_state		<= ST_BACKGROUND_EVAL_SETUP;
 					end if;
 
 			end case;
-	
+
 		end if;
 	end process main_fsm_proc;
 
@@ -480,20 +497,20 @@ begin
 
 	-- currently tested input combination
 	debug_bus(5 downto 3)	<= std_logic_vector(eval_vector);
-	 
+
 	-- current fitness value
 	debug_bus(10 downto 6)	<= std_logic_vector(to_unsigned(current_fitness, 5));
-		
+
 	-- latched capacitor discharge signals (3Hz update rate)
 	debug_bus(13 downto 11)	<= latched_y;
-	 
+
 	-- synchronized capacitor state signals (50MHz update rate)
 	debug_bus(15 downto 14)	<= final_x;
-	 
+
 	-- flags
 	debug_bus(16)			<= uart_alive_flag;
 	debug_bus(17)			<= tick_3Hz_pending_flag;
-	 
+
 	-- specific state flags
 	debug_bus(18)			<= '1' when current_state = ST_PANIC else '0';
 	debug_bus(19)			<= '1' when current_state = ST_REPAIR else '0';
