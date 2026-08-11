@@ -145,16 +145,17 @@ alt_putstr("Test start\n");
 	// restart_cmd to Watchdog FSM (address 61) for FSM to leave stPanic
 	IOWR_32DIRECT(CGP_WATCHDOG_BASE, 61 * 4, 0x01);
 
-	// waiting for the FSM to fully evaluate the seed (polling eval_done flag)
-	uint32_t local_status = status;
+
+	// reading from Avalon to ensure FSM is no longer in stRepair or stPanic before re-enabling irqs
+	uint32_t local_status;
 	do {
 		local_status = IORD_32DIRECT(CGP_WATCHDOG_BASE, 62 * 4);
-	} while (((local_status >> 2) & 0x01) == 0);
+	} while (((local_status >> 1) & 0x01) == 1 || (local_status & 0x01) == 1);
 
 	 // Re-enable interrupts now that the system is stable and quiet
 	alt_ic_irq_enable(CGP_WATCHDOG_IRQ_INTERRUPT_CONTROLLER_ID, CGP_WATCHDOG_IRQ);
 
-	printf("System stabilized with perfect seed.\nAfter delay simple fault will be simulated\n");
+	printf("System stabilized with perfect seed.\nAfter delay simple fault will be simulated.\n");
 	for(volatile int i=0; i<DELAY; i++);
 
 	printf("\n>>>simple fault simulation: zeroing F of LUT0 (0x0000) <<<\n");
@@ -165,15 +166,21 @@ alt_putstr("Test start\n");
 		if (irq_triggered)
 		{
 			irq_triggered = 0;
-			local_status = status;
+
+			printf("\nSystem fault detected.\n");
+			print_status(status);
+			printf("Next reading after delay.\n");
+
+			// delay to trigger st_panic
+			for(volatile int i=0; i<DELAY; i++);
+
+			local_status = IORD_32DIRECT(CGP_WATCHDOG_BASE, 62 * 4);
 			uint32_t panic  = local_status & 0x01;
 
 			if (panic == 1)
 			{
-				printf("\nSystem in ST_PANIC\n");
+				printf("\nSystem in state Panic.\n");
 				print_status(local_status);
-
-				for(volatile int i=0; i<DELAY; i++); // delay for osciloscope
 
 				printf(">>> Repairing LUT0 and FSM restart\n");
 				IOWR_32DIRECT(CGP_WATCHDOG_BASE, 30 * 4, 0xDCDC);
@@ -181,12 +188,10 @@ alt_putstr("Test start\n");
 				// restart_cmd to Watchdog FSM (address 61)
 				IOWR_32DIRECT(CGP_WATCHDOG_BASE, 61 * 4, 0x01);
 
-				// polling eval_done flag (bit 2 of status)
-				//uint32_t local_status;
+				// reading from Avalon to ensure FSM is no longer in stRepair or stPanic before re-enabling irqs
 				do {
 					local_status = IORD_32DIRECT(CGP_WATCHDOG_BASE, 62 * 4);
-				} while (((local_status >> 2) & 0x01) == 0);
-
+				} while (((local_status >> 1) & 0x01) == 1 || (local_status & 0x01) == 1);
 
 				printf(">>>simulated repair test passed.\n");
 				print_status(local_status);

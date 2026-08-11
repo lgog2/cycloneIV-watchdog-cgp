@@ -8,7 +8,7 @@ The core logic runs on a **Virtual Reconfigurable Circuit (VRC)** — an unclock
 * **Hardware-In-The-Loop (HIL):** A direct VHDL continuation of the [previous iCE40 VERILOG project](https://github.com/lgog2/icesugar-watchdog-cgp), moving from software-simulated faults to on-chip fault injection.
 * **16.6M Cycle Evolution Window:** The FPGA runs at 50 MHz, but the external RC analog timebase operates at 3 Hz. This decoupling provides a 16.6-million-cycle window for background evaluation and reconfiguration without blocking the watchdog operations.
 * **Massive Search Space:** Besides rerouting flexibility, each of the 30 `LUT4Cell` nodes can be dynamically reprogrammed with any of the 65,536 ($2^{16}$) 4-input Boolean functions. That allows discovery of unconventional logic structures and theoretically provides a mechanism for autonomous healing of not only VRC faults, but also faults occurring in the underlying actual FPGA structure.
-
+* **Hybrid Hardware-Software Co-Design:** A Nios II softcore processor executes the evolutionary algorithm to reconfigure the hardware VRC matrix. This software engine is safely decoupled from the real-time FPGA logic via avs_waitrequest signal acting as strict read-after-write barrier.
 
 ### Roadmap & Status
 
@@ -16,18 +16,18 @@ The core logic runs on a **Virtual Reconfigurable Circuit (VRC)** — an unclock
 * Physical hardware interface operational (50 MHz system clock bridged to 3 Hz analog domain via wrapper FSM).
 * Initial static validation completed using a hardcoded DAG logic (3 LUTs out of 30) to prove external Watchdog functionality.
 * Memory-mapped control registers for dynamic reconfiguration implemented.
-* Nios II softcore integrated with custom BSP.
-* Basic C-language test routines verifying Nios II communication with the Watchdog System and DAG dynamic reconfiguration.
+* Nios II softcore integrated with custom BSP, utilizing cascaded hardware multipliers (`mulxuu`) for Fast Range math optimization.
+* Full (1+4) Evolution Strategy implemented in C on the Nios II processor, with time measured via a dedicated Interval Timer IP.
+* Self-Healing Validated: System autonomously recovers from on-chip pseudo-fault injections (sabotaged configuration registers) via active reconfiguration.
+* Active phenotype extraction implemented using a Reverse Topological Traversal algorithm to visualize the resulting DAG structure.
 
 **TODO**
-* Implementing the CGP evolutionary algorithm on Nios II (porting the C++ model from a [previous project](https://github.com/lgog2/icesugar-watchdog-cgp)).
-* Testing unseeded evolution: assessing if the system can build functional logic from absolute randomness or some seeded initialstate is needed.
-* Implementing an on-chip fault injection network (internal logic with an external control interface).
-* Testing the hardware self-healing capabilities and fault recovery functionality.
+* Hardware fault injection network: implementing shadow registers (XOR/AND/OR overlay) to emulate faults (Stuck-At, SEU, MBU) decoupled from the evolutionary engine.
+* Stress testing of self-healing capabilities and fault recovery functionality of the system.
+* Spatial efficiency analysis: comparing CGP fault capacity against static N-modular redundancy. Static redundancy treats any fault as a fatal node failure. The CGP engine does not discard faulty nodes but exploits their remaining partial functionality. This allows the system to theoretically survive a massive, topology-dependent number of faults, provided the residual matrix retains enough logical plasticity to map the target function.
 
 **Future Exploration**
-* Hardware-level Pseudo-Random Number Generator (PRNG) module to accelerate software-level evolution.
-* Full hardware implementation of the evolutionary algorithm (completely replacing the Nios II core).
+* Full hardware implementation of the evolutionary algorithm to eliminate software overhead (replacing the Nios II core).
 * Dual Fault Tolerance (combining CGP with TMR).
 
 

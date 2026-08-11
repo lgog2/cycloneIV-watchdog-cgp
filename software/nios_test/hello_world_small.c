@@ -77,9 +77,6 @@ int main()
 				polling_status = IORD_32DIRECT(CGP_WATCHDOG_BASE, 62 * 4);
 			} while (((polling_status >> 1) & 0x01) == 1 || (polling_status & 0x01) == 1);
 
-			//reading from Avalon bus to ensure restart_cmd was already passed to FSM before re-enabling irqs
-			//volatile uint32_t dummy = IORD_32DIRECT(CGP_WATCHDOG_BASE, 62 * 4);
-			//(void)dummy; // preventing comipiler from optimizing it out
 
 			alt_ic_irq_enable(CGP_WATCHDOG_IRQ_INTERRUPT_CONTROLLER_ID, CGP_WATCHDOG_IRQ);
 

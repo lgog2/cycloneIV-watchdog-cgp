@@ -134,11 +134,12 @@ int main()
 			// restart_cmd to Watchdog FSM (address 61)
 			IOWR_32DIRECT(CGP_WATCHDOG_BASE, 61 * 4, 0x01);
 
-			// waiting for the FSM to fully evaluate the seed (polling eval_done flag)
+			// reading from Avalon to ensure FSM is no longer in stRepair or stPanic before re-enabling irqs
 			uint32_t polling_status;
 			do {
 				polling_status = IORD_32DIRECT(CGP_WATCHDOG_BASE, 62 * 4);
-			} while (((polling_status >> 2) & 0x01) == 0);
+			} while (((polling_status >> 1) & 0x01) == 1 || (polling_status & 0x01) == 1);
+
 
 			alt_ic_irq_enable(CGP_WATCHDOG_IRQ_INTERRUPT_CONTROLLER_ID, CGP_WATCHDOG_IRQ);
 

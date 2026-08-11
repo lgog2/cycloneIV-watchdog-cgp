@@ -58,6 +58,7 @@ entity wrapper is
 		avs_readdata		: out std_logic_vector(31 downto 0);
 		avs_write			: in  std_logic;
 		avs_writedata		: in  std_logic_vector(31 downto 0);
+		avs_waitrequest		: out std_logic; --freezes NIOS during Avalon-MM read/write
 		ins_irq				: out std_logic; --Interrupt request to NIOS
 
 
@@ -66,7 +67,7 @@ entity wrapper is
 
 		-- diagnostics
 		panic_flag_out			: out std_logic ; -- watchdog functionality disabled
-		debug_bus				: out std_logic_vector(DEBUG_BUS_WIDTH - 1 downto 0)
+		debug_bus				: out std_logic_vector(DEBUG_BUS_WIDTH - 1 downto 0)--23-0
 	);
 end wrapper;
 
@@ -90,7 +91,6 @@ architecture rtl of wrapper is
 	type status_reg_t is record
 		panic_flag	: std_logic;
 		repair_flag	: std_logic;
-		eval_done	: std_logic;
 		fitness		: integer range 0 to MAX_FITNESS; --5 bits
 	end record;
 
@@ -104,8 +104,7 @@ architecture rtl of wrapper is
 	begin
 		v(0) := s.panic_flag;
 		v(1) := s.repair_flag;
-		v(2) := s.eval_done;
-		--bits 3-7 reserved
+		--bits 2-7 reserved
 		v(12 downto 8)  := std_logic_vector(to_unsigned(s.fitness, 5));
 		--bits 13-31 reserved
 		return v;
@@ -125,6 +124,7 @@ architecture rtl of wrapper is
 		ST_BACKGROUND_EVAL_WAIT,
 		ST_BACKGROUND_EVAL_READ,
 		ST_BACKGROUND_EVAL_DECISION,
+		ST_BACKGROUND_EVAL_DONE,
 		ST_REPAIR,
 		ST_SERVE_ANALOG_SETUP,
 		ST_SERVE_ANALOG_WAIT,
@@ -134,12 +134,12 @@ architecture rtl of wrapper is
 
 	signal current_state : state_t;
 
-	signal state_debug : std_logic_vector(2 downto 0);
+	signal state_debug : std_logic_vector(3 downto 0);
 
 	-- metastability synchronizers
 	signal sync_x0 : std_logic_vector(1 downto 0) := "00";
 	signal sync_x1 : std_logic_vector(1 downto 0) := "00";
-	signal final_x: std_logic_vector(1 downto 0);
+	signal final_x : std_logic_vector(1 downto 0);
 
 	-- 10ms debouncer counters for 50MHz capacitor state sampling
 	signal cnt_x0 : integer range 0 to DEBOUNCE_CYCLES := 0;
@@ -154,8 +154,7 @@ architecture rtl of wrapper is
 	signal eval_vector 				: unsigned(2 downto 0) := (others => '0'); -- inputs combination
 	signal current_fitness			: integer range 0 to MAX_FITNESS := 0; -- forces 5-bit register synthesis
 
-	-- snapshot registers for status_reg
-	signal snapshot_eval_done		: std_logic := '0';
+	-- snapshot register for status_reg
 	signal snapshot_fitness			: integer range 0 to MAX_FITNESS := 0;
 
 	-- expected truth table outputs for fitness evaluation (detailed in 'core.vhd')
@@ -219,9 +218,20 @@ begin
 	status_reg.panic_flag	<= '1' when current_state = ST_PANIC else '0';
 	status_reg.repair_flag	<= '1' when current_state = ST_REPAIR else '0';
 	status_reg.fitness		<= snapshot_fitness;
-	status_reg.eval_done	<= snapshot_eval_done;
 
-	reset_timer_3hz 		<= '1' when (current_state = ST_INIT or command_reg.restart_cmd = '1') else '0';
+	avs_waitrequest			<= '1' when (current_state = ST_BACKGROUND_EVAL_SETUP or
+										current_state = ST_BACKGROUND_EVAL_WAIT or
+										current_state = ST_BACKGROUND_EVAL_READ or
+										current_state = ST_BACKGROUND_EVAL_DECISION)
+							else '0';
+
+	ins_irq					<= '1' when (current_state = ST_REPAIR or
+										current_state = ST_PANIC)
+							else '0';
+
+	reset_timer_3hz 		<= '1' when (current_state = ST_INIT or
+										current_state = ST_SERVE_ANALOG_LATCH)
+							else '0';
 
 	panic_flag_out			<= status_reg.panic_flag;
 
@@ -369,20 +379,12 @@ begin
 			eval_vector			<= (others => '0');
 			current_fitness		<= 0;
 			clear_uart_sig		<= '0';
-			snapshot_eval_done	<= '0';
 			snapshot_fitness	<= 0;
 		elsif rising_edge(clk) then
 			clear_uart_sig	<= '0';
 
-			if current_state = ST_REPAIR or current_state = ST_PANIC then
-				ins_irq	<= '1';
-			else
-				ins_irq	<= '0';
-			end if;
-
 			case current_state is
 				when ST_INIT =>
-					snapshot_eval_done <= '0';
 					current_state <= ST_BACKGROUND_EVAL_SETUP;
 
 				when ST_BACKGROUND_EVAL_SETUP =>
@@ -420,9 +422,11 @@ begin
 
 					-- snapshot to status register
 					snapshot_fitness	<= current_fitness;
-					snapshot_eval_done	<= '1';
 
-					if current_fitness	< MAX_FITNESS then
+					current_state		<= ST_BACKGROUND_EVAL_DONE;
+
+				when ST_BACKGROUND_EVAL_DONE =>
+					if snapshot_fitness	< MAX_FITNESS then
 						current_state	<= ST_REPAIR;
 					elsif tick_3Hz_pending_flag = '1' then -- max fitness(24) and tick_pending
 						current_fitness	<= 0;
@@ -441,7 +445,6 @@ begin
 						current_state 		<= ST_PANIC; -- time budget between 3Hz ticks exceeded
 					elsif command_reg.restart_cmd = '1' then
 						current_fitness		<= 0;
-						snapshot_eval_done	<= '0';
 						current_state 		<= ST_BACKGROUND_EVAL_SETUP; -- loop back to evaluation
 					end if;
 
@@ -470,7 +473,6 @@ begin
 					latched_y <= SAFE_OUT;
 
 					if command_reg.restart_cmd = '1' then
-						snapshot_eval_done	<= '0';
 						current_fitness		<= 0;
 						current_state		<= ST_BACKGROUND_EVAL_SETUP;
 					end if;
@@ -483,17 +485,21 @@ begin
 
 	with current_state select
 	state_debug <=
-		"000" when ST_INIT,
-		"001" when ST_BACKGROUND_EVAL_SETUP,
-		"010" when ST_BACKGROUND_EVAL_READ,
-		"011" when ST_BACKGROUND_EVAL_DECISION,
-		"100" when ST_REPAIR,
-		"101" when ST_SERVE_ANALOG_SETUP,
-		"110" when ST_SERVE_ANALOG_LATCH,
-		"111" when ST_PANIC,
-		"000" when others;
-	-- FSM state
-	debug_bus(2 downto 0)	<= state_debug;
+		"0000" when ST_INIT,
+		"0001" when ST_BACKGROUND_EVAL_SETUP,
+		"0010" when ST_BACKGROUND_EVAL_WAIT,
+		"0011" when ST_BACKGROUND_EVAL_READ,
+		"0100" when ST_BACKGROUND_EVAL_DECISION,
+		"0101" when ST_BACKGROUND_EVAL_DONE,
+		"0110" when ST_REPAIR,
+		"0111" when ST_SERVE_ANALOG_SETUP,
+		"1000" when ST_SERVE_ANALOG_WAIT,
+		"1001" when ST_SERVE_ANALOG_LATCH,
+		"1010" when ST_PANIC,
+		"1111" when others;
+
+	-- unused bits tied to zero
+	debug_bus(2 downto 0)	<= (others => '0');
 
 	-- currently tested input combination
 	debug_bus(5 downto 3)	<= std_logic_vector(eval_vector);
@@ -516,7 +522,7 @@ begin
 	debug_bus(19)			<= '1' when current_state = ST_REPAIR else '0';
 
 
-	-- unused bits tied to zero
-	debug_bus(DEBUG_BUS_WIDTH - 1 downto 20) <= (others => '0');
+	-- FMS state
+	debug_bus(DEBUG_BUS_WIDTH - 1 downto 20) <= state_debug;--23-20 Most Significant Nibble (MSN) for direct HEX readout
 
 end rtl;

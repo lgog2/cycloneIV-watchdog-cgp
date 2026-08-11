@@ -119,6 +119,7 @@ set_interface_property avalon_slave_0 SVD_ADDRESS_GROUP ""
 add_interface_port avalon_slave_0 avs_address address Input 12
 add_interface_port avalon_slave_0 avs_chipselect chipselect Input 1
 add_interface_port avalon_slave_0 avs_read read Input 1
+add_interface_port avalon_slave_0 avs_waitrequest waitrequest Output 1
 add_interface_port avalon_slave_0 avs_readdata readdata Output 32
 add_interface_port avalon_slave_0 avs_write write Input 1
 add_interface_port avalon_slave_0 avs_writedata writedata Input 32
