@@ -24,7 +24,7 @@ entity wrapper is
 
 		MAX_FITNESS 		: integer := 24;
 		-- evaluator delay required for signal propagation through the DAG
-		DAG_EVAL_DELAY		: integer := 7
+		DAG_EVAL_DELAY		: integer := 8
 	);
 
 	Port (
@@ -61,10 +61,6 @@ entity wrapper is
 		avs_waitrequest		: out std_logic; --freezes NIOS during Avalon-MM read/write
 		ins_irq				: out std_logic; --Interrupt request to NIOS
 
-
-		-- TODO
-		-- faults injection
-
 		-- diagnostics
 		panic_flag_out			: out std_logic ; -- watchdog functionality disabled
 		debug_bus				: out std_logic_vector(DEBUG_BUS_WIDTH - 1 downto 0)--23-0
@@ -86,6 +82,8 @@ architecture rtl of wrapper is
 	constant ADDR_CONF_OUT		: integer := NUM_LUTS * 2;--60
 	constant ADDR_CMD			: integer := (NUM_LUTS * 2) + 1;--61
 	constant ADDR_STATUS		: integer := (NUM_LUTS * 2) + 2;--62
+	constant ADDR_EXPECTED_Y 	: integer := (NUM_LUTS * 2) + 3;--63;
+	constant ADDR_FAULT_BASE	: integer := (NUM_LUTS * 2) + 4;--64;
 
 
 	type status_reg_t is record
@@ -159,9 +157,19 @@ architecture rtl of wrapper is
 
 	-- expected truth table outputs for fitness evaluation (detailed in 'core.vhd')
 	type truth_table_t is array (0 to 7) of std_logic_vector(2 downto 0);
-	constant EXPECTED_Y : truth_table_t := (
+
+	--three registers for TMR (Triple Modular Redundancy) initialized with the same truth table
+	signal expected_y_reg_A : truth_table_t := (
 		"010", "100", "011", "001", "011", "100", "011", "001"
 	);
+	signal expected_y_reg_B : truth_table_t := (
+		"010", "100", "011", "001", "011", "100", "011", "001"
+	);
+	signal expected_y_reg_C : truth_table_t := (
+		"010", "100", "011", "001", "011", "100", "011", "001"
+	);
+	-- combinatorial output from TMR
+	signal voted_expected_y : truth_table_t;
 
 	-- 3Hz tick generator from 50MHz clock (ZOH sampling trigger)
 	signal timer_3hz   : integer range 0 to TICKS_3HZ := 0;
@@ -174,9 +182,11 @@ architecture rtl of wrapper is
 	signal clear_uart_sig			: std_logic;
 
 	-- AVALON-MM REGISTERS
-	signal conf_routing_reg		: conf_routing_arr_t := (others => (others => '0'));
-	signal conf_F_reg			: conf_F_arr_t		 := (others => (others => '0'));
-	signal conf_out_reg			: conf_out_arr_t	 := (others => (others => '0'));
+	signal conf_routing_reg		: conf_routing_arr_t	:= (others => (others => '0'));
+	signal conf_F_reg			: conf_F_arr_t			:= (others => (others => '0'));
+	signal conf_out_reg			: conf_out_arr_t		:= (others => (others => '0'));
+
+	signal fault_masks_reg 		: conf_fault_arr_t		:= (others => (others => '0'));
 
 	signal status_reg 			: status_reg_t;
 	signal command_reg 			: command_reg_t;
@@ -185,19 +195,19 @@ architecture rtl of wrapper is
 	-- (from 4k addressable bytes to 1k addressable words)
 	signal word_addr			: integer range 0 to 1023; --above 62 - reserve for future system expansion
 
-	--- delay counter for 30-LUT DAG propagation time (140ns)
-	signal wait_counter 		: integer range 0 to DAG_EVAL_DELAY - FSM_OVERHEAD_CYCLES := 0;
+	--- delay counter for 30-LUT DAG propagation time (160ns)
+	signal wait_counter 		: integer range 0 to DAG_EVAL_DELAY - FSM_OVERHEAD_CYCLES := 0;--0-5
 
-	signal reset_timer_3hz : std_logic;
+	signal reset_timer_3hz 		: std_logic;
 
 begin
 
 	UART_det_int : entity work.UART_detector
 		Port map (
-			clk			=> clk,
-			rst_n		=> rst_n,
-			rx_in		=> uart_rx_in,
-			pulse_out	=> uart_signal
+			clk				=> clk,
+			rst_n			=> rst_n,
+			rx_in			=> uart_rx_in,
+			pulse_out		=> uart_signal
 		);
 
 	core_inst : entity work.core
@@ -207,6 +217,7 @@ begin
 
 			conf_routing_in	=> conf_routing_reg,
 			conf_F_in		=> conf_F_reg,
+			fault_masks_in	=> fault_masks_reg,
 			conf_out_in		=> conf_out_reg
 		);
 
@@ -235,6 +246,13 @@ begin
 
 	panic_flag_out			<= status_reg.panic_flag;
 
+	--TMR - combinatorial output
+	gen_voter: for i in 0 to 7 generate
+		voted_expected_y(i)(0) <= (expected_y_reg_A(i)(0) and expected_y_reg_B(i)(0)) or (expected_y_reg_B(i)(0) and expected_y_reg_C(i)(0)) or (expected_y_reg_A(i)(0) and expected_y_reg_C(i)(0));
+		voted_expected_y(i)(1) <= (expected_y_reg_A(i)(1) and expected_y_reg_B(i)(1)) or (expected_y_reg_B(i)(1) and expected_y_reg_C(i)(1)) or (expected_y_reg_A(i)(1) and expected_y_reg_C(i)(1));
+		voted_expected_y(i)(2) <= (expected_y_reg_A(i)(2) and expected_y_reg_B(i)(2)) or (expected_y_reg_B(i)(2) and expected_y_reg_C(i)(2)) or (expected_y_reg_A(i)(2) and expected_y_reg_C(i)(2));
+	end generate;
+
 	-- Avalon-MM write process (from Nios II)
 	avalon_write_proc : process(clk, rst_n)
 	begin
@@ -258,6 +276,17 @@ begin
 						conf_out_reg(2) <= avs_writedata(17 downto 12);
 					when ADDR_CMD =>
 						command_reg <= from_avalon_cmd(avs_writedata);
+					when ADDR_EXPECTED_Y =>
+						-- unpacking of 24-bit payload to 3 TMR registers
+						-- 8 possible input combinations (states 0 to 7).
+						-- each state requires a 3-bit expected output vector (y2, y1, y0).
+						for i in 0 to 7 loop
+							expected_y_reg_A(i) <= avs_writedata((i * 3) + 2 downto (i * 3));
+							expected_y_reg_B(i) <= avs_writedata((i * 3) + 2 downto (i * 3));
+							expected_y_reg_C(i) <= avs_writedata((i * 3) + 2 downto (i * 3));
+						end loop;
+					when ADDR_FAULT_BASE to ADDR_FAULT_BASE + NUM_LUTS - 1 =>
+						fault_masks_reg(word_addr - ADDR_FAULT_BASE) <= avs_writedata;
 					when others => null;
 				end case;
 			end if;
@@ -273,6 +302,11 @@ begin
 			if avs_chipselect = '1' and avs_read = '1' then
 				if word_addr = ADDR_STATUS then
 					avs_readdata <= to_avalon_status(status_reg);
+				elsif word_addr = ADDR_EXPECTED_Y then
+					-- packing TMR output to bits [23:0] of avs_readdata (higher bits initialized as '0')
+					for i in 0 to 7 loop
+						avs_readdata((i * 3) + 2 downto (i * 3)) <= voted_expected_y(i);
+					end loop;
 				end if;
 			end if;
 
@@ -394,8 +428,8 @@ begin
 					current_state	<= ST_BACKGROUND_EVAL_WAIT;-- 1 clock cycle latency
 
 				when ST_BACKGROUND_EVAL_WAIT =>
-					-- wait remaining cycles to achive 140ns total delay
-					if wait_counter = DAG_EVAL_DELAY - FSM_OVERHEAD_CYCLES then -- 7-3=4
+					-- wait remaining cycles to achive 160ns total delay
+					if wait_counter = DAG_EVAL_DELAY - FSM_OVERHEAD_CYCLES then -- 8-3=5
 						current_state <= ST_BACKGROUND_EVAL_READ;
 					else
 						wait_counter <= wait_counter + 1;
@@ -403,9 +437,10 @@ begin
 
 				when ST_BACKGROUND_EVAL_READ =>
 					match_pts := 0;
-					if core_y_out(0) = EXPECTED_Y(to_integer(eval_vector))(0) then match_pts := match_pts + 1; end if;
-					if core_y_out(1) = EXPECTED_Y(to_integer(eval_vector))(1) then match_pts := match_pts + 1; end if;
-					if core_y_out(2) = EXPECTED_Y(to_integer(eval_vector))(2) then match_pts := match_pts + 1; end if;
+					-- fitness evaluation relies on TMR protected truth table
+					if core_y_out(0) = voted_expected_y(to_integer(eval_vector))(0) then match_pts := match_pts + 1; end if;
+					if core_y_out(1) = voted_expected_y(to_integer(eval_vector))(1) then match_pts := match_pts + 1; end if;
+					if core_y_out(2) = voted_expected_y(to_integer(eval_vector))(2) then match_pts := match_pts + 1; end if;
 
 					current_fitness <= current_fitness + match_pts;
 

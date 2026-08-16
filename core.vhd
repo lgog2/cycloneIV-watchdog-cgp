@@ -32,7 +32,10 @@ entity core is
 		-- genotype format [30 x [F, in0, in1, in2, in3], out0, out1, out2]
 		conf_routing_in	: in  conf_routing_arr_t;
 		conf_F_in		: in  conf_F_arr_t;
-		conf_out_in		: in  conf_out_arr_t
+		conf_out_in		: in  conf_out_arr_t;
+
+		-- faults injection
+		fault_masks_in	: in conf_fault_arr_t
 
 	);
 end core;
@@ -140,14 +143,13 @@ begin
 	gen_cgp_nodes: for i in 0 to NUM_LUTS - 1 generate
 	begin
 		lut_cell_inst : entity work.Lut4Cell
-		generic map (
-			NODE_INDEX => i
-		)
 		port map (
 			--inputs:
 			all_signals_in	=> node_inputs_matrix(i),
 			conf_routing_in	=> conf_routing(i),
 			conf_F_in		=> conf_F(i),
+
+			fault_mask_in => fault_masks_in(i),
 
 			--outpust:
 			out_signal		=> lut_outputs(i)

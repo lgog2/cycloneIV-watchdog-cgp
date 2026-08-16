@@ -18,16 +18,20 @@ The core logic runs on a **Virtual Reconfigurable Circuit (VRC)** — an unclock
 * Memory-mapped control registers for dynamic reconfiguration implemented.
 * Nios II softcore integrated with custom BSP, utilizing cascaded hardware multipliers (`mulxuu`) for Fast Range math optimization.
 * Full (1+4) Evolution Strategy implemented in C on the Nios II processor, with time measured via a dedicated Interval Timer IP.
-* Self-Healing Validated: System autonomously recovers from on-chip pseudo-fault injections (sabotaged configuration registers) via active reconfiguration.
+* Hardware fault injection network: shadow registers (XOR/AND/OR overlay) to emulate faults (Stuck-At, SEU, MBU) configured from Nios II processor.
+* Fitness truth table for hardware validator is Nios-reconfigurable and protected by zero-cycle hardware TMR.
+* Self-Healing Validated: System autonomously recovers from fault injections via evolutionary reconfiguration.
 * Active phenotype extraction implemented using a Reverse Topological Traversal algorithm to visualize the resulting DAG structure.
 
+
 **TODO**
-* Hardware fault injection network: implementing shadow registers (XOR/AND/OR overlay) to emulate faults (Stuck-At, SEU, MBU) decoupled from the evolutionary engine.
+
+* Full hardware implementation of the evolutionary algorithm to eliminate software overhead and
+decouple the evolutionary engine from NIOS II fault injection.
 * Stress testing of self-healing capabilities and fault recovery functionality of the system.
 * Spatial efficiency analysis: comparing CGP fault capacity against static N-modular redundancy. Static redundancy treats any fault as a fatal node failure. The CGP engine does not discard faulty nodes but exploits their remaining partial functionality. This allows the system to theoretically survive a massive, topology-dependent number of faults, provided the residual matrix retains enough logical plasticity to map the target function.
 
 **Future Exploration**
-* Full hardware implementation of the evolutionary algorithm to eliminate software overhead (replacing the Nios II core).
 * Dual Fault Tolerance (combining CGP with TMR).
 
 

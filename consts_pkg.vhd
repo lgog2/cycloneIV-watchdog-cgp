@@ -12,10 +12,17 @@ package consts_pkg is
 
 	constant DEBUG_BUS_WIDTH	: integer := 24;
 
-	-- configuration types - data payload from NIOS
+	-- configuration arrays - data payload from NIOS:
+
+	-- Input Routing: [19:15]=sel_i3 | [14:10]=sel_i2 | [9:5]=sel_i1 | [4:0]=sel_i0
 	type conf_routing_arr_t	is array (0 to NUM_LUTS-1) of std_logic_vector(19 downto 0); --30x20=600bits
+	-- LUT Truth Table (F): 16 bits per LUT (representing all 16 states of a 4-input logic gate)
 	type conf_F_arr_t		is array (0 to NUM_LUTS-1) of std_logic_vector(15 downto 0);--30x16=480bits
 
-	-- 6 bits required to address all indices from total_signals (0 to 32)
-	type conf_out_arr_t is array (0 to 2) of std_logic_vector(5 downto 0);--3x6=18bits
-end package consts_pkg;
+	--External Outputs Routing (y0, y1, y2): 6 bits required to address all indices from total_signals (0 to 32)
+	type conf_out_arr_t		is array (0 to 2) of std_logic_vector(5 downto 0);--3x6=18bits
+
+	-- Hardware Faults: [31:16]=SEU/MBU (16 bits) | [12:8]=SA_VAL (5 bits) | [4:0]=SA_EN (5 bits)
+	type conf_fault_arr_t	is array (0 to NUM_LUTS-1) of std_logic_vector(31 downto 0);--30x32=600bits=960bits
+
+	end package consts_pkg;
