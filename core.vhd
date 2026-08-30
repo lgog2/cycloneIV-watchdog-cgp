@@ -47,15 +47,9 @@ architecture rtl of core is
 	--- global input bus (3 external + 30 LUT outputs = 33)
 	signal all_signals		: std_logic_vector(TOTAL_SIGNALS_WIDTH - 1 downto 0); --0-32
 
-	-- safe input matrix for each LUT (DAG constraint)
+	-- input matrix for each LUT
 	type node_inputs_matrix_t is array (0 to NUM_LUTS - 1) of std_logic_vector(TOTAL_SIGNALS_WIDTH - 1 downto 0);
 	signal node_inputs_matrix : node_inputs_matrix_t;
-
-
-	-- internal configuration signals
-	signal conf_F			: conf_F_arr_t;--30 x std_logic_vector(15 downto 0);--30x16=480bits
-	signal conf_routing		: conf_routing_arr_t;--30 x std_logic_vector(19 downto 0); --30x20=600bits
-	signal conf_out			: conf_out_arr_t;--std_logic_vector(5 downto 0);--3x6=18bits
 
 
 begin
@@ -95,39 +89,9 @@ begin
 	-- lut_2.F = 16'h2222  (Bin: 16'b0010_0010_0010_0010)  Dec: 16'd8738)
 	-- ==============================================================================
 
---------------------------------------------------------------------------------------------
-	-- uncomment for hardcoded seed test (helloworldsmall.c compatibility):
-	-- LUT0 :   y0 = (I2 & ~I0) | I1
-	--conf_F(0) <= X"DCDC";
-	--all_signals_in I3=0 , I2=2, I1=1, I0=0
-	--conf_routing(0) <= "00000" & "00010" & "00001" & "00000";
-
-	-- LUT 1:   y1 = ~I0
-	--conf_F(1) <= X"5555";
-	--all_signals_in I3=0 , I2=0, I1=0, I0=0
-	--conf_routing(1) <= "00000" & "00000" & "00000" & "00000";
-
-	-- LUT 2:   y2 = I0 & ~I1
-	--conf_F(2) <= X"2222";
-	--all_signals_in I3=0 , I2=0, I1=1, I0=0
-	--conf_routing(2) <= "00000" & "00000" & "00001" & "00000";
----------------------------------------------------------------------------------------------
-
-	conf_F <= conf_F_in;
-	conf_routing <= conf_routing_in;
-	-- replace with the following for hardcoded seed test:
-	--conf_F(3 to NUM_LUTS - 1) <= conf_F_in(3 to NUM_LUTS - 1);
-	--conf_routing(3 to NUM_LUTS - 1) <= conf_routing_in(3 to NUM_LUTS - 1);
-
-	conf_out <= conf_out_in;
-	-- replace with the following for hardcoded seed test:
-	--conf_out(0) <= std_logic_vector(to_unsigned(NUM_EXT_INPUTS, 6));--3
-	--conf_out(1) <= std_logic_vector(to_unsigned(NUM_EXT_INPUTS + 1, 6));--4
-	--conf_out(2) <= std_logic_vector(to_unsigned(NUM_EXT_INPUTS + 2, 6));--5
-
 -----------------------------------------------------------------------------------------
-	-- DAG enforcement for Quartus Analysis & Synthesis (without
-	-- prevents combinational loops
+	-- DAG enforcement for Quartus Analysis & Synthesis (without constraint,
+	-- the synthesizer detects combinational loops and fails timing analysis)
 	gen_matrix_rows: for i in 0 to NUM_LUTS - 1 generate
 
 		-- no connections from higher-indexed LUTs and self
@@ -146,19 +110,18 @@ begin
 		port map (
 			--inputs:
 			all_signals_in	=> node_inputs_matrix(i),
-			conf_routing_in	=> conf_routing(i),
-			conf_F_in		=> conf_F(i),
-
+			conf_routing_in	=> conf_routing_in(i),
+			conf_F_in		=> conf_F_in(i),
 			fault_mask_in => fault_masks_in(i),
 
-			--outpust:
+			--output:
 			out_signal		=> lut_outputs(i)
 		);
 	end generate;
 
 	-- output routing multiplexers with safe boundary checking (for Quartus syntesis)
-	y_out(0) <= all_signals(to_integer(unsigned(conf_out(0)))) when to_integer(unsigned(conf_out(0))) < TOTAL_SIGNALS_WIDTH else '0';
-	y_out(1) <= all_signals(to_integer(unsigned(conf_out(1)))) when to_integer(unsigned(conf_out(1))) < TOTAL_SIGNALS_WIDTH else '0';
-	y_out(2) <= all_signals(to_integer(unsigned(conf_out(2))) )when to_integer(unsigned(conf_out(2))) < TOTAL_SIGNALS_WIDTH else '0';
+	y_out(0) <= all_signals(to_integer(unsigned(conf_out_in(0)))) when to_integer(unsigned(conf_out_in(0))) < TOTAL_SIGNALS_WIDTH else '0';
+	y_out(1) <= all_signals(to_integer(unsigned(conf_out_in(1)))) when to_integer(unsigned(conf_out_in(1))) < TOTAL_SIGNALS_WIDTH else '0';
+	y_out(2) <= all_signals(to_integer(unsigned(conf_out_in(2))) )when to_integer(unsigned(conf_out_in(2))) < TOTAL_SIGNALS_WIDTH else '0';
 
 end rtl;

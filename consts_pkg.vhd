@@ -23,6 +23,7 @@ package consts_pkg is
 	type conf_out_arr_t		is array (0 to 2) of std_logic_vector(5 downto 0);--3x6=18bits
 
 	-- Hardware Faults: [31:16]=SEU/MBU (16 bits) | [12:8]=SA_VAL (5 bits) | [4:0]=SA_EN (5 bits)
+	-- SA_EN / SA_VAL -> bit 4: OUT, bit 3: I3, bit 2: I2, bit 1: I1, bit 0: I0
 	type conf_fault_arr_t	is array (0 to NUM_LUTS-1) of std_logic_vector(31 downto 0);--30x32=600bits=960bits
 
 	end package consts_pkg;
