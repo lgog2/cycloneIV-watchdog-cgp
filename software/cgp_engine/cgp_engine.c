@@ -2,6 +2,8 @@
 * file name: cgp_engine.c
 * DESCRIPTION:
 * Cartesian Genetic Programming (CGP) Engine for hardware-in-the-loop evolution.
+* and
+* Fault Injection (SEU/MBU and Stuck-At)
 * --------------------------------------------------------------------------------
 */
 
@@ -28,7 +30,7 @@ static inline uint32_t xorshift32(uint32_t *state) {
 
 
 // polling for fault instead of of interrupts
-void hw_wait_for_fault() {
+void wait_for_fault() {
 	volatile uint32_t status;
 	do {
 		status = IORD_32DIRECT(CGP_WATCHDOG_BASE, 62 * 4);
@@ -92,7 +94,7 @@ Individual create_seed(uint32_t *rng_state) {
 }
 
 // writing genotype into Avalon-MM registers.
-void hw_write_individual(const Individual *ind) {
+void write_individual(const Individual *ind) {
 	int i;
 	for (i = 0; i < NUM_NODES; i++) {
 		IOWR_32DIRECT(CGP_WATCHDOG_BASE, i * 4, ind->routing[i]);
@@ -104,8 +106,8 @@ void hw_write_individual(const Individual *ind) {
 }
 
 
-int hw_evaluate_individual(const Individual *ind) {
-	hw_write_individual(ind);
+int evaluate_individual(const Individual *ind) {
+	write_individual(ind);
 
 	// sending restart_cmd to FSM to trigger evaluation
 	IOWR_32DIRECT(CGP_WATCHDOG_BASE, 61 * 4, 0x01);
@@ -121,12 +123,12 @@ void mutate_individual(const Individual *parent, Individual *child, uint32_t *rn
 	int i, j;
 
 	for (i = 0; i < NUM_NODES; i++) {
-		// 1. Truth Table Mutation with set probability threshold
+		// Truth Table Mutation with set probability threshold
 		if (xorshift32(rng_state) < MUTATION_TH_F) {
 			child->F_table[i] = xorshift32(rng_state) & 0xFFFF;
 		}
 
-		// 2. Routing Mutation (Inputs I0, I1, I2, I3)
+		// Routing Mutation (Inputs I0, I1, I2, I3)
 		for (j = 0; j < 4; j++) {
 			if (xorshift32(rng_state) < MUTATION_TH_IN) {
 				// for DAG ensuring
@@ -143,7 +145,7 @@ void mutate_individual(const Individual *parent, Individual *child, uint32_t *rn
 		}
 	}
 
-	// 3. Outputs Mutation (y0, y1, y2)
+	// Outputs Mutation (y0, y1, y2)
 	for (j = 0; j < NUM_OUTPUTS; j++) {
 		if (xorshift32(rng_state) < MUTATION_TH_IN) {
 			// using Lemire's Fast Range instead of %(modulo) for generating random value from [0  to NUM_NODES-1]
@@ -217,3 +219,39 @@ void print_netlist(const Individual *ind) {
 	printf("Utilization: %d/%d LUTs.\n", active_count, NUM_NODES);
 	printf("---------------------------------------------------------------\n\n");
 }
+
+
+// ====================================================================
+// HARDWARE FAULT INJECTION API
+// ====================================================================
+
+// Uploading dynamic expected truth table for hardware evaluation
+void set_target_function(uint32_t pattern) {
+	IOWR_32DIRECT(CGP_WATCHDOG_BASE, 63 * 4, pattern);
+
+	// Hardware read-back assertion
+	uint32_t verification = IORD_32DIRECT(CGP_WATCHDOG_BASE, 63 * 4);
+	if (verification != pattern) {
+		printf("[FATAL] Oracle TMR update failed! Wrote: 0x%08X, Read: 0x%08X\n", (unsigned int)pattern, (unsigned int)verification);
+	}
+}
+
+// Fault injection (SEU/MBU + Stuck-At)
+// sa_en / sa_val -> bit 4: OUT, bit 3: I3, bit 2: I2, bit 1: I1, bit 0: I0
+void inject_fault(uint8_t lut_index, uint16_t seu_mbu_mask, uint8_t sa_en, uint8_t sa_val) {
+	if (lut_index >= NUM_NODES) return;
+
+	// Atomic composition of the 32-bit fault word mapped to RTL decoder logic
+	uint32_t fault_word = (seu_mbu_mask << 16) | ((sa_val & 0x1F) << 8) | (sa_en & 0x1F);
+	IOWR_32DIRECT(CGP_WATCHDOG_BASE, (64 + lut_index) * 4, fault_word);
+}
+
+// Global fault memory clearing (initialization)
+void heal_all() {
+	int i;
+	for (i = 0; i < NUM_NODES; i++) {
+		IOWR_32DIRECT(CGP_WATCHDOG_BASE, (64 + i) * 4, 0x00000000);
+	}
+}
+
+

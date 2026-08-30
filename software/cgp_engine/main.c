@@ -2,6 +2,8 @@
 * file name: main.c
 * DESCRIPTION:
 * Cartesian Genetic Programming (CGP) Engine for hardware-in-the-loop evolution.
+* and
+* Fault Injection (SEU/MBU and Stuck-At)
 * --------------------------------------------------------------------------------
 */
 
@@ -27,18 +29,14 @@ int main() {
 
 	uint32_t rng_state = 0x12345678;
 
-	Individual parent = create_seed(&rng_state);
+	// initializing TMR Target with Watchdog Pattern
+	// combinations (Y2, Y1, Y0) from states 7 to 0 packed into a 24-bit payload.
+	// 001_011_100_011_001_011_100_010 = 0x002E32E2
+	alt_putstr("Configuring Hardware Reference Truth Table (TMR)...\n");
+	set_target_function(0x002E32E2);
 
-	// seed evaluation
-	parent.fitness = hw_evaluate_individual(&parent);
-	printf("Seed fitness: %d / %d\n", parent.fitness, MAX_FITNESS);
-
-#ifdef SEED_CHECK
-	if (parent.fitness != EXPECTED_SEED_FITNESS) {
-		alt_putstr("[ERROR] Unexpected SEED fitness.\nFreezing system.\n");
-		while(1);
-	}
-#endif
+	// clearing potential garbage after power-on from fault registers
+	heal_all();
 
 	const int NUM_TESTS = 3;
 	int current_test = 0;
@@ -49,28 +47,34 @@ int main() {
 		printf("--- Initiating test %d ---\n", current_test + 1);
 		alt_putstr("======================================================\n");
 
-		if (current_test == 0) {
-			alt_putstr("Zeroing Truth Table of LUT 0 (fault in y0 logic)\n");
-			parent.F_table[0] = 0x0000;
-		} else if (current_test == 1) {
-			alt_putstr("Assigning output of LUT29 to y1 \n");
-			parent.outputs = (parent.outputs & ~(0x3F << 6)) | (32 << 6);
-			parent.F_table[29] = 0x0000;
-		} else if (current_test == 2) {
-			alt_putstr("Zeroing truth tables of 3 nodes connected directly to external outputs.\n");
-			uint32_t y0_src = parent.outputs & 0x3F;
-			uint32_t y1_src = (parent.outputs >> 6) & 0x3F;
-			uint32_t y2_src = (parent.outputs >> 12) & 0x3F;
+		heal_all();
 
-			if (y0_src >= NUM_INPUTS) parent.F_table[y0_src - NUM_INPUTS] = 0x0000;
-			if (y1_src >= NUM_INPUTS) parent.F_table[y1_src - NUM_INPUTS] = 0x0000;
-			if (y2_src >= NUM_INPUTS) parent.F_table[y2_src - NUM_INPUTS] = 0x0000;
+		Individual parent = create_seed(&rng_state);
+		parent.fitness = evaluate_individual(&parent);
+
+		if (parent.fitness != EXPECTED_SEED_FITNESS) {
+			printf("[ERROR] SEED fitness %d. Logic is damaged.\nFreezing system.\n", parent.fitness);
+			while(1);
 		}
 
-		parent.fitness = hw_evaluate_individual(&parent);
+		if (current_test == 0) {
+			alt_putstr("Output of LUT 0 - Stuck-At-0\n");
+			inject_fault(0, 0x0000, 0x10, 0x00);
+		} else if (current_test == 1) {
+			alt_putstr("I0 of LUT 1 - Stuck-At-1 \n");
+			inject_fault(1, 0x0000, 0x01, 0x01);
+		} else if (current_test == 2) {
+			alt_putstr("LUT 0, 1, 2 - MBU.\n");
+			inject_fault(0, 0xFFFF, 0x00, 0x00); // Full bitwise negation of truth table 0
+			inject_fault(1, 0x5555, 0x00, 0x00); // Negation of even-indexed bits in truth table 1
+			inject_fault(2, 0xAAAA, 0x00, 0x00); // Negation of odd-indexed bits in truth table 2
+		}
+
+
+		parent.fitness = evaluate_individual(&parent);
 
 		if (parent.fitness == MAX_FITNESS) {
-			alt_putstr("Fitness is still 24. Skipping evolution.\n");
+			alt_putstr("Fitness is still 24. (Fault was injected into dead logic?) Skipping evolution.\n");
 			print_netlist(&parent);
 			current_test++;
 			continue;
@@ -91,7 +95,7 @@ int main() {
 				Individual child;
 				mutate_individual(&parent, &child, &rng_state);
 
-				child.fitness = hw_evaluate_individual(&child);
+				child.fitness = evaluate_individual(&child);
 
 				if (child.fitness > best_child_fitness) {
 					best_child = child;
@@ -110,7 +114,7 @@ int main() {
 		uint32_t cycles_elapsed = time_end - time_start;
 
 		printf("\n[SUCCESS] Max fitness achieved in Generation %d!\n", generation);
-		printf("Time taken: %lu clock cycles\n", cycles_elapsed);
+		printf("Time taken: %lu clock cycles\n%lu clock cycles per generation\n", cycles_elapsed, cycles_elapsed/generation);
 
 		print_netlist(&parent);
 

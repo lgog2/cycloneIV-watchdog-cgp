@@ -1,7 +1,9 @@
 /*--------------------------------------------------------------------------------
-* file name: wrapper.vhd
+* file name: cgp_engine.h
 * DESCRIPTION:
 * Cartesian Genetic Programming (CGP) Engine for hardware-in-the-loop evolution.
+* and
+* Fault Injection (SEU/MBU and Stuck-At)
 * --------------------------------------------------------------------------------
 */
 
@@ -26,12 +28,17 @@ typedef struct {
 	int fitness;
 } Individual;
 
-// function declarations
+// core engine declarations
 Individual create_seed(uint32_t *rng_state);
-int hw_evaluate_individual(const Individual *ind);
+int evaluate_individual(const Individual *ind);
 void mutate_individual(const Individual *parent, Individual *child, uint32_t *rng_state);
-int hw_evaluate_individual(const Individual *ind);
-void hw_wait_for_fault();
+void wait_for_fault();
 void print_netlist(const Individual *ind);
+void write_individual(const Individual *ind);
+
+// fault injection declarations
+void set_target_function(uint32_t pattern);
+void inject_fault(uint8_t lut_index, uint16_t seu_mask, uint8_t sa_en, uint8_t sa_val);
+void heal_all();
 
 #endif // CGP_ENGINE_H
