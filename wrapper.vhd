@@ -85,6 +85,8 @@ architecture rtl of wrapper is
 	constant ADDR_EXPECTED_Y 	: integer := (NUM_LUTS * 2) + 3;--63;
 	constant ADDR_FAULT_BASE	: integer := (NUM_LUTS * 2) + 4;--64;
 
+	constant ADDR_PRNG_SEED		: integer := (NUM_LUTS * 2) + 40;--100
+	constant ADDR_PRNG_OUT		: integer := (NUM_LUTS * 2) + 41;--101
 
 	type status_reg_t is record
 		panic_flag	: std_logic;
@@ -93,7 +95,8 @@ architecture rtl of wrapper is
 	end record;
 
 	type command_reg_t is record
-		restart_cmd	: std_logic;
+		restart_cmd		: std_logic;
+		prng_step_cmd	: std_logic;
 		-- reserved for future Nios II commands
 	end record;
 
@@ -111,7 +114,8 @@ architecture rtl of wrapper is
 	function from_avalon_cmd(v : std_logic_vector(31 downto 0)) return command_reg_t is
 		variable c : command_reg_t;
 	begin
-		c.restart_cmd := v(0);
+		c.restart_cmd	:= v(0);
+		c.prng_step_cmd	:= v(1);
 
 		return c;
 	end function;
@@ -200,6 +204,11 @@ architecture rtl of wrapper is
 
 	signal reset_timer_3hz 		: std_logic;
 
+	-- PRNG interface signals
+	signal prng_load_seed : std_logic := '0';
+	signal prng_seed_in   : std_logic_vector(31 downto 0) := (others => '0');
+	signal prng_rand_out  : std_logic_vector(31 downto 0);
+
 begin
 
 	UART_det_int : entity work.UART_detector
@@ -219,6 +228,16 @@ begin
 			conf_F_in		=> conf_F_reg,
 			fault_masks_in	=> fault_masks_reg,
 			conf_out_in		=> conf_out_reg
+		);
+
+	prng_inst : entity work.xorshift32
+		Port map (
+			clk				=> clk,
+			rst_n			=> rst_n,
+			enable			=> command_reg.prng_step_cmd,
+			load_seed		=> prng_load_seed,
+			seed_in			=> prng_seed_in,
+			rand_out		=> prng_rand_out
 		);
 
 	-- translation from Avalon-MM byte address to 32-bit word address
@@ -258,10 +277,14 @@ begin
 	begin
 
 		if rst_n = '0' then
-			command_reg.restart_cmd <= '0';
+			command_reg.restart_cmd		<= '0';
+			command_reg.prng_step_cmd	<= '0';
+			prng_load_seed 				<= '0';
 		elsif rising_edge(clk) then
 
-			command_reg.restart_cmd <= '0';
+			command_reg.restart_cmd		<= '0';
+			command_reg.prng_step_cmd	<= '0';
+			prng_load_seed				<= '0';
 
 			-- handling of Avalon-MM write requests
 			if avs_chipselect = '1' and avs_write = '1' then
@@ -287,6 +310,10 @@ begin
 						end loop;
 					when ADDR_FAULT_BASE to ADDR_FAULT_BASE + NUM_LUTS - 1 =>
 						fault_masks_reg(word_addr - ADDR_FAULT_BASE) <= avs_writedata;
+					when ADDR_PRNG_SEED =>
+						-- feeding hardware xorshift32 module with new seed
+						prng_seed_in   <= avs_writedata;
+						prng_load_seed <= '1';
 					when others => null;
 				end case;
 			end if;
@@ -307,6 +334,9 @@ begin
 					for i in 0 to 7 loop
 						avs_readdata((i * 3) + 2 downto (i * 3)) <= voted_expected_y(i);
 					end loop;
+				elsif word_addr = ADDR_PRNG_OUT then
+					-- reading random 32bit value from hardware xorshift32 module
+					avs_readdata <= prng_rand_out;
 				end if;
 			end if;
 

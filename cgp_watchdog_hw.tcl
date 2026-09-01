@@ -45,6 +45,7 @@ add_fileset_file LUT4Cell.vhd VHDL PATH LUT4Cell.vhd
 add_fileset_file core.vhd VHDL PATH core.vhd
 add_fileset_file wrapper.vhd VHDL PATH wrapper.vhd TOP_LEVEL_FILE
 add_fileset_file UART_detector.vhd VHDL PATH UART_detector.vhd
+add_fileset_file xorshift32.vhd VHDL PATH xorshift32.vhd
 
 
 # 
