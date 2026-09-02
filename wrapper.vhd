@@ -205,9 +205,11 @@ architecture rtl of wrapper is
 	signal reset_timer_3hz 		: std_logic;
 
 	-- PRNG interface signals
-	signal prng_load_seed : std_logic := '0';
-	signal prng_seed_in   : std_logic_vector(31 downto 0) := (others => '0');
-	signal prng_rand_out  : std_logic_vector(31 downto 0);
+	signal prng_load_seed		: std_logic := '0';
+	signal prng_seed_in			: std_logic_vector(31 downto 0) := (others => '0');
+	signal prng_rand_out		: std_logic_vector(31 downto 0);
+
+	signal internal_waitreq		: std_logic;
 
 begin
 
@@ -249,11 +251,13 @@ begin
 	status_reg.repair_flag	<= '1' when current_state = ST_REPAIR else '0';
 	status_reg.fitness		<= snapshot_fitness;
 
-	avs_waitrequest			<= '1' when (current_state = ST_BACKGROUND_EVAL_SETUP or
+	internal_waitreq		<= '1' when (current_state = ST_BACKGROUND_EVAL_SETUP or
 										current_state = ST_BACKGROUND_EVAL_WAIT or
 										current_state = ST_BACKGROUND_EVAL_READ or
 										current_state = ST_BACKGROUND_EVAL_DECISION)
 							else '0';
+
+	avs_waitrequest			<= internal_waitreq;
 
 	ins_irq					<= '1' when (current_state = ST_REPAIR or
 										current_state = ST_PANIC)
@@ -287,7 +291,8 @@ begin
 			prng_load_seed				<= '0';
 
 			-- handling of Avalon-MM write requests
-			if avs_chipselect = '1' and avs_write = '1' then
+			if avs_chipselect = '1' and avs_write = '1' and internal_waitreq = '0' then
+
 				case word_addr is
 					when ADDR_CONF_ROUTING to ADDR_CONF_F - 1 =>
 						conf_routing_reg(word_addr) <= avs_writedata(19 downto 0);
@@ -316,6 +321,7 @@ begin
 						prng_load_seed <= '1';
 					when others => null;
 				end case;
+
 			end if;
 		end if;
 	end process;
