@@ -3,7 +3,7 @@
 * DESCRIPTION:
 * Cartesian Genetic Programming (CGP) Engine for hardware-in-the-loop evolution.
 * and
-* Fault Injection (SEU/MBU and Stuck-At)
+* Fault Injection (SPBI/MPBI and Stuck-At)
 * --------------------------------------------------------------------------------
 */
 
@@ -38,7 +38,7 @@ void write_individual(const Individual *ind);
 
 // fault injection declarations
 void set_target_function(uint32_t pattern);
-void inject_fault(uint8_t lut_index, uint16_t seu_mask, uint8_t sa_en, uint8_t sa_val);
+void inject_fault(uint8_t lut_index, uint16_t pbi_mask, uint8_t sa_en, uint8_t sa_val);
 void heal_all();
 
 #endif // CGP_ENGINE_H

@@ -25,8 +25,8 @@ entity core is
 	--		y_out(1): 5s capacitor discharge signal
 	--		y_out(2): NanoPi power cutoff signal
 	Port (
-		x_in	: in  std_logic_vector(NUM_EXT_INPUTS - 1 downto 0);--3
-		y_out	: out std_logic_vector(NUM_EXT_OUTPUTS - 1 downto 0); --3
+		x_in			: in  std_logic_vector(NUM_EXT_INPUTS - 1 downto 0);--3
+		y_out			: out std_logic_vector(NUM_EXT_OUTPUTS - 1 downto 0); --3
 
 		-- configuration from NIOS -61cycles (61x32bits)
 		-- genotype format [30 x [F, in0, in1, in2, in3], out0, out1, out2]
@@ -112,7 +112,7 @@ begin
 			all_signals_in	=> node_inputs_matrix(i),
 			conf_routing_in	=> conf_routing_in(i),
 			conf_F_in		=> conf_F_in(i),
-			fault_mask_in => fault_masks_in(i),
+			fault_mask_in	=> fault_masks_in(i),
 
 			--output:
 			out_signal		=> lut_outputs(i)
