@@ -7,11 +7,18 @@
 create_clock -name CLOCK -period 20.000 [get_ports {CLOCK}]
 
 # Multicycle exception for the CGP evaluation path (30-LUT DAG) - 8 clock cycles (160 ns)
-# Shifts the setup latching edge 8 cycles forward to allow combinatorial propagation
-set_multicycle_path -setup -end -from [get_registers {*core_x_in* *conf_routing_reg* *conf_F_reg* *conf_out_reg* *fault_masks_reg*}] -to [get_registers {*current_fitness* *latched_y*}] 8
+# Shifts the setup latching edge 8 cycles forward to allow combinatorial propagation through the
+# asynchronous CGP core after any configuration or input change
+# Includes 'is_evaluating_child' which switches the parent/child MUX.
+set_multicycle_path -setup -end -from [get_registers {*core_x_in* *conf_routing_reg* *conf_F_reg* *conf_out_reg* *fault_masks_reg* *xorshift64* *is_evaluating_child*}] -to [get_registers {*current_fitness* *latched_y*}] 8
 
-# Hold edge correction (Anchor the hold check to the original launch edge)
-set_multicycle_path -hold -end -from [get_registers {*core_x_in* *conf_routing_reg* *conf_F_reg* *conf_out_reg* *fault_masks_reg*}] -to [get_registers {*current_fitness* *latched_y*}] 7
+# Multicycle exception for the combinatorial child generation path (applying mutation to parent)
+# only 1 cycle delay is needed, but as evaluation takes place before writing new individual to configuration registers 8 is set here
+set_multicycle_path -setup -end -from [get_registers {*xorshift64*}] -to [get_registers {*conf_routing_reg* *conf_F_reg* *conf_out_reg*}] 8
+
+# Hold edge corrections for both above multicycles (Anchor the hold check to the original launch edge)
+set_multicycle_path -hold -end -from [get_registers {*core_x_in* *conf_routing_reg* *conf_F_reg* *conf_out_reg* *fault_masks_reg* *xorshift64* *is_evaluating_child*}] -to [get_registers {*current_fitness* *latched_y*}] 7
+set_multicycle_path -hold -end -from [get_registers {*xorshift64*}] -to [get_registers {*conf_routing_reg* *conf_F_reg* *conf_out_reg*}] 7
 
 # Automatically calculate and apply clock jitter and uncertainty margins
 derive_clock_uncertainty

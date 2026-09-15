@@ -2,9 +2,13 @@
 -- file name: LUT4Cell.vhd
 -- DESCRIPTION:
 --		Configurable 4-input Look-Up Table (LUT4)
---		Integrates a 16-bit programmable truth table with routing multiplexers
---		to dynamically select 4 signals from the global signal bus.
+--		Integrates programmable truth table with routing multiplexers
+--		to dynamically select signals from the global signal bus.
 --		Building block for the CGP DAG Reconfigurable Circuit (VRC).
+--		NOTE:
+--		Deliberately not parameterized - width of truth table and number of inputs
+--		hardcoded to match current single-cycle model of fault injection from NIOS:
+--		-both Permanent Bit Inversion(PBI) and Stuck-At in one 32-bit word.
 ----------------------------------------------------------------------------------
 
 library ieee;
@@ -13,7 +17,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 use work.consts_pkg.all;
 
-entity Lut4Cell is 
+entity Lut4Cell is
 	port(
 		-- global input bus (30 LUT outputs + 3 external inputs = 33 signals)
 		all_signals_in		: in  std_logic_vector(TOTAL_SIGNALS_WIDTH - 1 downto 0); --0-32
@@ -31,7 +35,7 @@ entity Lut4Cell is
 		conf_F_in 			: in std_logic_vector(15 downto 0);
 
 		-- FAULT INJECTION BUS:
-		-- Bits [31:16] : SEU/MBU mask (Soft Errors applied via XOR to the Truth Table)
+		-- Bits [31:16] : Permanent Bit Inversion mask (Hard Errors applied via XOR to the Truth Table)
 		-- Bits [15:13] : unused
 		-- Bits [12:8]  : SA_VAL mask (Stuck-At Value: 1=VCC, 0=GND for [OUT, I3, I2, I1, I0])
 		-- Bits [7:5]   : unused
@@ -72,7 +76,7 @@ begin
 
 	address		<= to_integer(unsigned'(i3_f & i2_f & i1_f & i0_f));
 
-	--SEU/MBU
+	--SPBI/MPBI
 	corrupted_F	<= conf_F_in xor fault_mask_in(31 downto 16);
 
 	raw_out		<= corrupted_F(address);

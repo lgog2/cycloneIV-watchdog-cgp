@@ -3,7 +3,7 @@
 * DESCRIPTION:
 * Cartesian Genetic Programming (CGP) Engine for hardware-in-the-loop evolution.
 * and
-* Fault Injection (SEU/MBU and Stuck-At)
+* Fault Injection (SPBI/MPBI and Stuck-At)
 * --------------------------------------------------------------------------------
 */
 
@@ -236,13 +236,13 @@ void set_target_function(uint32_t pattern) {
 	}
 }
 
-// Fault injection (SEU/MBU + Stuck-At)
+// Fault injection (SPBI/MPBI + Stuck-At)
 // sa_en / sa_val -> bit 4: OUT, bit 3: I3, bit 2: I2, bit 1: I1, bit 0: I0
-void inject_fault(uint8_t lut_index, uint16_t seu_mbu_mask, uint8_t sa_en, uint8_t sa_val) {
+void inject_fault(uint8_t lut_index, uint16_t pbi_mask, uint8_t sa_en, uint8_t sa_val) {
 	if (lut_index >= NUM_NODES) return;
 
 	// Atomic composition of the 32-bit fault word mapped to RTL decoder logic
-	uint32_t fault_word = (seu_mbu_mask << 16) | ((sa_val & 0x1F) << 8) | (sa_en & 0x1F);
+	uint32_t fault_word = (pbi_mask << 16) | ((sa_val & 0x1F) << 8) | (sa_en & 0x1F);
 	IOWR_32DIRECT(CGP_WATCHDOG_BASE, (64 + lut_index) * 4, fault_word);
 }
 
