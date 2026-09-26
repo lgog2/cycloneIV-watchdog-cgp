@@ -13,6 +13,13 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity UART_detector is
+	generic (
+		-- Calculations: clock 50 MHz and baud rate 1500000bps (nanopi):
+		-- Tc = 1 / 50 Mhz = 20 ns
+		-- Tbit = 1 / 1.5 Mbps = 666.67 ns
+		-- N = 666.66 / 20 = 33.33 cycles per bit (half -> around 16 cycles)
+		HALF_BIT_CYCLES : integer := 16
+	);
 	Port (
 		clk			: in  std_logic; -- 50 MHz
 		rst_n		: in  std_logic; -- asynchronous active-low reset
@@ -22,16 +29,14 @@ entity UART_detector is
 end UART_detector;
 
 architecture rtl of UART_detector is
-
-	-- Calculations: clock 50 MHz and baud rate 1500000bps (nanopi):
-		-- Tc = 1 / 50 Mhz = 20 ns
-		-- Tbit = 1 / 1.5 Mbps = 666.67 ns
-		-- N = 666.66 / 20 = 33.33 cycles fo bit (half -around 16 cycles)
-	 
-	constant HALF_BIT_CYCLES : integer := 16;
-	 
 	-- metastability neutralization and edge detector (3-stage shift register)
 	signal rx_sync : std_logic_vector(2 downto 0) := "111";
+
+	--- Blocking potential optimization by the synthesizer (Register Retiming / Duplication) on Clock Domain Crossing (CDC) Synchronizer
+	attribute altera_attribute : string;
+	attribute altera_attribute of rx_sync : signal is "-name SYNCHRONIZER_IDENTIFICATION FORCED_IF_ASYNCHRONOUS";
+	attribute preserve : boolean;
+	attribute preserve of rx_sync : signal is true;
 	 
 	type state_type is (IDLE, VALIDATE, REARM);
 	signal state : state_type := IDLE;

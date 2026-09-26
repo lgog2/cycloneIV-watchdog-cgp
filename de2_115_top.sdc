@@ -25,9 +25,7 @@ derive_clock_uncertainty
 
 # Asynchronous inputs (buttons, RC states, UART) treated as false paths
 # (Timing is ignored here because signals cross clock domains via internal 2-FF synchronizers)
-set_false_path -from [all_inputs]
-#set_false_path -from [get_ports {KEY* EX_I* rst_n}]
+set_false_path -from [get_ports {KEY* EX_I* altera_reserved_tdi altera_reserved_tms}]
 
 # Asynchronous/slow outputs (LEDs, GPIO debug bus, EX_O) treated as false paths
-set_false_path -to [all_outputs]
-#set_false_path -to [get_ports {LEDR* LEDG* GPIO* EX_O*}]
+set_false_path -to [get_ports {LEDR* LEDG* GPIO* EX_O* altera_reserved_tdo}]

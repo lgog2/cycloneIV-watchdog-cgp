@@ -12,6 +12,8 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
+use work.consts_pkg.all;
+
 entity de2_115_top is
 	Port (
 		CLOCK		: in  std_logic; -- 50MHz
@@ -65,9 +67,15 @@ architecture Structural of de2_115_top is
 	signal clean_rst_n						: std_logic := '0';
 	signal key0_sync						: std_logic_vector(1 downto 0) := "11";
 
+	--- Blocking potential optimization by the synthesizer (Register Retiming / Duplication) on Clock Domain Crossing (CDC) Two-Flip-Flop (2-FF) Synchronizer
+	attribute altera_attribute : string;
+	attribute altera_attribute of key0_sync	: signal is "-name SYNCHRONIZER_IDENTIFICATION FORCED_IF_ASYNCHRONOUS";
+	attribute preserve : boolean;
+	attribute preserve of key0_sync			: signal is true;
+
 	-- counters for reset stretch and 3Hz tick LED strecher (50ms at 50MHz)
-	constant TIME_50MS						: integer := 2500000;
-	signal rst_counter						: integer range 0 to TIME_50MS := 0;
+	constant TIME_50MS						: integer := SYS_CLOCK_FREQ_HZ / 20; --2500000;
+	signal rst_counter						: integer range 0 to TIME_50MS := TIME_50MS;
 
 	signal led_50ms_cnt						: integer range 0 to TIME_50MS := 0;
 	signal tick_3Hz_pending_flag_visible	: std_logic := '0';
@@ -95,10 +103,10 @@ begin
 
 			-- stretching reset to 50ms and ensuring reset on power-on
 			if key0_sync(1) = '0' then
-				rst_counter <= 0;
+				rst_counter <= TIME_50MS;
 				clean_rst_n <= '0';
-			elsif rst_counter < TIME_50MS then
-				rst_counter <= rst_counter + 1;
+			elsif rst_counter > 0 then
+				rst_counter <= rst_counter - 1;
 				clean_rst_n <= '0';
 			else
 				clean_rst_n <= '1';

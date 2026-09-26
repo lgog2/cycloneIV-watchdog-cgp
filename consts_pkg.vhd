@@ -16,6 +16,8 @@ package consts_pkg is
 	-- Computes the ceiling of log base 2 (used to determine bus widths)
 	function clog2(depth : integer) return integer;
 
+	constant SYS_CLOCK_FREQ_HZ			: integer := 50_000_000;
+
 	-- =========================================================================
 	-- CORE TOPOLOGY PARAMETERS
 	-- =========================================================================

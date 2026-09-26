@@ -18,9 +18,9 @@ use work.consts_pkg.all;
 entity wrapper is
 	generic (
 		-- 50 000 000 / 3 = 16 666 666 (Requires 24 bits, max is 16 777 215)
-		TICKS_3HZ			: integer := 16666666; -- ~333 ms at 50MHz
+		TICKS_3HZ			: integer := SYS_CLOCK_FREQ_HZ / 3; -- ~333 ms at 50MHz
 		-- debouncer delay for capacitors transitional state signals
-		DEBOUNCE_CYCLES		: integer := 500000;  -- 10 ms at 50MHz
+		DEBOUNCE_CYCLES		: integer := SYS_CLOCK_FREQ_HZ / 100;  -- 10 ms
 
 		MAX_FITNESS			: integer := 24;
 		-- evaluator delay required for signal propagation through the DAG
@@ -163,6 +163,14 @@ architecture rtl of wrapper is
 	signal sync_x1 : std_logic_vector(1 downto 0) := "00";
 	signal final_x : std_logic_vector(1 downto 0);
 
+	--- Blocking potential optimization by the synthesizer (Register Retiming / Duplication) on Clock Domain Crossing (CDC) Two-Flip-Flop (2-FF) Synchronizer
+	attribute altera_attribute : string;
+	attribute altera_attribute of sync_x0 : signal is "-name SYNCHRONIZER_IDENTIFICATION FORCED_IF_ASYNCHRONOUS";
+	attribute altera_attribute of sync_x1 : signal is "-name SYNCHRONIZER_IDENTIFICATION FORCED_IF_ASYNCHRONOUS";
+	attribute preserve : boolean;
+	attribute preserve of sync_x0 : signal is true;
+	attribute preserve of sync_x1 : signal is true;
+
 	-- 10ms debouncer counters for 50MHz capacitor state sampling
 	signal cnt_x0 : integer range 0 to DEBOUNCE_CYCLES := 0;
 	signal cnt_x1 : integer range 0 to DEBOUNCE_CYCLES := 0;
@@ -280,9 +288,15 @@ architecture rtl of wrapper is
 	signal gen_counter			: unsigned(31 downto 0) := (others => '0');
 	signal last_repair_gens		: unsigned(31 downto 0) := (others => '0');
 
+	constant BAUD_RATE			: integer := 1500000;
+
 begin
 
 	UART_det_inst : entity work.UART_detector
+		generic map (
+			-- UART timing calculations for 50MHz and 1.5Mbps baud rate
+			HALF_BIT_CYCLES => (SYS_CLOCK_FREQ_HZ / BAUD_RATE) / 2
+		)
 		Port map (
 			clk				=> clk,
 			rst_n			=> rst_n,
