@@ -1,0 +1,148 @@
+Configuring Hardware Reference Truth Table (TMR)...
+
+
+=================================================================
+ Tests of repair capabilities under SPBI/MPBI and Stuck-At fault injections
+=====================================================================
+[1] Comparative Benchmark (SW 1+4 vs HW 1+1)
+[2] Cumulative Routing Faults Test (STA-0/STA-1 of LUTs inputs)
+[3] Cumulative Logic Faults Test (PBI of LUTs Truth Tables)
+--- CONTINUOUS ASYNCHRONOUS FAULT TESTS ---------------------
+[4] Logic Degradation Only (PBI)
+[5] Routing Degradation Only (Inputs Stuck-At)
+[6] Rapid Degradation (Outputs Stuck-At)
+[7] Full Model (Mix 16:4:1)
+---------------------------------------------------------------------
+Select test (1-7) and press Enter: 
+6
+
+
+===============================================================
+TEST 6: CONTINUOUS ASYNCHRONOUS FAULT INJECTION (GRACEFUL DEGRADATION)
+- Mode: RAPID DEGRADATION
+- Injections: Output Stuck-At-0 / Stuck-At-1 ONLY (Node elimination).
+- Hardware evolution operates asynchronously; the 3Hz timer is never reset.
+- Evaluates system fitness and logs fatal capacity loss.
+  Test ends after 5.0s (~15 consecutive 333ms windows) of PANIC - state
+  where the system is unable to repair itself even for a moment.
+  (This enforces 5s of continuous SAFE OUT on capacitors, meaning 5s
+   without supervision for the watchdog-monitored device).
+==================================================================
+
+
+========================= BASELINE ==============================
+
+--------------- EXTRACTED STRUCTURAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 00]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x0)   (x1)   (x2)   (x1)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (x0)   (x1)   (x2)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (x2)   (x0)   
+---------------------------------------------------------------
+Utilization: 3/30 LUTs.
+---------------------------------------------------------------
+
+
+--------------- EXTRACTED LOGICAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 00]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x0)   (x1)   (x2)   (--)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (--)   (--)   (--)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (--)   (--)   
+---------------------------------------------------------------
+Utilization: 3/30 LUTs.
+---------------------------------------------------------------
+
+
+>>> INITIALIZING FAULT INJECTION TEST | POOL SIZE: 30 <<<
+--- Fault Strike #1 --- Injecting Output Stuck-At-1 into LUT 15 (Total LUT Dysfunction)
+--- Fault Strike #2 --- Injecting Output Stuck-At-0 into LUT 8 (Total LUT Dysfunction)
+--- Fault Strike #3 --- Injecting Output Stuck-At-1 into LUT 12 (Total LUT Dysfunction)
+--- Fault Strike #4 --- Injecting Output Stuck-At-1 into LUT 14 (Total LUT Dysfunction)
+--- Fault Strike #5 --- Injecting Output Stuck-At-1 into LUT 21 (Total LUT Dysfunction)
+--- Fault Strike #6 --- Injecting Output Stuck-At-0 into LUT 10 (Total LUT Dysfunction)
+--- Fault Strike #7 --- Injecting Output Stuck-At-1 into LUT 23 (Total LUT Dysfunction)
+--- Fault Strike #8 --- Injecting Output Stuck-At-1 into LUT 27 (Total LUT Dysfunction)
+--- Fault Strike #9 --- Injecting Output Stuck-At-1 into LUT 17 (Total LUT Dysfunction)
+--- Fault Strike #10 --- Injecting Output Stuck-At-0 into LUT 19 (Total LUT Dysfunction)
+--- Fault Strike #11 --- Injecting Output Stuck-At-0 into LUT 3 (Total LUT Dysfunction)
+--- Fault Strike #12 --- Injecting Output Stuck-At-1 into LUT 20 (Total LUT Dysfunction)
+--- Fault Strike #13 --- Injecting Output Stuck-At-1 into LUT 25 (Total LUT Dysfunction)
+--- Fault Strike #14 --- Injecting Output Stuck-At-1 into LUT 11 (Total LUT Dysfunction)
+--- Fault Strike #15 --- Injecting Output Stuck-At-1 into LUT 26 (Total LUT Dysfunction)
+--- Fault Strike #16 --- Injecting Output Stuck-At-0 into LUT 0 (Total LUT Dysfunction)
+--- Fault Strike #17 --- Injecting Output Stuck-At-1 into LUT 24 (Total LUT Dysfunction)
+--- Fault Strike #18 --- Injecting Output Stuck-At-1 into LUT 7 (Total LUT Dysfunction)
+--- Fault Strike #19 --- Injecting Output Stuck-At-0 into LUT 6 (Total LUT Dysfunction)
+--- Fault Strike #20 --- Injecting Output Stuck-At-0 into LUT 9 (Total LUT Dysfunction)
+--- Fault Strike #21 --- Injecting Output Stuck-At-0 into LUT 4 (Total LUT Dysfunction)
+--- Fault Strike #22 --- Injecting Output Stuck-At-1 into LUT 13 (Total LUT Dysfunction)
+
+[IRQ] 333ms Window exceeded! System entered PANIC.
+--- Fault Strike #23 --- Injecting Output Stuck-At-0 into LUT 1 (Total LUT Dysfunction)
+--- Fault Strike #24 --- Injecting Output Stuck-At-1 into LUT 22 (Total LUT Dysfunction)
+--- Fault Strike #25 --- Injecting Output Stuck-At-0 into LUT 2 (Total LUT Dysfunction)
+--- Fault Strike #26 --- Injecting Output Stuck-At-0 into LUT 5 (Total LUT Dysfunction)
+--- Fault Strike #27 --- Injecting Output Stuck-At-1 into LUT 29 (Total LUT Dysfunction)
+--- Fault Strike #28 --- Injecting Output Stuck-At-0 into LUT 16 (Total LUT Dysfunction)
+--- Fault Strike #29 --- Injecting Output Stuck-At-0 into LUT 18 (Total LUT Dysfunction)
+--- Fault Strike #30 --- Injecting Output Stuck-At-0 into LUT 28 (Total LUT Dysfunction)
+
+[END] Pool exhausted while in PANIC
+System absorbed 20 UNIQUE faults before capacity loss.
+Breakdown: [ 0 PBI | 0 IN | 20 OUT ]
+
+
+=================== LAST WORKING CONFIGURATION ====================
+
+--------------- EXTRACTED STRUCTURAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 18]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x1)   (x0)   (x2)   (x0)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (x1)   (x1)   (x2)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (x0)   (x0)   
+  [LUT 03] :: F=0x8AF7 :: Inputs: (L01)  (L01)  (x1)   (x2)   
+  [LUT 04] :: F=0x5DA3 :: Inputs: (L00)  (x1)   (x0)   (L03)  
+  [LUT 05] :: F=0x64EA :: Inputs: (L04)  (L04)  (x2)   (x2)   
+  [LUT 08] :: F=0xC311 :: Inputs: (L05)  (L05)  (L03)  (L03)  
+  [LUT 13] :: F=0xCCCA :: Inputs: (L08)  (x2)   (L03)  (L01)  
+  [LUT 18] :: F=0x182D :: Inputs: (L02)  (L13)  (L05)  (L03)  
+---------------------------------------------------------------
+Utilization: 9/30 LUTs.
+---------------------------------------------------------------
+
+
+--------------- EXTRACTED LOGICAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 18]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x1)   (x0)   (x2)   (--)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (--)   (--)   (--)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (--)   (--)   
+  [LUT 03] :: F=0x8AF7 :: Inputs: (L01)  (L01)  (x1)   (x2)   
+  [LUT 04] :: F=0x5DA3 :: Inputs: (L00)  (x1)   (x0)   (L03)  
+  [LUT 05] :: F=0x64EA :: Inputs: (L04)  (L04)  (x2)   (x2)   
+  [LUT 08] :: F=0xC311 :: Inputs: (L05)  (L05)  (L03)  (L03)  
+  [LUT 13] :: F=0xCCCA :: Inputs: (L08)  (x2)   (L03)  (L01)  
+  [LUT 18] :: F=0x182D :: Inputs: (L02)  (L13)  (L05)  (L03)  
+---------------------------------------------------------------
+Utilization: 9/30 LUTs.
+---------------------------------------------------------------
+
+
+

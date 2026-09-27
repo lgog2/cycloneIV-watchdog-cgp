@@ -1,0 +1,1613 @@
+Configuring Hardware Reference Truth Table (TMR)...
+
+
+=================================================================
+ Tests of repair capabilities under SPBI/MPBI and Stuck-At fault injections
+=====================================================================
+[1] Comparative Benchmark (SW 1+4 vs HW 1+1)
+[2] Cumulative Routing Faults Test (STA-0/STA-1 of LUTs inputs)
+[3] Cumulative Logic Faults Test (PBI of LUTs Truth Tables)
+--- CONTINUOUS ASYNCHRONOUS FAULT TESTS ---------------------
+[4] Logic Degradation Only (PBI)
+[5] Routing Degradation Only (Inputs Stuck-At)
+[6] Rapid Degradation (Outputs Stuck-At)
+[7] Full Model (Mix 16:4:1)
+---------------------------------------------------------------------
+Select test (1-7) and press Enter: 
+3
+
+
+===============================================================
+CUMULATIVE LOGIC FAULTS (PBI) - HARDWARE AUTO-HEALING
+- cumulative Permanent Bit Inversions of LUTs Truth Tables single bits.
+- targeting only active logic paths.
+- each new fault resets 3Hz time window.
+- test ends if evolution wont find new configuration in time window.
+  or all bits in Truth Tables of LUTs in active logic paths are damaged.
+==================================================================
+
+
+========================= BASELINE ==============================
+
+--------------- EXTRACTED STRUCTURAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 00]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x0)   (x1)   (x2)   (x1)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (x0)   (x1)   (x2)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (x2)   (x0)   
+---------------------------------------------------------------
+Utilization: 3/30 LUTs.
+---------------------------------------------------------------
+
+
+--------------- EXTRACTED LOGICAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 00]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x0)   (x1)   (x2)   (--)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (--)   (--)   (--)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (--)   (--)   
+---------------------------------------------------------------
+Utilization: 3/30 LUTs.
+---------------------------------------------------------------
+
+
+--- Fault Strike #1 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 1
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #2 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 0
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #3 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 0
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #4 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 1
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 627 generations (Time: 42009 cycles | ~840 us).
+
+--- Fault Strike #5 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 1
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #6 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 0
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #7 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 1
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 273 generations (Time: 18291 cycles | ~365 us).
+
+--- Fault Strike #8 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 2
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 3351 generations (Time: 224517 cycles | ~4490 us).
+
+--- Fault Strike #9 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 2
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #10 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 0
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 364 generations (Time: 24388 cycles | ~487 us).
+
+--- Fault Strike #11 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 1
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #12 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 0
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 4703 generations (Time: 315101 cycles | ~6302 us).
+
+--- Fault Strike #13 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 25
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 5573 generations (Time: 373391 cycles | ~7467 us).
+
+--- Fault Strike #14 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 3
+Fitness dropped to 18. Starting (1+1)-ES cumulative evolution.
+Repaired in 14 generations (Time: 938 cycles | ~18 us).
+
+--- Fault Strike #15 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 7
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #16 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 19
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #17 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 13
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #18 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 19
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #19 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 16
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 404 generations (Time: 27068 cycles | ~541 us).
+
+--- Fault Strike #20 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 4
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 45 generations (Time: 3015 cycles | ~60 us).
+
+--- Fault Strike #21 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 3
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #22 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 16
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 422 generations (Time: 28274 cycles | ~565 us).
+
+--- Fault Strike #23 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 2
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #24 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 16
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #25 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 19
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #26 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 19
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 518 generations (Time: 34706 cycles | ~694 us).
+
+--- Fault Strike #27 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 12
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #28 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 13
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #29 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 17
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #30 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 5
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #31 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 1
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #32 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 19
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 291 generations (Time: 19497 cycles | ~389 us).
+
+--- Fault Strike #33 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 13
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 347 generations (Time: 23249 cycles | ~464 us).
+
+--- Fault Strike #34 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 15
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #35 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 10
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 12 generations (Time: 804 cycles | ~16 us).
+
+--- Fault Strike #36 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 10
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 85 generations (Time: 5695 cycles | ~113 us).
+
+--- Fault Strike #37 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 8
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #38 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 14
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #39 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 17
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 72 generations (Time: 4824 cycles | ~96 us).
+
+--- Fault Strike #40 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 6
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #41 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 5
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #42 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 16
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #43 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 6
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #44 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 4
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 164 generations (Time: 10988 cycles | ~219 us).
+
+--- Fault Strike #45 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 3
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #46 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 2
+Fitness dropped to 21. Starting (1+1)-ES cumulative evolution.
+Repaired in 196 generations (Time: 13132 cycles | ~262 us).
+
+--- Fault Strike #47 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 3
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #48 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 2
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #49 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 6
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 113 generations (Time: 7571 cycles | ~151 us).
+
+--- Fault Strike #50 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 1
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #51 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 7
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #52 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 14
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #53 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 2
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #54 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 6
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 145 generations (Time: 9715 cycles | ~194 us).
+
+--- Fault Strike #55 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 7
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #56 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 14
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #57 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 6
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #58 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 14
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #59 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 2
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #60 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 6
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #61 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 19
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 5 generations (Time: 335 cycles | ~6 us).
+
+--- Fault Strike #62 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 10
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 91 generations (Time: 6097 cycles | ~121 us).
+
+--- Fault Strike #63 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 13
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #64 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 0
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #65 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 10
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #66 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 8
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #67 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 8
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 14 generations (Time: 938 cycles | ~18 us).
+
+--- Fault Strike #68 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 10
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #69 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 2
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #70 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 9
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #71 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 17
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #72 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 10
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #73 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 11
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #74 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 9
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #75 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 17
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #76 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 10
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #77 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 8
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #78 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 10
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #79 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 10
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 2090 generations (Time: 140030 cycles | ~2800 us).
+
+--- Fault Strike #80 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 1
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #81 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 21
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 877 generations (Time: 58759 cycles | ~1175 us).
+
+--- Fault Strike #82 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 16
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #83 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 5
+Fitness dropped to 19. Starting (1+1)-ES cumulative evolution.
+Repaired in 485 generations (Time: 32495 cycles | ~649 us).
+
+--- Fault Strike #84 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 11
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #85 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 8
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #86 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 5
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #87 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 20
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #88 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 6
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #89 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 3
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 3 generations (Time: 201 cycles | ~4 us).
+
+--- Fault Strike #90 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 20
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #91 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 2
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 385 generations (Time: 25795 cycles | ~515 us).
+
+--- Fault Strike #92 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 0
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #93 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 9
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #94 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 10
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #95 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 5
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #96 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 23
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #97 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 16
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #98 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 12
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 39 generations (Time: 2613 cycles | ~52 us).
+
+--- Fault Strike #99 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 6
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #100 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 16
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #101 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 16
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #102 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 1
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 24 generations (Time: 1608 cycles | ~32 us).
+
+--- Fault Strike #103 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 4
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #104 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 20
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #105 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 6
+Fitness dropped to 21. Starting (1+1)-ES cumulative evolution.
+Repaired in 613 generations (Time: 41071 cycles | ~821 us).
+
+--- Fault Strike #106 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 7
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #107 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 3
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #108 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 4
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #109 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 4
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #110 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 0
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #111 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 4
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #112 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 7
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 113 generations (Time: 7571 cycles | ~151 us).
+
+--- Fault Strike #113 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 8
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #114 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 12
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #115 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 8
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #116 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 7
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #117 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 4
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 714 generations (Time: 47838 cycles | ~956 us).
+
+--- Fault Strike #118 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 1
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #119 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 12
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 63 generations (Time: 4221 cycles | ~84 us).
+
+--- Fault Strike #120 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 12
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #121 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 8
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #122 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 9
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #123 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 1
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #124 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 12
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #125 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 16
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 24 generations (Time: 1608 cycles | ~32 us).
+
+--- Fault Strike #126 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 7
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #127 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 12
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #128 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 20
+Fitness dropped to 21. Starting (1+1)-ES cumulative evolution.
+Repaired in 175 generations (Time: 11725 cycles | ~234 us).
+
+--- Fault Strike #129 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 3
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #130 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 12
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #131 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 16
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 155 generations (Time: 10385 cycles | ~207 us).
+
+--- Fault Strike #132 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 8
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #133 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 12
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #134 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 16
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #135 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 7
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #136 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 9
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #137 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 0
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #138 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 5
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #139 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 4
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #140 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 10
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 90 generations (Time: 6030 cycles | ~120 us).
+
+--- Fault Strike #141 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 9
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #142 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 4
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #143 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 2
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 11558 generations (Time: 774386 cycles | ~15487 us).
+
+--- Fault Strike #144 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 18
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #145 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 11
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #146 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 4
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #147 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 17
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #148 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 20
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #149 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 18
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #150 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 9
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #151 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 14
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #152 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 15
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #153 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 15
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #154 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 12
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #155 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 0
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #156 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 13
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 26 generations (Time: 1742 cycles | ~34 us).
+
+--- Fault Strike #157 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 14
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #158 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 3
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #159 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 13
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #160 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 16
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #161 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 20
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #162 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 18
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #163 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 2
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #164 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 18
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #165 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 5
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #166 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 17
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #167 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 14
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #168 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 15
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #169 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 9
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #170 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 14
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #171 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 7
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #172 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 3
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 234 generations (Time: 15678 cycles | ~313 us).
+
+--- Fault Strike #173 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 25
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #174 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 0
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #175 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 13
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 5 generations (Time: 335 cycles | ~6 us).
+
+--- Fault Strike #176 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 6
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #177 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 5
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 4 generations (Time: 268 cycles | ~5 us).
+
+--- Fault Strike #178 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 6
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #179 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 12
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 59 generations (Time: 3953 cycles | ~79 us).
+
+--- Fault Strike #180 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 9
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #181 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 0
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #182 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 6
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #183 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 1
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 95 generations (Time: 6365 cycles | ~127 us).
+
+--- Fault Strike #184 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 0
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 22 generations (Time: 1474 cycles | ~29 us).
+
+--- Fault Strike #185 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 11
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #186 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 7
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #187 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 25
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #188 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 11
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #189 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 13
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #190 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 20
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #191 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 7
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #192 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 6
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #193 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 25
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #194 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 25
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #195 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 5
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #196 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 11
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #197 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 6
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #198 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 0
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 452 generations (Time: 30284 cycles | ~605 us).
+
+--- Fault Strike #199 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 15
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #200 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 11
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #201 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 25
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #202 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 15
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #203 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 3
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #204 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 7
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #205 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 14
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #206 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 1
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #207 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 7
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #208 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 11
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #209 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 9
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 92 generations (Time: 6164 cycles | ~123 us).
+
+--- Fault Strike #210 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 7
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #211 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 5
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #212 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 16
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #213 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 25
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #214 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 10
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #215 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 3
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #216 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 11
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 237 generations (Time: 15879 cycles | ~317 us).
+
+--- Fault Strike #217 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 1
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #218 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 15
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #219 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 25
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 348 generations (Time: 23316 cycles | ~466 us).
+
+--- Fault Strike #220 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 17
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #221 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 10
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #222 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 17
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #223 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 10
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #224 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 25
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #225 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 11
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #226 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 20
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #227 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 27
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #228 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 2
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #229 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 4
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #230 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 2
+Fitness dropped to 21. Starting (1+1)-ES cumulative evolution.
+Repaired in 300 generations (Time: 20100 cycles | ~402 us).
+
+--- Fault Strike #231 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 27
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 367 generations (Time: 24589 cycles | ~491 us).
+
+--- Fault Strike #232 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 4
+Fitness dropped to 20. Starting (1+1)-ES cumulative evolution.
+Repaired in 158 generations (Time: 10586 cycles | ~211 us).
+
+--- Fault Strike #233 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 22
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 401 generations (Time: 26867 cycles | ~537 us).
+
+--- Fault Strike #234 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 18
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #235 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 27
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #236 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 20
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #237 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 0
+Fitness dropped to 21. Starting (1+1)-ES cumulative evolution.
+Repaired in 825 generations (Time: 55275 cycles | ~1105 us).
+
+--- Fault Strike #238 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 27
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #239 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 15
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #240 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 8
+Fitness dropped to 20. Starting (1+1)-ES cumulative evolution.
+Repaired in 10 generations (Time: 670 cycles | ~13 us).
+
+--- Fault Strike #241 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 12
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #242 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 7
+Fitness dropped to 21. Starting (1+1)-ES cumulative evolution.
+Repaired in 1033 generations (Time: 69211 cycles | ~1384 us).
+
+--- Fault Strike #243 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 28
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #244 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 11
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #245 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 18
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #246 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 25
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #247 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 28
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #248 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 8
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #249 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 15
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #250 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 3
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #251 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 7
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #252 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 15
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #253 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 27
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #254 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 28
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #255 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 16
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #256 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 2
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #257 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 3
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #258 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 17
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #259 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 15
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #260 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 25
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #261 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 17
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #262 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 14
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #263 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 18
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #264 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 5
+Fitness dropped to 20. Starting (1+1)-ES cumulative evolution.
+Repaired in 1750 generations (Time: 117250 cycles | ~2345 us).
+
+--- Fault Strike #265 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 27
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #266 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 15
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #267 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 18
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #268 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 4
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #269 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 28
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 224 generations (Time: 15008 cycles | ~300 us).
+
+--- Fault Strike #270 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 18
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #271 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 20
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #272 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 8
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #273 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 20
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #274 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 28
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #275 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 14
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #276 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 5
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #277 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 28
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 26 generations (Time: 1742 cycles | ~34 us).
+
+--- Fault Strike #278 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 2
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #279 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 23
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #280 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 28
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #281 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 11
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 21 generations (Time: 1407 cycles | ~28 us).
+
+--- Fault Strike #282 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 27
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #283 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 23
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #284 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 9
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #285 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 1
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 553 generations (Time: 37051 cycles | ~741 us).
+
+--- Fault Strike #286 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 19
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #287 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 22
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #288 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 13
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #289 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 4
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #290 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 8
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #291 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 8
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #292 ---
+Injecting Single Permanent Bit Inversion (Bit 3) into LUT 11
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #293 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 13
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #294 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 13
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #295 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 9
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #296 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 26
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #297 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 8
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #298 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 13
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #299 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 27
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #300 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 19
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 72 generations (Time: 4824 cycles | ~96 us).
+
+--- Fault Strike #301 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 6
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #302 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 26
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #303 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 19
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 1554 generations (Time: 104118 cycles | ~2082 us).
+
+--- Fault Strike #304 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 1
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #305 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 12
+Fitness dropped to 21. Starting (1+1)-ES cumulative evolution.
+Repaired in 819 generations (Time: 54873 cycles | ~1097 us).
+
+--- Fault Strike #306 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 20
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #307 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 21
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 503 generations (Time: 33701 cycles | ~674 us).
+
+--- Fault Strike #308 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 13
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #309 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 5
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #310 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 20
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #311 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 25
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 145 generations (Time: 9715 cycles | ~194 us).
+
+--- Fault Strike #312 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 19
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 3637 generations (Time: 243679 cycles | ~4873 us).
+
+--- Fault Strike #313 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 3
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #314 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 9
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #315 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 0
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #316 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 10
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #317 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 27
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #318 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 27
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #319 ---
+Injecting Single Permanent Bit Inversion (Bit 12) into LUT 19
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 127 generations (Time: 8509 cycles | ~170 us).
+
+--- Fault Strike #320 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 19
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #321 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 14
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #322 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 19
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 161 generations (Time: 10787 cycles | ~215 us).
+
+--- Fault Strike #323 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 2
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 124 generations (Time: 8308 cycles | ~166 us).
+
+--- Fault Strike #324 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 10
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 2332 generations (Time: 156244 cycles | ~3124 us).
+
+--- Fault Strike #325 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 9
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #326 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 9
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 726 generations (Time: 48642 cycles | ~972 us).
+
+--- Fault Strike #327 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 3
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #328 ---
+Injecting Single Permanent Bit Inversion (Bit 10) into LUT 27
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #329 ---
+Injecting Single Permanent Bit Inversion (Bit 15) into LUT 27
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 176 generations (Time: 11792 cycles | ~235 us).
+
+--- Fault Strike #330 ---
+Injecting Single Permanent Bit Inversion (Bit 9) into LUT 15
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #331 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 20
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #332 ---
+Injecting Single Permanent Bit Inversion (Bit 6) into LUT 5
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #333 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 15
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #334 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 27
+Fitness dropped to 23. Starting (1+1)-ES cumulative evolution.
+Repaired in 34 generations (Time: 2278 cycles | ~45 us).
+
+--- Fault Strike #335 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 15
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #336 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 8
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #337 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 13
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #338 ---
+Injecting Single Permanent Bit Inversion (Bit 1) into LUT 13
+Fitness dropped to 22. Starting (1+1)-ES cumulative evolution.
+Repaired in 37 generations (Time: 2479 cycles | ~49 us).
+
+--- Fault Strike #339 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 20
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #340 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 9
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #341 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 27
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #342 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 11
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #343 ---
+Injecting Single Permanent Bit Inversion (Bit 13) into LUT 27
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #344 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 27
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #345 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 11
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #346 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 13
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #347 ---
+Injecting Single Permanent Bit Inversion (Bit 7) into LUT 20
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #348 ---
+Injecting Single Permanent Bit Inversion (Bit 5) into LUT 5
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #349 ---
+Injecting Single Permanent Bit Inversion (Bit 0) into LUT 4
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #350 ---
+Injecting Single Permanent Bit Inversion (Bit 14) into LUT 6
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #351 ---
+Injecting Single Permanent Bit Inversion (Bit 2) into LUT 11
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #352 ---
+Injecting Single Permanent Bit Inversion (Bit 8) into LUT 3
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #353 ---
+Injecting Single Permanent Bit Inversion (Bit 4) into LUT 5
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+--- Fault Strike #354 ---
+Injecting Single Permanent Bit Inversion (Bit 11) into LUT 4
+Silent Fault! Bit inversion did not break the current logic flow (Fitness still 24).
+
+[END OF TEST] All active LUTs logic bits are completely inverted. Capacity exhausted.
+Number of faults: 354 (278 silent).
+
+
+================== LAST WORKING CONFIGURATION =======================
+
+--------------- EXTRACTED STRUCTURAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 02]
+  y1 <=== Logic Gate  [LUT 27]
+  y2 <=== Logic Gate  [LUT 09]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0x4031 :: Inputs: (x2)   (x1)   (x2)   (x1)   
+  [LUT 01] :: F=0x195B :: Inputs: (L00)  (x1)   (x2)   (x1)   
+  [LUT 02] :: F=0x7613 :: Inputs: (L00)  (L00)  (x0)   (x2)   
+  [LUT 03] :: F=0x3041 :: Inputs: (x0)   (x2)   (L02)  (x2)   
+  [LUT 04] :: F=0x567C :: Inputs: (L03)  (L02)  (L02)  (L02)  
+  [LUT 05] :: F=0x3FF3 :: Inputs: (L01)  (L03)  (L01)  (L02)  
+  [LUT 06] :: F=0x948E :: Inputs: (x0)   (L00)  (x1)   (L04)  
+  [LUT 07] :: F=0xCE96 :: Inputs: (x1)   (x0)   (L04)  (L02)  
+  [LUT 08] :: F=0x480C :: Inputs: (x1)   (L01)  (L05)  (L00)  
+  [LUT 09] :: F=0xAA5B :: Inputs: (L08)  (L07)  (L05)  (L01)  
+  [LUT 10] :: F=0xD7CC :: Inputs: (L07)  (L06)  (L06)  (L08)  
+  [LUT 11] :: F=0x62A9 :: Inputs: (L04)  (L02)  (L07)  (x1)   
+  [LUT 13] :: F=0xB14C :: Inputs: (L11)  (L02)  (L01)  (L04)  
+  [LUT 20] :: F=0xF5C2 :: Inputs: (L09)  (L13)  (L02)  (L01)  
+  [LUT 27] :: F=0x6570 :: Inputs: (L20)  (L03)  (L10)  (x0)   
+---------------------------------------------------------------
+Utilization: 15/30 LUTs.
+---------------------------------------------------------------
+
+
+--------------- EXTRACTED LOGICAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 02]
+  y1 <=== Logic Gate  [LUT 27]
+  y2 <=== Logic Gate  [LUT 09]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0x4031 :: Inputs: (x2)   (x1)   (x2)   (x1)   
+  [LUT 01] :: F=0x195B :: Inputs: (L00)  (x1)   (x2)   (x1)   
+  [LUT 02] :: F=0x7613 :: Inputs: (L00)  (L00)  (x0)   (x2)   
+  [LUT 03] :: F=0x3041 :: Inputs: (x0)   (x2)   (L02)  (x2)   
+  [LUT 04] :: F=0x567C :: Inputs: (L03)  (L02)  (L02)  (L02)  
+  [LUT 05] :: F=0x3FF3 :: Inputs: (--)   (L03)  (L01)  (L02)  
+  [LUT 06] :: F=0x948E :: Inputs: (x0)   (L00)  (x1)   (L04)  
+  [LUT 07] :: F=0xCE96 :: Inputs: (x1)   (x0)   (L04)  (L02)  
+  [LUT 08] :: F=0x480C :: Inputs: (x1)   (L01)  (L05)  (L00)  
+  [LUT 09] :: F=0xAA5B :: Inputs: (L08)  (L07)  (L05)  (L01)  
+  [LUT 10] :: F=0xD7CC :: Inputs: (L07)  (L06)  (L06)  (L08)  
+  [LUT 11] :: F=0x62A9 :: Inputs: (L04)  (L02)  (L07)  (x1)   
+  [LUT 13] :: F=0xB14C :: Inputs: (L11)  (L02)  (L01)  (L04)  
+  [LUT 20] :: F=0xF5C2 :: Inputs: (L09)  (L13)  (L02)  (L01)  
+  [LUT 27] :: F=0x6570 :: Inputs: (L20)  (L03)  (L10)  (x0)   
+---------------------------------------------------------------
+Utilization: 15/30 LUTs.
+---------------------------------------------------------------
+
+

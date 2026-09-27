@@ -1,0 +1,707 @@
+Configuring Hardware Reference Truth Table (TMR)...
+
+
+=================================================================
+ Tests of repair capabilities under SPBI/MPBI and Stuck-At fault injections
+=====================================================================
+[1] Comparative Benchmark (SW 1+4 vs HW 1+1)
+[2] Cumulative Routing Faults Test (STA-0/STA-1 of LUTs inputs)
+[3] Cumulative Logic Faults Test (PBI of LUTs Truth Tables)
+--- CONTINUOUS ASYNCHRONOUS FAULT TESTS ---------------------
+[4] Logic Degradation Only (PBI)
+[5] Routing Degradation Only (Inputs Stuck-At)
+[6] Rapid Degradation (Outputs Stuck-At)
+[7] Full Model (Mix 16:4:1)
+---------------------------------------------------------------------
+Select test (1-7) and press Enter: 
+7
+
+
+===============================================================
+TEST 7: CONTINUOUS ASYNCHRONOUS FAULT INJECTION (GRACEFUL DEGRADATION)
+- Mode: FULL (MIX 16:4:1)
+- Injections: PBI, Input Stuck-At, and Output Stuck-At.
+- Hardware evolution operates asynchronously; the 3Hz timer is never reset.
+- Evaluates system fitness and logs fatal capacity loss.
+  Test ends after 5.0s (~15 consecutive 333ms windows) of PANIC - state
+  where the system is unable to repair itself even for a moment.
+  (This enforces 5s of continuous SAFE OUT on capacitors, meaning 5s
+   without supervision for the watchdog-monitored device).
+==================================================================
+
+
+========================= BASELINE ==============================
+
+--------------- EXTRACTED STRUCTURAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 00]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x0)   (x1)   (x2)   (x1)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (x0)   (x1)   (x2)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (x2)   (x0)   
+---------------------------------------------------------------
+Utilization: 3/30 LUTs.
+---------------------------------------------------------------
+
+
+--------------- EXTRACTED LOGICAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 00]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x0)   (x1)   (x2)   (--)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (--)   (--)   (--)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (--)   (--)   
+---------------------------------------------------------------
+Utilization: 3/30 LUTs.
+---------------------------------------------------------------
+
+
+>>> INITIALIZING FAULT INJECTION TEST | POOL SIZE: 630 <<<
+--- Fault Strike #1 --- Injecting PBI (Bit 13) into LUT 20
+--- Fault Strike #2 --- Injecting PBI (Bit 1) into LUT 11
+--- Fault Strike #3 --- Injecting PBI (Bit 3) into LUT 17
+--- Fault Strike #4 --- Injecting PBI (Bit 1) into LUT 21
+--- Fault Strike #5 --- Injecting Input Stuck-At-1 into LUT 9, Input I1
+--- Fault Strike #6 --- Injecting PBI (Bit 2) into LUT 16
+--- Fault Strike #7 --- Injecting Output Stuck-At-1 into LUT 16 (Total LUT Dysfunction)
+--- Fault Strike #8 --- Injecting PBI (Bit 6) into LUT 21
+--- Fault Strike #9 --- Injecting Input Stuck-At-1 into LUT 4, Input I3
+--- Fault Strike #10 --- Injecting Input Stuck-At-0 into LUT 20, Input I2
+--- Fault Strike #11 --- Injecting PBI (Bit 13) into LUT 6
+--- Fault Strike #12 --- Injecting PBI (Bit 5) into LUT 6
+--- Fault Strike #13 --- Injecting Input Stuck-At-1 into LUT 29, Input I1
+--- Fault Strike #14 --- Injecting PBI (Bit 14) into LUT 25
+--- Fault Strike #15 --- Injecting Input Stuck-At-1 into LUT 21, Input I0
+--- Fault Strike #16 --- Injecting PBI (Bit 6) into LUT 2
+--- Fault Strike #17 --- Injecting PBI (Bit 14) into LUT 28
+--- Fault Strike #18 --- Injecting PBI (Bit 10) into LUT 22
+--- Fault Strike #19 --- Injecting PBI (Bit 12) into LUT 19
+--- Fault Strike #20 --- Injecting Input Stuck-At-0 into LUT 16, Input I3
+--- Fault Strike #21 --- Injecting PBI (Bit 8) into LUT 15
+--- Fault Strike #22 --- Injecting PBI (Bit 12) into LUT 17
+--- Fault Strike #23 --- Injecting PBI (Bit 10) into LUT 6
+--- Fault Strike #24 --- Injecting PBI (Bit 12) into LUT 7
+--- Fault Strike #25 --- Injecting Output Stuck-At-0 into LUT 9 (Total LUT Dysfunction)
+--- Fault Strike #26 --- Injecting PBI (Bit 4) into LUT 22
+--- Fault Strike #27 --- Injecting PBI (Bit 11) into LUT 6
+--- Fault Strike #28 --- Injecting PBI (Bit 11) into LUT 19
+--- Fault Strike #29 --- Injecting PBI (Bit 10) into LUT 17
+--- Fault Strike #30 --- Injecting PBI (Bit 3) into LUT 5
+--- Fault Strike #31 --- Injecting Input Stuck-At-1 into LUT 28, Input I2
+--- Fault Strike #32 --- Injecting PBI (Bit 11) into LUT 27
+--- Fault Strike #33 --- Injecting PBI (Bit 2) into LUT 21
+--- Fault Strike #34 --- Injecting PBI (Bit 0) into LUT 17
+--- Fault Strike #35 --- Injecting PBI (Bit 14) into LUT 4
+--- Fault Strike #36 --- Injecting Input Stuck-At-1 into LUT 13, Input I1
+--- Fault Strike #37 --- Injecting PBI (Bit 8) into LUT 23
+--- Fault Strike #38 --- Injecting Output Stuck-At-0 into LUT 10 (Total LUT Dysfunction)
+--- Fault Strike #39 --- Injecting Output Stuck-At-1 into LUT 1 (Total LUT Dysfunction)
+--- Fault Strike #40 --- Injecting PBI (Bit 11) into LUT 21
+--- Fault Strike #41 --- Injecting PBI (Bit 12) into LUT 29
+--- Fault Strike #42 --- Injecting PBI (Bit 13) into LUT 8
+--- Fault Strike #43 --- Injecting PBI (Bit 6) into LUT 15
+--- Fault Strike #44 --- Injecting Input Stuck-At-0 into LUT 11, Input I3
+
+[IRQ] 333ms Window exceeded! System entered PANIC.
+[RECOVERY] System exited PANIC after 0 msec!    Resuming...
+
+--- Fault Strike #45 --- Injecting PBI (Bit 12) into LUT 5
+--- Fault Strike #46 --- Injecting PBI (Bit 5) into LUT 4
+--- Fault Strike #47 --- Injecting PBI (Bit 0) into LUT 16
+--- Fault Strike #48 --- Injecting PBI (Bit 13) into LUT 10
+--- Fault Strike #49 --- Injecting PBI (Bit 14) into LUT 27
+--- Fault Strike #50 --- Injecting PBI (Bit 14) into LUT 11
+--- Fault Strike #51 --- Injecting PBI (Bit 8) into LUT 28
+--- Fault Strike #52 --- Injecting PBI (Bit 3) into LUT 7
+--- Fault Strike #53 --- Injecting PBI (Bit 8) into LUT 11
+--- Fault Strike #54 --- Injecting PBI (Bit 14) into LUT 8
+--- Fault Strike #55 --- Injecting PBI (Bit 3) into LUT 11
+--- Fault Strike #56 --- Injecting PBI (Bit 0) into LUT 10
+--- Fault Strike #57 --- Injecting PBI (Bit 8) into LUT 19
+--- Fault Strike #58 --- Injecting PBI (Bit 8) into LUT 21
+--- Fault Strike #59 --- Injecting PBI (Bit 15) into LUT 9
+--- Fault Strike #60 --- Injecting Input Stuck-At-1 into LUT 25, Input I1
+--- Fault Strike #61 --- Injecting Output Stuck-At-1 into LUT 2 (Total LUT Dysfunction)
+--- Fault Strike #62 --- Injecting PBI (Bit 5) into LUT 2
+--- Fault Strike #63 --- Injecting Input Stuck-At-1 into LUT 3, Input I3
+--- Fault Strike #64 --- Injecting PBI (Bit 4) into LUT 28
+--- Fault Strike #65 --- Injecting PBI (Bit 3) into LUT 6
+--- Fault Strike #66 --- Injecting Input Stuck-At-1 into LUT 1, Input I0
+--- Fault Strike #67 --- Injecting PBI (Bit 13) into LUT 27
+--- Fault Strike #68 --- Injecting PBI (Bit 9) into LUT 18
+--- Fault Strike #69 --- Injecting PBI (Bit 4) into LUT 1
+--- Fault Strike #70 --- Injecting PBI (Bit 6) into LUT 9
+--- Fault Strike #71 --- Injecting PBI (Bit 5) into LUT 23
+--- Fault Strike #72 --- Injecting PBI (Bit 1) into LUT 6
+--- Fault Strike #73 --- Injecting PBI (Bit 0) into LUT 15
+--- Fault Strike #74 --- Injecting PBI (Bit 2) into LUT 25
+--- Fault Strike #75 --- Injecting PBI (Bit 6) into LUT 27
+--- Fault Strike #76 --- Injecting Output Stuck-At-1 into LUT 29 (Total LUT Dysfunction)
+--- Fault Strike #77 --- Injecting PBI (Bit 3) into LUT 22
+--- Fault Strike #78 --- Injecting Input Stuck-At-1 into LUT 20, Input I1
+--- Fault Strike #79 --- Injecting PBI (Bit 14) into LUT 18
+--- Fault Strike #80 --- Injecting PBI (Bit 14) into LUT 17
+--- Fault Strike #81 --- Injecting PBI (Bit 6) into LUT 29
+--- Fault Strike #82 --- Injecting PBI (Bit 3) into LUT 3
+--- Fault Strike #83 --- Injecting PBI (Bit 8) into LUT 6
+--- Fault Strike #84 --- Injecting PBI (Bit 9) into LUT 19
+--- Fault Strike #85 --- Injecting PBI (Bit 9) into LUT 12
+--- Fault Strike #86 --- Injecting PBI (Bit 4) into LUT 8
+--- Fault Strike #87 --- Injecting Input Stuck-At-1 into LUT 3, Input I2
+--- Fault Strike #88 --- Injecting PBI (Bit 4) into LUT 24
+--- Fault Strike #89 --- Injecting PBI (Bit 3) into LUT 10
+--- Fault Strike #90 --- Injecting PBI (Bit 13) into LUT 22
+--- Fault Strike #91 --- Injecting PBI (Bit 15) into LUT 0
+--- Fault Strike #92 --- Injecting PBI (Bit 11) into LUT 2
+--- Fault Strike #93 --- Injecting PBI (Bit 1) into LUT 19
+--- Fault Strike #94 --- Injecting Input Stuck-At-1 into LUT 12, Input I0
+--- Fault Strike #95 --- Injecting Input Stuck-At-1 into LUT 19, Input I3
+--- Fault Strike #96 --- Injecting PBI (Bit 3) into LUT 12
+--- Fault Strike #97 --- Injecting Input Stuck-At-1 into LUT 21, Input I3
+--- Fault Strike #98 --- Injecting PBI (Bit 13) into LUT 9
+--- Fault Strike #99 --- Injecting PBI (Bit 11) into LUT 10
+--- Fault Strike #100 --- Injecting PBI (Bit 14) into LUT 24
+--- Fault Strike #101 --- Injecting Input Stuck-At-0 into LUT 1, Input I2
+--- Fault Strike #102 --- Injecting PBI (Bit 12) into LUT 4
+--- Fault Strike #103 --- Injecting PBI (Bit 7) into LUT 22
+--- Fault Strike #104 --- Injecting PBI (Bit 8) into LUT 9
+--- Fault Strike #105 --- Injecting PBI (Bit 6) into LUT 14
+--- Fault Strike #106 --- Injecting PBI (Bit 14) into LUT 7
+--- Fault Strike #107 --- Injecting Input Stuck-At-1 into LUT 29, Input I3
+--- Fault Strike #108 --- Injecting PBI (Bit 9) into LUT 3
+--- Fault Strike #109 --- Injecting PBI (Bit 7) into LUT 1
+--- Fault Strike #110 --- Injecting Input Stuck-At-0 into LUT 0, Input I2
+--- Fault Strike #111 --- Injecting PBI (Bit 0) into LUT 13
+--- Fault Strike #112 --- Injecting PBI (Bit 4) into LUT 12
+--- Fault Strike #113 --- Injecting PBI (Bit 1) into LUT 13
+--- Fault Strike #114 --- Injecting PBI (Bit 10) into LUT 29
+--- Fault Strike #115 --- Injecting PBI (Bit 8) into LUT 4
+--- Fault Strike #116 --- Injecting PBI (Bit 14) into LUT 29
+--- Fault Strike #117 --- Injecting PBI (Bit 13) into LUT 23
+--- Fault Strike #118 --- Injecting PBI (Bit 8) into LUT 29
+--- Fault Strike #119 --- Injecting PBI (Bit 2) into LUT 0
+--- Fault Strike #120 --- Injecting PBI (Bit 15) into LUT 15
+--- Fault Strike #121 --- Injecting PBI (Bit 12) into LUT 12
+--- Fault Strike #122 --- Injecting Input Stuck-At-0 into LUT 12, Input I1
+--- Fault Strike #123 --- Injecting PBI (Bit 3) into LUT 19
+--- Fault Strike #124 --- Injecting Input Stuck-At-0 into LUT 6, Input I2
+--- Fault Strike #125 --- Injecting PBI (Bit 9) into LUT 13
+--- Fault Strike #126 --- Injecting PBI (Bit 6) into LUT 5
+--- Fault Strike #127 --- Injecting PBI (Bit 10) into LUT 25
+--- Fault Strike #128 --- Injecting Input Stuck-At-1 into LUT 19, Input I1
+--- Fault Strike #129 --- Injecting PBI (Bit 8) into LUT 1
+--- Fault Strike #130 --- Injecting PBI (Bit 14) into LUT 12
+--- Fault Strike #131 --- Injecting PBI (Bit 10) into LUT 16
+--- Fault Strike #132 --- Injecting PBI (Bit 9) into LUT 16
+--- Fault Strike #133 --- Injecting PBI (Bit 2) into LUT 24
+--- Fault Strike #134 --- Injecting PBI (Bit 4) into LUT 16
+--- Fault Strike #135 --- Injecting PBI (Bit 12) into LUT 27
+--- Fault Strike #136 --- Injecting PBI (Bit 7) into LUT 21
+--- Fault Strike #137 --- Injecting PBI (Bit 14) into LUT 20
+--- Fault Strike #138 --- Injecting Input Stuck-At-0 into LUT 7, Input I1
+--- Fault Strike #139 --- Injecting Input Stuck-At-1 into LUT 1, Input I3
+--- Fault Strike #140 --- Injecting PBI (Bit 4) into LUT 23
+--- Fault Strike #141 --- Injecting PBI (Bit 0) into LUT 8
+--- Fault Strike #142 --- Injecting PBI (Bit 5) into LUT 25
+--- Fault Strike #143 --- Injecting PBI (Bit 10) into LUT 0
+--- Fault Strike #144 --- Injecting PBI (Bit 3) into LUT 21
+--- Fault Strike #145 --- Injecting PBI (Bit 0) into LUT 2
+--- Fault Strike #146 --- Injecting PBI (Bit 3) into LUT 4
+--- Fault Strike #147 --- Injecting PBI (Bit 1) into LUT 8
+--- Fault Strike #148 --- Injecting Output Stuck-At-1 into LUT 0 (Total LUT Dysfunction)
+--- Fault Strike #149 --- Injecting PBI (Bit 11) into LUT 3
+--- Fault Strike #150 --- Injecting PBI (Bit 12) into LUT 26
+--- Fault Strike #151 --- Injecting PBI (Bit 10) into LUT 3
+--- Fault Strike #152 --- Injecting PBI (Bit 1) into LUT 14
+--- Fault Strike #153 --- Injecting PBI (Bit 9) into LUT 8
+--- Fault Strike #154 --- Injecting PBI (Bit 5) into LUT 21
+--- Fault Strike #155 --- Injecting PBI (Bit 12) into LUT 6
+--- Fault Strike #156 --- Injecting PBI (Bit 9) into LUT 28
+--- Fault Strike #157 --- Injecting Input Stuck-At-1 into LUT 5, Input I1
+--- Fault Strike #158 --- Injecting Input Stuck-At-1 into LUT 7, Input I3
+--- Fault Strike #159 --- Injecting PBI (Bit 15) into LUT 24
+--- Fault Strike #160 --- Injecting PBI (Bit 11) into LUT 22
+--- Fault Strike #161 --- Injecting PBI (Bit 3) into LUT 15
+--- Fault Strike #162 --- Injecting PBI (Bit 2) into LUT 1
+--- Fault Strike #163 --- Injecting PBI (Bit 9) into LUT 11
+--- Fault Strike #164 --- Injecting PBI (Bit 4) into LUT 2
+--- Fault Strike #165 --- Injecting Input Stuck-At-0 into LUT 24, Input I3
+--- Fault Strike #166 --- Injecting PBI (Bit 12) into LUT 23
+--- Fault Strike #167 --- Injecting PBI (Bit 11) into LUT 18
+--- Fault Strike #168 --- Injecting PBI (Bit 15) into LUT 19
+--- Fault Strike #169 --- Injecting PBI (Bit 9) into LUT 17
+--- Fault Strike #170 --- Injecting PBI (Bit 6) into LUT 20
+--- Fault Strike #171 --- Injecting PBI (Bit 7) into LUT 24
+--- Fault Strike #172 --- Injecting PBI (Bit 13) into LUT 25
+--- Fault Strike #173 --- Injecting Input Stuck-At-0 into LUT 7, Input I0
+--- Fault Strike #174 --- Injecting PBI (Bit 2) into LUT 26
+--- Fault Strike #175 --- Injecting PBI (Bit 4) into LUT 9
+--- Fault Strike #176 --- Injecting PBI (Bit 13) into LUT 21
+--- Fault Strike #177 --- Injecting PBI (Bit 0) into LUT 27
+--- Fault Strike #178 --- Injecting PBI (Bit 15) into LUT 23
+--- Fault Strike #179 --- Injecting PBI (Bit 12) into LUT 9
+--- Fault Strike #180 --- Injecting PBI (Bit 2) into LUT 10
+--- Fault Strike #181 --- Injecting PBI (Bit 5) into LUT 20
+--- Fault Strike #182 --- Injecting PBI (Bit 4) into LUT 21
+--- Fault Strike #183 --- Injecting PBI (Bit 4) into LUT 10
+--- Fault Strike #184 --- Injecting PBI (Bit 2) into LUT 4
+--- Fault Strike #185 --- Injecting PBI (Bit 1) into LUT 9
+--- Fault Strike #186 --- Injecting PBI (Bit 12) into LUT 0
+--- Fault Strike #187 --- Injecting Input Stuck-At-1 into LUT 17, Input I2
+--- Fault Strike #188 --- Injecting PBI (Bit 11) into LUT 9
+--- Fault Strike #189 --- Injecting Input Stuck-At-0 into LUT 26, Input I2
+--- Fault Strike #190 --- Injecting Input Stuck-At-1 into LUT 14, Input I3
+--- Fault Strike #191 --- Injecting PBI (Bit 15) into LUT 4
+--- Fault Strike #192 --- Injecting PBI (Bit 4) into LUT 17
+--- Fault Strike #193 --- Injecting Output Stuck-At-1 into LUT 8 (Total LUT Dysfunction)
+--- Fault Strike #194 --- Injecting PBI (Bit 6) into LUT 12
+--- Fault Strike #195 --- Injecting PBI (Bit 12) into LUT 11
+--- Fault Strike #196 --- Injecting Output Stuck-At-1 into LUT 22 (Total LUT Dysfunction)
+--- Fault Strike #197 --- Injecting PBI (Bit 7) into LUT 3
+--- Fault Strike #198 --- Injecting PBI (Bit 0) into LUT 1
+--- Fault Strike #199 --- Injecting PBI (Bit 4) into LUT 4
+--- Fault Strike #200 --- Injecting PBI (Bit 3) into LUT 8
+--- Fault Strike #201 --- Injecting Input Stuck-At-0 into LUT 11, Input I0
+--- Fault Strike #202 --- Injecting PBI (Bit 15) into LUT 8
+--- Fault Strike #203 --- Injecting PBI (Bit 10) into LUT 4
+--- Fault Strike #204 --- Injecting Output Stuck-At-0 into LUT 4 (Total LUT Dysfunction)
+--- Fault Strike #205 --- Injecting PBI (Bit 12) into LUT 14
+--- Fault Strike #206 --- Injecting PBI (Bit 7) into LUT 8
+--- Fault Strike #207 --- Injecting PBI (Bit 1) into LUT 20
+--- Fault Strike #208 --- Injecting PBI (Bit 13) into LUT 3
+--- Fault Strike #209 --- Injecting Output Stuck-At-0 into LUT 12 (Total LUT Dysfunction)
+--- Fault Strike #210 --- Injecting PBI (Bit 9) into LUT 25
+--- Fault Strike #211 --- Injecting PBI (Bit 9) into LUT 0
+--- Fault Strike #212 --- Injecting Input Stuck-At-1 into LUT 26, Input I3
+--- Fault Strike #213 --- Injecting PBI (Bit 10) into LUT 19
+--- Fault Strike #214 --- Injecting PBI (Bit 14) into LUT 0
+--- Fault Strike #215 --- Injecting PBI (Bit 5) into LUT 27
+--- Fault Strike #216 --- Injecting PBI (Bit 7) into LUT 19
+--- Fault Strike #217 --- Injecting PBI (Bit 14) into LUT 2
+--- Fault Strike #218 --- Injecting Input Stuck-At-0 into LUT 22, Input I2
+--- Fault Strike #219 --- Injecting PBI (Bit 14) into LUT 5
+--- Fault Strike #220 --- Injecting PBI (Bit 9) into LUT 26
+--- Fault Strike #221 --- Injecting Input Stuck-At-1 into LUT 18, Input I1
+--- Fault Strike #222 --- Injecting PBI (Bit 3) into LUT 27
+--- Fault Strike #223 --- Injecting Input Stuck-At-0 into LUT 18, Input I0
+--- Fault Strike #224 --- Injecting Input Stuck-At-1 into LUT 2, Input I3
+--- Fault Strike #225 --- Injecting PBI (Bit 10) into LUT 15
+--- Fault Strike #226 --- Injecting Output Stuck-At-0 into LUT 14 (Total LUT Dysfunction)
+--- Fault Strike #227 --- Injecting PBI (Bit 8) into LUT 22
+--- Fault Strike #228 --- Injecting PBI (Bit 8) into LUT 26
+--- Fault Strike #229 --- Injecting PBI (Bit 1) into LUT 29
+--- Fault Strike #230 --- Injecting PBI (Bit 0) into LUT 4
+--- Fault Strike #231 --- Injecting Input Stuck-At-1 into LUT 1, Input I1
+--- Fault Strike #232 --- Injecting PBI (Bit 12) into LUT 3
+--- Fault Strike #233 --- Injecting PBI (Bit 1) into LUT 5
+--- Fault Strike #234 --- Injecting PBI (Bit 3) into LUT 16
+--- Fault Strike #235 --- Injecting Input Stuck-At-1 into LUT 20, Input I0
+--- Fault Strike #236 --- Injecting Output Stuck-At-1 into LUT 20 (Total LUT Dysfunction)
+--- Fault Strike #237 --- Injecting PBI (Bit 1) into LUT 28
+--- Fault Strike #238 --- Injecting PBI (Bit 8) into LUT 7
+--- Fault Strike #239 --- Injecting PBI (Bit 11) into LUT 8
+--- Fault Strike #240 --- Injecting Input Stuck-At-1 into LUT 27, Input I2
+--- Fault Strike #241 --- Injecting PBI (Bit 6) into LUT 7
+--- Fault Strike #242 --- Injecting Output Stuck-At-0 into LUT 25 (Total LUT Dysfunction)
+--- Fault Strike #243 --- Injecting Input Stuck-At-0 into LUT 18, Input I2
+--- Fault Strike #244 --- Injecting Output Stuck-At-1 into LUT 15 (Total LUT Dysfunction)
+
+[IRQ] 333ms Window exceeded! System entered PANIC.
+--- Fault Strike #245 --- Injecting Input Stuck-At-0 into LUT 18, Input I3
+--- Fault Strike #246 --- Injecting Input Stuck-At-1 into LUT 5, Input I3
+--- Fault Strike #247 --- Injecting Output Stuck-At-0 into LUT 13 (Total LUT Dysfunction)
+--- Fault Strike #248 --- Injecting PBI (Bit 15) into LUT 22
+--- Fault Strike #249 --- Injecting Input Stuck-At-0 into LUT 5, Input I2
+--- Fault Strike #250 --- Injecting Input Stuck-At-0 into LUT 27, Input I3
+--- Fault Strike #251 --- Injecting Input Stuck-At-0 into LUT 9, Input I2
+--- Fault Strike #252 --- Injecting Output Stuck-At-0 into LUT 27 (Total LUT Dysfunction)
+--- Fault Strike #253 --- Injecting PBI (Bit 15) into LUT 11
+--- Fault Strike #254 --- Injecting Input Stuck-At-1 into LUT 13, Input I2
+--- Fault Strike #255 --- Injecting PBI (Bit 7) into LUT 23
+--- Fault Strike #256 --- Injecting PBI (Bit 2) into LUT 13
+--- Fault Strike #257 --- Injecting PBI (Bit 1) into LUT 18
+--- Fault Strike #258 --- Injecting PBI (Bit 0) into LUT 23
+--- Fault Strike #259 --- Injecting PBI (Bit 14) into LUT 21
+--- Fault Strike #260 --- Injecting PBI (Bit 0) into LUT 20
+--- Fault Strike #261 --- Injecting PBI (Bit 4) into LUT 20
+--- Fault Strike #262 --- Injecting PBI (Bit 3) into LUT 13
+--- Fault Strike #263 --- Injecting PBI (Bit 1) into LUT 26
+--- Fault Strike #264 --- Injecting PBI (Bit 10) into LUT 24
+--- Fault Strike #265 --- Injecting PBI (Bit 11) into LUT 25
+--- Fault Strike #266 --- Injecting PBI (Bit 11) into LUT 0
+--- Fault Strike #267 --- Injecting PBI (Bit 12) into LUT 18
+--- Fault Strike #268 --- Injecting PBI (Bit 9) into LUT 10
+--- Fault Strike #269 --- Injecting PBI (Bit 11) into LUT 28
+--- Fault Strike #270 --- Injecting Input Stuck-At-0 into LUT 28, Input I3
+--- Fault Strike #271 --- Injecting PBI (Bit 11) into LUT 11
+--- Fault Strike #272 --- Injecting PBI (Bit 5) into LUT 7
+--- Fault Strike #273 --- Injecting PBI (Bit 9) into LUT 21
+--- Fault Strike #274 --- Injecting Input Stuck-At-1 into LUT 8, Input I3
+--- Fault Strike #275 --- Injecting Input Stuck-At-1 into LUT 21, Input I1
+--- Fault Strike #276 --- Injecting PBI (Bit 13) into LUT 24
+--- Fault Strike #277 --- Injecting PBI (Bit 9) into LUT 7
+--- Fault Strike #278 --- Injecting Input Stuck-At-1 into LUT 20, Input I3
+--- Fault Strike #279 --- Injecting PBI (Bit 13) into LUT 11
+--- Fault Strike #280 --- Injecting PBI (Bit 14) into LUT 9
+--- Fault Strike #281 --- Injecting Output Stuck-At-0 into LUT 3 (Total LUT Dysfunction)
+--- Fault Strike #282 --- Injecting PBI (Bit 3) into LUT 25
+--- Fault Strike #283 --- Injecting Input Stuck-At-1 into LUT 14, Input I2
+--- Fault Strike #284 --- Injecting Input Stuck-At-0 into LUT 10, Input I3
+--- Fault Strike #285 --- Injecting Input Stuck-At-0 into LUT 19, Input I0
+--- Fault Strike #286 --- Injecting Output Stuck-At-0 into LUT 21 (Total LUT Dysfunction)
+--- Fault Strike #287 --- Injecting PBI (Bit 12) into LUT 8
+--- Fault Strike #288 --- Injecting PBI (Bit 7) into LUT 0
+--- Fault Strike #289 --- Injecting PBI (Bit 1) into LUT 15
+--- Fault Strike #290 --- Injecting Input Stuck-At-1 into LUT 25, Input I0
+--- Fault Strike #291 --- Injecting PBI (Bit 10) into LUT 20
+--- Fault Strike #292 --- Injecting PBI (Bit 7) into LUT 6
+--- Fault Strike #293 --- Injecting PBI (Bit 15) into LUT 12
+--- Fault Strike #294 --- Injecting PBI (Bit 4) into LUT 13
+--- Fault Strike #295 --- Injecting PBI (Bit 7) into LUT 20
+--- Fault Strike #296 --- Injecting PBI (Bit 5) into LUT 17
+--- Fault Strike #297 --- Injecting Input Stuck-At-1 into LUT 27, Input I1
+--- Fault Strike #298 --- Injecting Input Stuck-At-0 into LUT 2, Input I0
+--- Fault Strike #299 --- Injecting PBI (Bit 0) into LUT 14
+--- Fault Strike #300 --- Injecting PBI (Bit 7) into LUT 9
+--- Fault Strike #301 --- Injecting PBI (Bit 13) into LUT 19
+--- Fault Strike #302 --- Injecting Input Stuck-At-1 into LUT 26, Input I1
+--- Fault Strike #303 --- Injecting PBI (Bit 14) into LUT 10
+--- Fault Strike #304 --- Injecting Input Stuck-At-0 into LUT 25, Input I3
+--- Fault Strike #305 --- Injecting Input Stuck-At-0 into LUT 0, Input I1
+--- Fault Strike #306 --- Injecting Input Stuck-At-0 into LUT 15, Input I2
+--- Fault Strike #307 --- Injecting PBI (Bit 13) into LUT 26
+--- Fault Strike #308 --- Injecting PBI (Bit 8) into LUT 14
+--- Fault Strike #309 --- Injecting Input Stuck-At-1 into LUT 17, Input I3
+--- Fault Strike #310 --- Injecting PBI (Bit 6) into LUT 24
+--- Fault Strike #311 --- Injecting PBI (Bit 8) into LUT 12
+--- Fault Strike #312 --- Injecting PBI (Bit 8) into LUT 27
+--- Fault Strike #313 --- Injecting PBI (Bit 6) into LUT 3
+--- Fault Strike #314 --- Injecting PBI (Bit 11) into LUT 5
+--- Fault Strike #315 --- Injecting PBI (Bit 15) into LUT 2
+--- Fault Strike #316 --- Injecting Input Stuck-At-1 into LUT 9, Input I3
+--- Fault Strike #317 --- Injecting Input Stuck-At-1 into LUT 2, Input I1
+--- Fault Strike #318 --- Injecting Input Stuck-At-0 into LUT 24, Input I2
+--- Fault Strike #319 --- Injecting PBI (Bit 3) into LUT 1
+--- Fault Strike #320 --- Injecting Input Stuck-At-0 into LUT 27, Input I0
+--- Fault Strike #321 --- Injecting Output Stuck-At-1 into LUT 6 (Total LUT Dysfunction)
+--- Fault Strike #322 --- Injecting PBI (Bit 7) into LUT 14
+--- Fault Strike #323 --- Injecting PBI (Bit 0) into LUT 22
+--- Fault Strike #324 --- Injecting PBI (Bit 0) into LUT 29
+--- Fault Strike #325 --- Injecting PBI (Bit 13) into LUT 4
+--- Fault Strike #326 --- Injecting PBI (Bit 15) into LUT 28
+--- Fault Strike #327 --- Injecting Input Stuck-At-1 into LUT 13, Input I3
+--- Fault Strike #328 --- Injecting PBI (Bit 14) into LUT 13
+--- Fault Strike #329 --- Injecting PBI (Bit 0) into LUT 24
+--- Fault Strike #330 --- Injecting PBI (Bit 7) into LUT 18
+--- Fault Strike #331 --- Injecting PBI (Bit 12) into LUT 13
+--- Fault Strike #332 --- Injecting PBI (Bit 5) into LUT 24
+--- Fault Strike #333 --- Injecting PBI (Bit 3) into LUT 14
+--- Fault Strike #334 --- Injecting PBI (Bit 0) into LUT 5
+--- Fault Strike #335 --- Injecting Input Stuck-At-0 into LUT 6, Input I3
+--- Fault Strike #336 --- Injecting PBI (Bit 5) into LUT 11
+--- Fault Strike #337 --- Injecting PBI (Bit 1) into LUT 3
+--- Fault Strike #338 --- Injecting PBI (Bit 8) into LUT 18
+--- Fault Strike #339 --- Injecting PBI (Bit 13) into LUT 2
+--- Fault Strike #340 --- Injecting PBI (Bit 0) into LUT 7
+--- Fault Strike #341 --- Injecting PBI (Bit 0) into LUT 11
+--- Fault Strike #342 --- Injecting PBI (Bit 6) into LUT 16
+--- Fault Strike #343 --- Injecting Input Stuck-At-1 into LUT 19, Input I2
+--- Fault Strike #344 --- Injecting PBI (Bit 7) into LUT 25
+--- Fault Strike #345 --- Injecting PBI (Bit 13) into LUT 7
+--- Fault Strike #346 --- Injecting PBI (Bit 6) into LUT 1
+--- Fault Strike #347 --- Injecting PBI (Bit 12) into LUT 10
+--- Fault Strike #348 --- Injecting Output Stuck-At-0 into LUT 18 (Total LUT Dysfunction)
+--- Fault Strike #349 --- Injecting Input Stuck-At-0 into LUT 3, Input I1
+--- Fault Strike #350 --- Injecting PBI (Bit 2) into LUT 22
+--- Fault Strike #351 --- Injecting Input Stuck-At-0 into LUT 2, Input I2
+--- Fault Strike #352 --- Injecting PBI (Bit 0) into LUT 19
+--- Fault Strike #353 --- Injecting PBI (Bit 13) into LUT 16
+--- Fault Strike #354 --- Injecting PBI (Bit 2) into LUT 7
+--- Fault Strike #355 --- Injecting PBI (Bit 12) into LUT 15
+--- Fault Strike #356 --- Injecting PBI (Bit 5) into LUT 16
+--- Fault Strike #357 --- Injecting PBI (Bit 1) into LUT 27
+--- Fault Strike #358 --- Injecting Output Stuck-At-0 into LUT 28 (Total LUT Dysfunction)
+--- Fault Strike #359 --- Injecting PBI (Bit 10) into LUT 18
+--- Fault Strike #360 --- Injecting Input Stuck-At-0 into LUT 10, Input I2
+--- Fault Strike #361 --- Injecting PBI (Bit 11) into LUT 20
+--- Fault Strike #362 --- Injecting PBI (Bit 3) into LUT 28
+--- Fault Strike #363 --- Injecting PBI (Bit 15) into LUT 16
+--- Fault Strike #364 --- Injecting PBI (Bit 10) into LUT 7
+--- Fault Strike #365 --- Injecting PBI (Bit 13) into LUT 1
+--- Fault Strike #366 --- Injecting PBI (Bit 11) into LUT 17
+--- Fault Strike #367 --- Injecting PBI (Bit 8) into LUT 0
+--- Fault Strike #368 --- Injecting PBI (Bit 9) into LUT 20
+--- Fault Strike #369 --- Injecting PBI (Bit 13) into LUT 29
+--- Fault Strike #370 --- Injecting PBI (Bit 14) into LUT 1
+--- Fault Strike #371 --- Injecting Input Stuck-At-0 into LUT 15, Input I1
+--- Fault Strike #372 --- Injecting Input Stuck-At-1 into LUT 29, Input I2
+--- Fault Strike #373 --- Injecting PBI (Bit 10) into LUT 14
+--- Fault Strike #374 --- Injecting PBI (Bit 10) into LUT 13
+--- Fault Strike #375 --- Injecting PBI (Bit 5) into LUT 8
+--- Fault Strike #376 --- Injecting PBI (Bit 5) into LUT 18
+--- Fault Strike #377 --- Injecting PBI (Bit 7) into LUT 10
+--- Fault Strike #378 --- Injecting PBI (Bit 6) into LUT 28
+--- Fault Strike #379 --- Injecting PBI (Bit 12) into LUT 2
+--- Fault Strike #380 --- Injecting PBI (Bit 5) into LUT 14
+--- Fault Strike #381 --- Injecting Input Stuck-At-1 into LUT 23, Input I3
+--- Fault Strike #382 --- Injecting PBI (Bit 15) into LUT 10
+--- Fault Strike #383 --- Injecting PBI (Bit 15) into LUT 5
+--- Fault Strike #384 --- Injecting PBI (Bit 7) into LUT 17
+--- Fault Strike #385 --- Injecting PBI (Bit 5) into LUT 10
+--- Fault Strike #386 --- Injecting PBI (Bit 2) into LUT 9
+--- Fault Strike #387 --- Injecting PBI (Bit 12) into LUT 25
+--- Fault Strike #388 --- Injecting PBI (Bit 13) into LUT 13
+--- Fault Strike #389 --- Injecting PBI (Bit 3) into LUT 24
+--- Fault Strike #390 --- Injecting PBI (Bit 10) into LUT 23
+--- Fault Strike #391 --- Injecting PBI (Bit 1) into LUT 4
+--- Fault Strike #392 --- Injecting PBI (Bit 2) into LUT 14
+--- Fault Strike #393 --- Injecting Input Stuck-At-1 into LUT 5, Input I0
+--- Fault Strike #394 --- Injecting PBI (Bit 11) into LUT 15
+--- Fault Strike #395 --- Injecting PBI (Bit 6) into LUT 22
+--- Fault Strike #396 --- Injecting Input Stuck-At-0 into LUT 16, Input I1
+--- Fault Strike #397 --- Injecting PBI (Bit 6) into LUT 19
+--- Fault Strike #398 --- Injecting PBI (Bit 10) into LUT 27
+--- Fault Strike #399 --- Injecting PBI (Bit 14) into LUT 26
+--- Fault Strike #400 --- Injecting PBI (Bit 2) into LUT 15
+--- Fault Strike #401 --- Injecting PBI (Bit 4) into LUT 26
+--- Fault Strike #402 --- Injecting PBI (Bit 14) into LUT 19
+--- Fault Strike #403 --- Injecting PBI (Bit 3) into LUT 0
+--- Fault Strike #404 --- Injecting Input Stuck-At-1 into LUT 8, Input I2
+--- Fault Strike #405 --- Injecting Input Stuck-At-1 into LUT 6, Input I1
+--- Fault Strike #406 --- Injecting PBI (Bit 5) into LUT 5
+--- Fault Strike #407 --- Injecting PBI (Bit 3) into LUT 29
+--- Fault Strike #408 --- Injecting PBI (Bit 9) into LUT 15
+--- Fault Strike #409 --- Injecting PBI (Bit 8) into LUT 3
+--- Fault Strike #410 --- Injecting PBI (Bit 15) into LUT 21
+--- Fault Strike #411 --- Injecting PBI (Bit 7) into LUT 16
+--- Fault Strike #412 --- Injecting PBI (Bit 5) into LUT 13
+--- Fault Strike #413 --- Injecting Input Stuck-At-0 into LUT 16, Input I0
+--- Fault Strike #414 --- Injecting Input Stuck-At-0 into LUT 12, Input I2
+--- Fault Strike #415 --- Injecting PBI (Bit 7) into LUT 2
+--- Fault Strike #416 --- Injecting PBI (Bit 4) into LUT 3
+--- Fault Strike #417 --- Injecting PBI (Bit 1) into LUT 10
+--- Fault Strike #418 --- Injecting PBI (Bit 9) into LUT 2
+--- Fault Strike #419 --- Injecting PBI (Bit 6) into LUT 26
+--- Fault Strike #420 --- Injecting Input Stuck-At-1 into LUT 0, Input I3
+--- Fault Strike #421 --- Injecting PBI (Bit 13) into LUT 18
+--- Fault Strike #422 --- Injecting PBI (Bit 2) into LUT 20
+--- Fault Strike #423 --- Injecting Output Stuck-At-0 into LUT 24 (Total LUT Dysfunction)
+--- Fault Strike #424 --- Injecting Input Stuck-At-1 into LUT 15, Input I0
+--- Fault Strike #425 --- Injecting Input Stuck-At-1 into LUT 17, Input I1
+--- Fault Strike #426 --- Injecting PBI (Bit 1) into LUT 25
+--- Fault Strike #427 --- Injecting PBI (Bit 6) into LUT 13
+--- Fault Strike #428 --- Injecting PBI (Bit 4) into LUT 11
+--- Fault Strike #429 --- Injecting PBI (Bit 14) into LUT 14
+--- Fault Strike #430 --- Injecting PBI (Bit 14) into LUT 3
+--- Fault Strike #431 --- Injecting PBI (Bit 4) into LUT 5
+--- Fault Strike #432 --- Injecting PBI (Bit 6) into LUT 8
+--- Fault Strike #433 --- Injecting Output Stuck-At-0 into LUT 23 (Total LUT Dysfunction)
+--- Fault Strike #434 --- Injecting PBI (Bit 13) into LUT 28
+--- Fault Strike #435 --- Injecting PBI (Bit 8) into LUT 2
+--- Fault Strike #436 --- Injecting PBI (Bit 2) into LUT 18
+--- Fault Strike #437 --- Injecting Input Stuck-At-1 into LUT 17, Input I0
+--- Fault Strike #438 --- Injecting Input Stuck-At-0 into LUT 9, Input I0
+--- Fault Strike #439 --- Injecting PBI (Bit 12) into LUT 16
+--- Fault Strike #440 --- Injecting PBI (Bit 15) into LUT 25
+--- Fault Strike #441 --- Injecting PBI (Bit 2) into LUT 23
+--- Fault Strike #442 --- Injecting PBI (Bit 1) into LUT 12
+--- Fault Strike #443 --- Injecting Input Stuck-At-0 into LUT 14, Input I0
+--- Fault Strike #444 --- Injecting PBI (Bit 5) into LUT 9
+--- Fault Strike #445 --- Injecting PBI (Bit 4) into LUT 25
+--- Fault Strike #446 --- Injecting PBI (Bit 11) into LUT 13
+--- Fault Strike #447 --- Injecting Input Stuck-At-1 into LUT 25, Input I2
+--- Fault Strike #448 --- Injecting PBI (Bit 7) into LUT 15
+--- Fault Strike #449 --- Injecting PBI (Bit 5) into LUT 28
+--- Fault Strike #450 --- Injecting PBI (Bit 0) into LUT 18
+--- Fault Strike #451 --- Injecting PBI (Bit 4) into LUT 27
+--- Fault Strike #452 --- Injecting Input Stuck-At-1 into LUT 3, Input I0
+--- Fault Strike #453 --- Injecting PBI (Bit 9) into LUT 23
+--- Fault Strike #454 --- Injecting PBI (Bit 7) into LUT 13
+--- Fault Strike #455 --- Injecting PBI (Bit 14) into LUT 16
+--- Fault Strike #456 --- Injecting PBI (Bit 4) into LUT 15
+--- Fault Strike #457 --- Injecting PBI (Bit 1) into LUT 7
+--- Fault Strike #458 --- Injecting Output Stuck-At-1 into LUT 17 (Total LUT Dysfunction)
+--- Fault Strike #459 --- Injecting Input Stuck-At-0 into LUT 22, Input I0
+--- Fault Strike #460 --- Injecting PBI (Bit 5) into LUT 19
+--- Fault Strike #461 --- Injecting Input Stuck-At-0 into LUT 24, Input I0
+--- Fault Strike #462 --- Injecting PBI (Bit 15) into LUT 14
+--- Fault Strike #463 --- Injecting PBI (Bit 1) into LUT 2
+--- Fault Strike #464 --- Injecting PBI (Bit 2) into LUT 28
+--- Fault Strike #465 --- Injecting PBI (Bit 8) into LUT 5
+--- Fault Strike #466 --- Injecting PBI (Bit 15) into LUT 20
+--- Fault Strike #467 --- Injecting PBI (Bit 2) into LUT 6
+--- Fault Strike #468 --- Injecting PBI (Bit 7) into LUT 28
+--- Fault Strike #469 --- Injecting PBI (Bit 6) into LUT 17
+--- Fault Strike #470 --- Injecting PBI (Bit 13) into LUT 17
+--- Fault Strike #471 --- Injecting PBI (Bit 10) into LUT 8
+--- Fault Strike #472 --- Injecting PBI (Bit 6) into LUT 0
+--- Fault Strike #473 --- Injecting PBI (Bit 8) into LUT 16
+--- Fault Strike #474 --- Injecting PBI (Bit 14) into LUT 22
+--- Fault Strike #475 --- Injecting PBI (Bit 8) into LUT 8
+--- Fault Strike #476 --- Injecting PBI (Bit 3) into LUT 2
+--- Fault Strike #477 --- Injecting Input Stuck-At-1 into LUT 11, Input I2
+--- Fault Strike #478 --- Injecting PBI (Bit 14) into LUT 15
+--- Fault Strike #479 --- Injecting Input Stuck-At-1 into LUT 6, Input I0
+--- Fault Strike #480 --- Injecting PBI (Bit 13) into LUT 0
+--- Fault Strike #481 --- Injecting PBI (Bit 1) into LUT 0
+--- Fault Strike #482 --- Injecting PBI (Bit 9) into LUT 22
+--- Fault Strike #483 --- Injecting Input Stuck-At-0 into LUT 4, Input I1
+--- Fault Strike #484 --- Injecting Output Stuck-At-0 into LUT 11 (Total LUT Dysfunction)
+--- Fault Strike #485 --- Injecting PBI (Bit 5) into LUT 29
+--- Fault Strike #486 --- Injecting Input Stuck-At-0 into LUT 13, Input I0
+--- Fault Strike #487 --- Injecting PBI (Bit 0) into LUT 9
+--- Fault Strike #488 --- Injecting PBI (Bit 5) into LUT 15
+--- Fault Strike #489 --- Injecting PBI (Bit 1) into LUT 16
+--- Fault Strike #490 --- Injecting PBI (Bit 12) into LUT 21
+--- Fault Strike #491 --- Injecting PBI (Bit 3) into LUT 20
+--- Fault Strike #492 --- Injecting Input Stuck-At-1 into LUT 16, Input I2
+--- Fault Strike #493 --- Injecting Input Stuck-At-1 into LUT 28, Input I1
+--- Fault Strike #494 --- Injecting Input Stuck-At-0 into LUT 14, Input I1
+--- Fault Strike #495 --- Injecting PBI (Bit 11) into LUT 14
+--- Fault Strike #496 --- Injecting PBI (Bit 12) into LUT 1
+--- Fault Strike #497 --- Injecting PBI (Bit 2) into LUT 27
+--- Fault Strike #498 --- Injecting PBI (Bit 12) into LUT 24
+--- Fault Strike #499 --- Injecting PBI (Bit 3) into LUT 9
+--- Fault Strike #500 --- Injecting PBI (Bit 11) into LUT 26
+--- Fault Strike #501 --- Injecting PBI (Bit 2) into LUT 12
+--- Fault Strike #502 --- Injecting Output Stuck-At-0 into LUT 26 (Total LUT Dysfunction)
+--- Fault Strike #503 --- Injecting PBI (Bit 0) into LUT 0
+--- Fault Strike #504 --- Injecting PBI (Bit 8) into LUT 13
+--- Fault Strike #505 --- Injecting PBI (Bit 0) into LUT 12
+--- Fault Strike #506 --- Injecting PBI (Bit 10) into LUT 21
+--- Fault Strike #507 --- Injecting Input Stuck-At-0 into LUT 23, Input I0
+--- Fault Strike #508 --- Injecting PBI (Bit 6) into LUT 23
+--- Fault Strike #509 --- Injecting PBI (Bit 8) into LUT 24
+--- Fault Strike #510 --- Injecting Input Stuck-At-0 into LUT 29, Input I0
+--- Fault Strike #511 --- Injecting PBI (Bit 9) into LUT 1
+--- Fault Strike #512 --- Injecting Output Stuck-At-0 into LUT 5 (Total LUT Dysfunction)
+--- Fault Strike #513 --- Injecting PBI (Bit 0) into LUT 25
+--- Fault Strike #514 --- Injecting PBI (Bit 15) into LUT 18
+--- Fault Strike #515 --- Injecting PBI (Bit 12) into LUT 20
+--- Fault Strike #516 --- Injecting PBI (Bit 0) into LUT 21
+--- Fault Strike #517 --- Injecting Input Stuck-At-0 into LUT 28, Input I0
+--- Fault Strike #518 --- Injecting PBI (Bit 2) into LUT 19
+--- Fault Strike #519 --- Injecting Output Stuck-At-1 into LUT 19 (Total LUT Dysfunction)
+--- Fault Strike #520 --- Injecting PBI (Bit 3) into LUT 18
+--- Fault Strike #521 --- Injecting PBI (Bit 10) into LUT 11
+--- Fault Strike #522 --- Injecting PBI (Bit 4) into LUT 29
+--- Fault Strike #523 --- Injecting PBI (Bit 11) into LUT 16
+--- Fault Strike #524 --- Injecting PBI (Bit 2) into LUT 2
+--- Fault Strike #525 --- Injecting PBI (Bit 10) into LUT 2
+--- Fault Strike #526 --- Injecting PBI (Bit 2) into LUT 29
+--- Fault Strike #527 --- Injecting PBI (Bit 13) into LUT 12
+--- Fault Strike #528 --- Injecting PBI (Bit 6) into LUT 18
+--- Fault Strike #529 --- Injecting PBI (Bit 11) into LUT 12
+--- Fault Strike #530 --- Injecting PBI (Bit 10) into LUT 26
+--- Fault Strike #531 --- Injecting PBI (Bit 11) into LUT 4
+--- Fault Strike #532 --- Injecting PBI (Bit 2) into LUT 17
+--- Fault Strike #533 --- Injecting PBI (Bit 6) into LUT 11
+--- Fault Strike #534 --- Injecting PBI (Bit 1) into LUT 23
+--- Fault Strike #535 --- Injecting Input Stuck-At-0 into LUT 7, Input I2
+--- Fault Strike #536 --- Injecting PBI (Bit 10) into LUT 28
+--- Fault Strike #537 --- Injecting PBI (Bit 11) into LUT 7
+--- Fault Strike #538 --- Injecting PBI (Bit 5) into LUT 3
+--- Fault Strike #539 --- Injecting PBI (Bit 8) into LUT 17
+--- Fault Strike #540 --- Injecting PBI (Bit 6) into LUT 4
+--- Fault Strike #541 --- Injecting PBI (Bit 7) into LUT 5
+--- Fault Strike #542 --- Injecting PBI (Bit 4) into LUT 18
+--- Fault Strike #543 --- Injecting PBI (Bit 5) into LUT 12
+--- Fault Strike #544 --- Injecting PBI (Bit 15) into LUT 7
+--- Fault Strike #545 --- Injecting PBI (Bit 0) into LUT 28
+--- Fault Strike #546 --- Injecting PBI (Bit 10) into LUT 10
+--- Fault Strike #547 --- Injecting PBI (Bit 1) into LUT 1
+--- Fault Strike #548 --- Injecting Input Stuck-At-0 into LUT 8, Input I0
+--- Fault Strike #549 --- Injecting PBI (Bit 9) into LUT 9
+--- Fault Strike #550 --- Injecting PBI (Bit 3) into LUT 26
+--- Fault Strike #551 --- Injecting PBI (Bit 4) into LUT 7
+--- Fault Strike #552 --- Injecting PBI (Bit 15) into LUT 17
+--- Fault Strike #553 --- Injecting PBI (Bit 5) into LUT 22
+--- Fault Strike #554 --- Injecting PBI (Bit 9) into LUT 5
+--- Fault Strike #555 --- Injecting PBI (Bit 14) into LUT 6
+--- Fault Strike #556 --- Injecting PBI (Bit 2) into LUT 5
+--- Fault Strike #557 --- Injecting PBI (Bit 11) into LUT 23
+--- Fault Strike #558 --- Injecting PBI (Bit 13) into LUT 15
+--- Fault Strike #559 --- Injecting PBI (Bit 11) into LUT 1
+--- Fault Strike #560 --- Injecting PBI (Bit 10) into LUT 12
+--- Fault Strike #561 --- Injecting Input Stuck-At-0 into LUT 22, Input I1
+--- Fault Strike #562 --- Injecting Input Stuck-At-1 into LUT 23, Input I1
+--- Fault Strike #563 --- Injecting PBI (Bit 1) into LUT 22
+--- Fault Strike #564 --- Injecting PBI (Bit 5) into LUT 26
+--- Fault Strike #565 --- Injecting Input Stuck-At-0 into LUT 10, Input I1
+--- Fault Strike #566 --- Injecting PBI (Bit 15) into LUT 6
+--- Fault Strike #567 --- Injecting Input Stuck-At-1 into LUT 23, Input I2
+--- Fault Strike #568 --- Injecting Output Stuck-At-1 into LUT 7 (Total LUT Dysfunction)
+--- Fault Strike #569 --- Injecting PBI (Bit 9) into LUT 29
+--- Fault Strike #570 --- Injecting PBI (Bit 7) into LUT 27
+--- Fault Strike #571 --- Injecting PBI (Bit 13) into LUT 5
+--- Fault Strike #572 --- Injecting PBI (Bit 10) into LUT 5
+--- Fault Strike #573 --- Injecting PBI (Bit 10) into LUT 9
+--- Fault Strike #574 --- Injecting PBI (Bit 10) into LUT 1
+--- Fault Strike #575 --- Injecting PBI (Bit 8) into LUT 10
+--- Fault Strike #576 --- Injecting Input Stuck-At-1 into LUT 12, Input I3
+--- Fault Strike #577 --- Injecting PBI (Bit 7) into LUT 7
+
+[END] System trapped in PANIC for 5.0 seconds without recovery.
+System absorbed 237 UNIQUE asynchronous hard faults before capacity loss.
+Breakdown: [ 184 PBI | 40 IN | 13 OUT ]
+
+
+=================== LAST WORKING CONFIGURATION ====================
+
+--------------- EXTRACTED STRUCTURAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 23]
+  y1 <=== Logic Gate  [LUT 17]
+  y2 <=== Logic Gate  [LUT 13]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0x704D :: Inputs: (x0)   (x2)   (x0)   (x0)   
+  [LUT 01] :: F=0xD3D7 :: Inputs: (x0)   (L00)  (L00)  (x1)   
+  [LUT 02] :: F=0x9F11 :: Inputs: (x0)   (x0)   (x2)   (x1)   
+  [LUT 03] :: F=0x0D64 :: Inputs: (L01)  (x0)   (x1)   (L00)  
+  [LUT 04] :: F=0x5242 :: Inputs: (x2)   (x2)   (L00)  (L01)  
+  [LUT 05] :: F=0xD316 :: Inputs: (x2)   (L03)  (L03)  (L03)  
+  [LUT 06] :: F=0x7B4E :: Inputs: (L00)  (L02)  (L03)  (x1)   
+  [LUT 07] :: F=0xC686 :: Inputs: (L00)  (x1)   (x0)   (L03)  
+  [LUT 08] :: F=0x7E13 :: Inputs: (L04)  (L01)  (L05)  (x0)   
+  [LUT 11] :: F=0xCD0E :: Inputs: (L00)  (L08)  (L04)  (x0)   
+  [LUT 13] :: F=0x28B4 :: Inputs: (L07)  (L06)  (L11)  (x1)   
+  [LUT 17] :: F=0xC66F :: Inputs: (L07)  (L11)  (x2)   (L04)  
+  [LUT 18] :: F=0x30B1 :: Inputs: (L03)  (L05)  (L03)  (L05)  
+  [LUT 23] :: F=0x50D4 :: Inputs: (L18)  (x1)   (L05)  (L04)  
+---------------------------------------------------------------
+Utilization: 14/30 LUTs.
+---------------------------------------------------------------
+
+
+--------------- EXTRACTED LOGICAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 23]
+  y1 <=== Logic Gate  [LUT 17]
+  y2 <=== Logic Gate  [LUT 13]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0x704D :: Inputs: (x0)   (x2)   (x0)   (x0)   
+  [LUT 01] :: F=0xD3D7 :: Inputs: (x0)   (L00)  (L00)  (x1)   
+  [LUT 02] :: F=0x9F11 :: Inputs: (x0)   (x0)   (x2)   (x1)   
+  [LUT 03] :: F=0x0D64 :: Inputs: (L01)  (x0)   (x1)   (L00)  
+  [LUT 04] :: F=0x5242 :: Inputs: (x2)   (x2)   (L00)  (L01)  
+  [LUT 05] :: F=0xD316 :: Inputs: (x2)   (L03)  (L03)  (L03)  
+  [LUT 06] :: F=0x7B4E :: Inputs: (L00)  (L02)  (L03)  (x1)   
+  [LUT 07] :: F=0xC686 :: Inputs: (L00)  (x1)   (x0)   (L03)  
+  [LUT 08] :: F=0x7E13 :: Inputs: (L04)  (L01)  (L05)  (x0)   
+  [LUT 11] :: F=0xCD0E :: Inputs: (L00)  (L08)  (L04)  (x0)   
+  [LUT 13] :: F=0x28B4 :: Inputs: (L07)  (L06)  (L11)  (x1)   
+  [LUT 17] :: F=0xC66F :: Inputs: (L07)  (L11)  (x2)   (L04)  
+  [LUT 18] :: F=0x30B1 :: Inputs: (L03)  (L05)  (L03)  (L05)  
+  [LUT 23] :: F=0x50D4 :: Inputs: (L18)  (x1)   (L05)  (L04)  
+---------------------------------------------------------------
+Utilization: 14/30 LUTs.
+---------------------------------------------------------------
+

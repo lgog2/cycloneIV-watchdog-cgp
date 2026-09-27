@@ -1,0 +1,255 @@
+Configuring Hardware Reference Truth Table (TMR)...
+
+
+=================================================================
+ Tests of repair capabilities under SPBI/MPBI and Stuck-At fault injections
+=====================================================================
+[1] Comparative Benchmark (SW 1+4 vs HW 1+1)
+[2] Cumulative Routing Faults Test (STA-0/STA-1 of LUTs inputs)
+[3] Cumulative Logic Faults Test (PBI of LUTs Truth Tables)
+--- CONTINUOUS ASYNCHRONOUS FAULT TESTS ---------------------
+[4] Logic Degradation Only (PBI)
+[5] Routing Degradation Only (Inputs Stuck-At)
+[6] Rapid Degradation (Outputs Stuck-At)
+[7] Full Model (Mix 16:4:1)
+---------------------------------------------------------------------
+Select test (1-7) and press Enter: 
+5
+
+
+===============================================================
+TEST 5: CONTINUOUS ASYNCHRONOUS FAULT INJECTION (GRACEFUL DEGRADATION)
+- Mode: ROUTING DEGRADATION ONLY
+- Injections: Input Stuck-At-0 / Stuck-At-1 ONLY.
+- Hardware evolution operates asynchronously; the 3Hz timer is never reset.
+- Evaluates system fitness and logs fatal capacity loss.
+  Test ends after 5.0s (~15 consecutive 333ms windows) of PANIC - state
+  where the system is unable to repair itself even for a moment.
+  (This enforces 5s of continuous SAFE OUT on capacitors, meaning 5s
+   without supervision for the watchdog-monitored device).
+==================================================================
+
+
+========================= BASELINE ==============================
+
+--------------- EXTRACTED STRUCTURAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 00]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x0)   (x1)   (x2)   (x1)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (x0)   (x1)   (x2)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (x2)   (x0)   
+---------------------------------------------------------------
+Utilization: 3/30 LUTs.
+---------------------------------------------------------------
+
+
+--------------- EXTRACTED LOGICAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 00]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x0)   (x1)   (x2)   (--)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (--)   (--)   (--)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (--)   (--)   
+---------------------------------------------------------------
+Utilization: 3/30 LUTs.
+---------------------------------------------------------------
+
+
+>>> INITIALIZING FAULT INJECTION TEST | POOL SIZE: 120 <<<
+--- Fault Strike #1 --- Injecting Input Stuck-At-1 into LUT 15, Input I3
+--- Fault Strike #2 --- Injecting Input Stuck-At-0 into LUT 8, Input I1
+--- Fault Strike #3 --- Injecting Input Stuck-At-1 into LUT 12, Input I3
+--- Fault Strike #4 --- Injecting Input Stuck-At-1 into LUT 15, Input I2
+--- Fault Strike #5 --- Injecting Input Stuck-At-1 into LUT 23, Input I3
+--- Fault Strike #6 --- Injecting Input Stuck-At-0 into LUT 11, Input I3
+--- Fault Strike #7 --- Injecting Input Stuck-At-1 into LUT 28, Input I0
+--- Fault Strike #8 --- Injecting Input Stuck-At-1 into LUT 29, Input I0
+--- Fault Strike #9 --- Injecting Input Stuck-At-1 into LUT 22, Input I1
+--- Fault Strike #10 --- Injecting Input Stuck-At-0 into LUT 25, Input I0
+--- Fault Strike #11 --- Injecting Input Stuck-At-0 into LUT 4, Input I3
+--- Fault Strike #12 --- Injecting Input Stuck-At-1 into LUT 4, Input I1
+--- Fault Strike #13 --- Injecting Input Stuck-At-1 into LUT 26, Input I0
+--- Fault Strike #14 --- Injecting Input Stuck-At-1 into LUT 17, Input I3
+--- Fault Strike #15 --- Injecting Input Stuck-At-1 into LUT 24, Input I1
+--- Fault Strike #16 --- Injecting Input Stuck-At-0 into LUT 1, Input I2
+--- Fault Strike #17 --- Injecting Input Stuck-At-1 into LUT 19, Input I2
+--- Fault Strike #18 --- Injecting Input Stuck-At-1 into LUT 15, Input I0
+--- Fault Strike #19 --- Injecting Input Stuck-At-0 into LUT 13, Input I0
+--- Fault Strike #20 --- Injecting Input Stuck-At-0 into LUT 22, Input I2
+--- Fault Strike #21 --- Injecting Input Stuck-At-0 into LUT 10, Input I0
+--- Fault Strike #22 --- Injecting Input Stuck-At-1 into LUT 11, Input I2
+--- Fault Strike #23 --- Injecting Input Stuck-At-0 into LUT 27, Input I0
+--- Fault Strike #24 --- Injecting Input Stuck-At-1 into LUT 27, Input I1
+--- Fault Strike #25 --- Injecting Input Stuck-At-0 into LUT 9, Input I3
+--- Fault Strike #26 --- Injecting Input Stuck-At-0 into LUT 14, Input I0
+--- Fault Strike #27 --- Injecting Input Stuck-At-1 into LUT 4, Input I0
+--- Fault Strike #28 --- Injecting Input Stuck-At-0 into LUT 12, Input I0
+--- Fault Strike #29 --- Injecting Input Stuck-At-0 into LUT 10, Input I3
+--- Fault Strike #30 --- Injecting Input Stuck-At-0 into LUT 3, Input I0
+--- Fault Strike #31 --- Injecting Input Stuck-At-1 into LUT 27, Input I3
+--- Fault Strike #32 --- Injecting Input Stuck-At-1 into LUT 16, Input I1
+--- Fault Strike #33 --- Injecting Input Stuck-At-1 into LUT 12, Input I1
+--- Fault Strike #34 --- Injecting Input Stuck-At-1 into LUT 28, Input I3
+--- Fault Strike #35 --- Injecting Input Stuck-At-1 into LUT 2, Input I3
+--- Fault Strike #36 --- Injecting Input Stuck-At-1 into LUT 19, Input I0
+--- Fault Strike #37 --- Injecting Input Stuck-At-0 into LUT 13, Input I1
+--- Fault Strike #38 --- Injecting Input Stuck-At-0 into LUT 21, Input I0
+--- Fault Strike #39 --- Injecting Input Stuck-At-1 into LUT 21, Input I2
+--- Fault Strike #40 --- Injecting Input Stuck-At-1 into LUT 28, Input I2
+--- Fault Strike #41 --- Injecting Input Stuck-At-1 into LUT 16, Input I0
+--- Fault Strike #42 --- Injecting Input Stuck-At-1 into LUT 24, Input I0
+--- Fault Strike #43 --- Injecting Input Stuck-At-1 into LUT 8, Input I0
+--- Fault Strike #44 --- Injecting Input Stuck-At-0 into LUT 17, Input I1
+--- Fault Strike #45 --- Injecting Input Stuck-At-1 into LUT 21, Input I1
+--- Fault Strike #46 --- Injecting Input Stuck-At-0 into LUT 2, Input I0
+--- Fault Strike #47 --- Injecting Input Stuck-At-1 into LUT 19, Input I1
+--- Fault Strike #48 --- Injecting Input Stuck-At-0 into LUT 5, Input I1
+--- Fault Strike #49 --- Injecting Input Stuck-At-0 into LUT 13, Input I3
+--- Fault Strike #50 --- Injecting Input Stuck-At-0 into LUT 5, Input I3
+--- Fault Strike #51 --- Injecting Input Stuck-At-1 into LUT 26, Input I2
+--- Fault Strike #52 --- Injecting Input Stuck-At-1 into LUT 3, Input I1
+--- Fault Strike #53 --- Injecting Input Stuck-At-1 into LUT 18, Input I0
+--- Fault Strike #54 --- Injecting Input Stuck-At-0 into LUT 23, Input I1
+--- Fault Strike #55 --- Injecting Input Stuck-At-1 into LUT 5, Input I0
+--- Fault Strike #56 --- Injecting Input Stuck-At-1 into LUT 4, Input I2
+--- Fault Strike #57 --- Injecting Input Stuck-At-1 into LUT 8, Input I2
+--- Fault Strike #58 --- Injecting Input Stuck-At-1 into LUT 9, Input I1
+--- Fault Strike #59 --- Injecting Input Stuck-At-1 into LUT 26, Input I1
+--- Fault Strike #60 --- Injecting Input Stuck-At-1 into LUT 20, Input I0
+--- Fault Strike #61 --- Injecting Input Stuck-At-1 into LUT 29, Input I2
+--- Fault Strike #62 --- Injecting Input Stuck-At-1 into LUT 0, Input I3
+--- Fault Strike #63 --- Injecting Input Stuck-At-1 into LUT 12, Input I2
+--- Fault Strike #64 --- Injecting Input Stuck-At-0 into LUT 11, Input I1
+--- Fault Strike #65 --- Injecting Input Stuck-At-1 into LUT 2, Input I1
+--- Fault Strike #66 --- Injecting Input Stuck-At-1 into LUT 25, Input I2
+--- Fault Strike #67 --- Injecting Input Stuck-At-0 into LUT 10, Input I2
+--- Fault Strike #68 --- Injecting Input Stuck-At-0 into LUT 6, Input I3
+--- Fault Strike #69 --- Injecting Input Stuck-At-1 into LUT 0, Input I1
+--- Fault Strike #70 --- Injecting Input Stuck-At-0 into LUT 17, Input I0
+--- Fault Strike #71 --- Injecting Input Stuck-At-0 into LUT 14, Input I3
+--- Fault Strike #72 --- Injecting Input Stuck-At-1 into LUT 18, Input I2
+--- Fault Strike #73 --- Injecting Input Stuck-At-1 into LUT 22, Input I0
+--- Fault Strike #74 --- Injecting Input Stuck-At-1 into LUT 21, Input I3
+--- Fault Strike #75 --- Injecting Input Stuck-At-0 into LUT 9, Input I0
+--- Fault Strike #76 --- Injecting Input Stuck-At-1 into LUT 25, Input I1
+--- Fault Strike #77 --- Injecting Input Stuck-At-0 into LUT 7, Input I0
+--- Fault Strike #78 --- Injecting Input Stuck-At-1 into LUT 29, Input I1
+--- Fault Strike #79 --- Injecting Input Stuck-At-1 into LUT 17, Input I2
+--- Fault Strike #80 --- Injecting Input Stuck-At-0 into LUT 16, Input I3
+--- Fault Strike #81 --- Injecting Input Stuck-At-1 into LUT 29, Input I3
+--- Fault Strike #82 --- Injecting Input Stuck-At-0 into LUT 14, Input I2
+--- Fault Strike #83 --- Injecting Input Stuck-At-1 into LUT 1, Input I3
+--- Fault Strike #84 --- Injecting Input Stuck-At-1 into LUT 24, Input I3
+--- Fault Strike #85 --- Injecting Input Stuck-At-0 into LUT 14, Input I1
+--- Fault Strike #86 --- Injecting Input Stuck-At-0 into LUT 23, Input I0
+--- Fault Strike #87 --- Injecting Input Stuck-At-1 into LUT 7, Input I2
+--- Fault Strike #88 --- Injecting Input Stuck-At-0 into LUT 10, Input I1
+
+[IRQ] 333ms Window exceeded! System entered PANIC.
+--- Fault Strike #89 --- Injecting Input Stuck-At-1 into LUT 20, Input I2
+--- Fault Strike #90 --- Injecting Input Stuck-At-0 into LUT 13, Input I2
+--- Fault Strike #91 --- Injecting Input Stuck-At-1 into LUT 0, Input I0
+--- Fault Strike #92 --- Injecting Input Stuck-At-1 into LUT 0, Input I2
+--- Fault Strike #93 --- Injecting Input Stuck-At-1 into LUT 3, Input I3
+--- Fault Strike #94 --- Injecting Input Stuck-At-1 into LUT 6, Input I2
+--- Fault Strike #95 --- Injecting Input Stuck-At-1 into LUT 19, Input I3
+--- Fault Strike #96 --- Injecting Input Stuck-At-0 into LUT 7, Input I3
+--- Fault Strike #97 --- Injecting Input Stuck-At-1 into LUT 5, Input I2
+--- Fault Strike #98 --- Injecting Input Stuck-At-0 into LUT 26, Input I3
+--- Fault Strike #99 --- Injecting Input Stuck-At-1 into LUT 28, Input I1
+--- Fault Strike #100 --- Injecting Input Stuck-At-0 into LUT 11, Input I0
+--- Fault Strike #101 --- Injecting Input Stuck-At-0 into LUT 6, Input I1
+--- Fault Strike #102 --- Injecting Input Stuck-At-0 into LUT 22, Input I3
+--- Fault Strike #103 --- Injecting Input Stuck-At-1 into LUT 27, Input I2
+--- Fault Strike #104 --- Injecting Input Stuck-At-0 into LUT 1, Input I0
+--- Fault Strike #105 --- Injecting Input Stuck-At-1 into LUT 23, Input I2
+--- Fault Strike #106 --- Injecting Input Stuck-At-0 into LUT 9, Input I2
+--- Fault Strike #107 --- Injecting Input Stuck-At-1 into LUT 8, Input I3
+--- Fault Strike #108 --- Injecting Input Stuck-At-0 into LUT 20, Input I3
+--- Fault Strike #109 --- Injecting Input Stuck-At-0 into LUT 7, Input I1
+--- Fault Strike #110 --- Injecting Input Stuck-At-0 into LUT 2, Input I2
+--- Fault Strike #111 --- Injecting Input Stuck-At-1 into LUT 16, Input I2
+--- Fault Strike #112 --- Injecting Input Stuck-At-1 into LUT 3, Input I2
+--- Fault Strike #113 --- Injecting Input Stuck-At-0 into LUT 20, Input I1
+--- Fault Strike #114 --- Injecting Input Stuck-At-0 into LUT 18, Input I1
+--- Fault Strike #115 --- Injecting Input Stuck-At-1 into LUT 18, Input I3
+--- Fault Strike #116 --- Injecting Input Stuck-At-1 into LUT 6, Input I0
+--- Fault Strike #117 --- Injecting Input Stuck-At-1 into LUT 25, Input I3
+--- Fault Strike #118 --- Injecting Input Stuck-At-1 into LUT 24, Input I2
+--- Fault Strike #119 --- Injecting Input Stuck-At-0 into LUT 1, Input I1
+--- Fault Strike #120 --- Injecting Input Stuck-At-1 into LUT 15, Input I1
+
+[END] Pool exhausted while in PANIC
+System absorbed 79 UNIQUE faults before capacity loss.
+Breakdown: [ 0 PBI | 79 IN | 0 OUT ]
+
+
+=================== LAST WORKING CONFIGURATION ====================
+
+--------------- EXTRACTED STRUCTURAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 01]
+  y1 <=== Logic Gate  [LUT 26]
+  y2 <=== Logic Gate  [LUT 14]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0x62B3 :: Inputs: (x0)   (x0)   (x2)   (x2)   
+  [LUT 01] :: F=0xDEBE :: Inputs: (x1)   (L00)  (x0)   (x0)   
+  [LUT 02] :: F=0xE1DD :: Inputs: (x0)   (L01)  (x2)   (L00)  
+  [LUT 03] :: F=0xC60C :: Inputs: (L02)  (x0)   (x0)   (L01)  
+  [LUT 04] :: F=0xB26C :: Inputs: (L00)  (L00)  (L02)  (x2)   
+  [LUT 05] :: F=0x9844 :: Inputs: (L04)  (x2)   (L03)  (L01)  
+  [LUT 06] :: F=0x6F09 :: Inputs: (L01)  (L05)  (L04)  (x1)   
+  [LUT 07] :: F=0xAFB5 :: Inputs: (x2)   (L06)  (L05)  (x2)   
+  [LUT 08] :: F=0x21D7 :: Inputs: (L03)  (x0)   (L03)  (L07)  
+  [LUT 10] :: F=0x89CC :: Inputs: (x1)   (L00)  (L05)  (x1)   
+  [LUT 11] :: F=0xA87F :: Inputs: (L10)  (L00)  (L03)  (L03)  
+  [LUT 12] :: F=0x493C :: Inputs: (L00)  (x0)   (L07)  (x1)   
+  [LUT 13] :: F=0x9E42 :: Inputs: (L02)  (L11)  (L08)  (L10)  
+  [LUT 14] :: F=0x6B2B :: Inputs: (L11)  (L03)  (L00)  (L11)  
+  [LUT 15] :: F=0x73AB :: Inputs: (L08)  (L13)  (L04)  (L13)  
+  [LUT 16] :: F=0x28E5 :: Inputs: (L11)  (L15)  (L12)  (x0)   
+  [LUT 21] :: F=0x7C66 :: Inputs: (x1)   (L13)  (L16)  (L13)  
+  [LUT 26] :: F=0xF142 :: Inputs: (L16)  (L21)  (L08)  (L16)  
+---------------------------------------------------------------
+Utilization: 18/30 LUTs.
+---------------------------------------------------------------
+
+
+--------------- EXTRACTED LOGICAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 01]
+  y1 <=== Logic Gate  [LUT 26]
+  y2 <=== Logic Gate  [LUT 14]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0x62B3 :: Inputs: (x0)   (x0)   (x2)   (x2)   
+  [LUT 01] :: F=0xDEBE :: Inputs: (x1)   (L00)  (x0)   (x0)   
+  [LUT 02] :: F=0xE1DD :: Inputs: (x0)   (L01)  (x2)   (L00)  
+  [LUT 03] :: F=0xC60C :: Inputs: (L02)  (x0)   (x0)   (L01)  
+  [LUT 04] :: F=0xB26C :: Inputs: (L00)  (L00)  (L02)  (x2)   
+  [LUT 05] :: F=0x9844 :: Inputs: (L04)  (x2)   (L03)  (L01)  
+  [LUT 06] :: F=0x6F09 :: Inputs: (L01)  (L05)  (L04)  (x1)   
+  [LUT 07] :: F=0xAFB5 :: Inputs: (x2)   (L06)  (L05)  (x2)   
+  [LUT 08] :: F=0x21D7 :: Inputs: (L03)  (x0)   (L03)  (L07)  
+  [LUT 10] :: F=0x89CC :: Inputs: (x1)   (L00)  (L05)  (x1)   
+  [LUT 11] :: F=0xA87F :: Inputs: (L10)  (L00)  (L03)  (L03)  
+  [LUT 12] :: F=0x493C :: Inputs: (L00)  (x0)   (L07)  (x1)   
+  [LUT 13] :: F=0x9E42 :: Inputs: (L02)  (L11)  (L08)  (L10)  
+  [LUT 14] :: F=0x6B2B :: Inputs: (L11)  (L03)  (L00)  (L11)  
+  [LUT 15] :: F=0x73AB :: Inputs: (L08)  (L13)  (L04)  (L13)  
+  [LUT 16] :: F=0x28E5 :: Inputs: (L11)  (L15)  (L12)  (x0)   
+  [LUT 21] :: F=0x7C66 :: Inputs: (x1)   (L13)  (L16)  (L13)  
+  [LUT 26] :: F=0xF142 :: Inputs: (L16)  (L21)  (L08)  (L16)  
+---------------------------------------------------------------
+Utilization: 18/30 LUTs.
+---------------------------------------------------------------
+
+

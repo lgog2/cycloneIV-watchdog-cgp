@@ -1,0 +1,449 @@
+Configuring Hardware Reference Truth Table (TMR)...
+
+
+=================================================================
+ Tests of repair capabilities under SPBI/MPBI and Stuck-At fault injections
+=====================================================================
+[1] Comparative Benchmark (SW 1+4 vs HW 1+1)
+[2] Cumulative Routing Faults Test (STA-0/STA-1 of LUTs inputs)
+[3] Cumulative Logic Faults Test (PBI of LUTs Truth Tables)
+--- CONTINUOUS ASYNCHRONOUS FAULT TESTS ---------------------
+[4] Logic Degradation Only (PBI)
+[5] Routing Degradation Only (Inputs Stuck-At)
+[6] Rapid Degradation (Outputs Stuck-At)
+[7] Full Model (Mix 16:4:1)
+---------------------------------------------------------------------
+Select test (1-7) and press Enter: 
+1
+
+
+
+==================================================================
+
+==================================================================
+[COMPARATIVE FAULT INJECTION BENCHMARK: SW (1+4) vs HW (1+1)]
+Executing identical 3 INDEPENDENT fault scenarios.
+Faults DO NOT accumulate; system resets and heals between strikes:
+  1. Output of LUT 0 - Stuck-At-0
+  2. Input 0 of LUT 1 - Stuck-At-1
+  3. LUT 0, 1, 2 - Multiple Permanent Bit Inversion (MPBI)
+Execution sequence: Phase 1 (Software 1+4) -> Phase 2 (Hardware 1+1)
+===================================================================
+
+==================================================================
+
+--- [PHASE 1] Software Evolution from NIOS (ES 1+4) ---
+
+
+========================= BASELINE ==============================
+
+--------------- EXTRACTED STRUCTURAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 00]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x0)   (x1)   (x2)   (x1)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (x0)   (x1)   (x2)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (x2)   (x0)   
+---------------------------------------------------------------
+Utilization: 3/30 LUTs.
+---------------------------------------------------------------
+
+
+--------------- EXTRACTED LOGICAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 00]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x0)   (x1)   (x2)   (--)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (--)   (--)   (--)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (--)   (--)   
+---------------------------------------------------------------
+Utilization: 3/30 LUTs.
+---------------------------------------------------------------
+
+
+
+======================================================
+--- Initiating test 1 ---
+======================================================
+Output of LUT 0 - Stuck-At-0
+
+Software (1+4)-ES
+
+Fitness dropped to 19. Starting (1+4)-ES evolution.
+
+[SUCCESS] Max fitness achieved in Generation 133!
+Time taken: 5330858 clock cycles | ~106617 us
+40081 clock cycles per generation | ~801 us
+
+--------------- EXTRACTED STRUCTURAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 18]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0x6AA5 :: Inputs: (x0)   (x2)   (x2)   (x0)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (L00)  (L00)  (x1)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (x2)   (L01)  
+  [LUT 03] :: F=0x672F :: Inputs: (L00)  (L01)  (x1)   (L00)  
+  [LUT 04] :: F=0xB0A2 :: Inputs: (x1)   (x1)   (L00)  (L01)  
+  [LUT 05] :: F=0xBFDA :: Inputs: (L04)  (L04)  (x2)   (x1)   
+  [LUT 06] :: F=0xBE18 :: Inputs: (x2)   (L04)  (L05)  (L05)  
+  [LUT 09] :: F=0x7366 :: Inputs: (L06)  (x0)   (L00)  (L01)  
+  [LUT 18] :: F=0xC3F8 :: Inputs: (L02)  (L09)  (L05)  (L03)  
+---------------------------------------------------------------
+Utilization: 9/30 LUTs.
+---------------------------------------------------------------
+
+
+--------------- EXTRACTED LOGICAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 18]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0x6AA5 :: Inputs: (x0)   (x2)   (x2)   (x0)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (--)   (--)   (--)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (--)   (--)   
+  [LUT 03] :: F=0x672F :: Inputs: (L00)  (L01)  (x1)   (L00)  
+  [LUT 04] :: F=0xB0A2 :: Inputs: (x1)   (x1)   (L00)  (L01)  
+  [LUT 05] :: F=0xBFDA :: Inputs: (L04)  (L04)  (x2)   (x1)   
+  [LUT 06] :: F=0xBE18 :: Inputs: (x2)   (L04)  (L05)  (L05)  
+  [LUT 09] :: F=0x7366 :: Inputs: (L06)  (x0)   (L00)  (L01)  
+  [LUT 18] :: F=0xC3F8 :: Inputs: (L02)  (L09)  (L05)  (L03)  
+---------------------------------------------------------------
+Utilization: 9/30 LUTs.
+---------------------------------------------------------------
+
+Waiting 3 seconds before next test.
+
+
+
+======================================================
+--- Initiating test 2 ---
+======================================================
+I0 of LUT 1 - Stuck-At-1 
+
+Software (1+4)-ES
+
+Fitness dropped to 20. Starting (1+4)-ES evolution.
+
+[SUCCESS] Max fitness achieved in Generation 43!
+Time taken: 1717980 clock cycles | ~34359 us
+39953 clock cycles per generation | ~799 us
+
+--------------- EXTRACTED STRUCTURAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 00]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x0)   (x1)   (x2)   (x1)   
+  [LUT 01] :: F=0x3276 :: Inputs: (x0)   (x0)   (x1)   (x2)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (x2)   (x0)   
+---------------------------------------------------------------
+Utilization: 3/30 LUTs.
+---------------------------------------------------------------
+
+
+--------------- EXTRACTED LOGICAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 00]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x0)   (x1)   (x2)   (--)   
+  [LUT 01] :: F=0x3276 :: Inputs: (x0)   (x0)   (x1)   (x2)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (--)   (--)   
+---------------------------------------------------------------
+Utilization: 3/30 LUTs.
+---------------------------------------------------------------
+
+Waiting 3 seconds before next test.
+
+
+
+======================================================
+--- Initiating test 3 ---
+======================================================
+LUT 0, 1, 2 - MPBI.
+Full bitwise negation of truth table of LUT 0
+Negation of even-indexed bits in truth table of LUT 1
+Negation of odd-indexed bits in truth table 2
+
+Software (1+4)-ES
+
+Fitness dropped to 8. Starting (1+4)-ES evolution.
+
+[SUCCESS] Max fitness achieved in Generation 291!
+Time taken: 11726831 clock cycles | ~234536 us
+40298 clock cycles per generation | ~805 us
+
+--------------- EXTRACTED STRUCTURAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 19]
+  y1 <=== Logic Gate  [LUT 00]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0x8AAE :: Inputs: (x0)   (x0)   (x0)   (x1)   
+  [LUT 01] :: F=0x5145 :: Inputs: (L00)  (x2)   (x1)   (x1)   
+  [LUT 02] :: F=0xF870 :: Inputs: (x0)   (x1)   (L01)  (x1)   
+  [LUT 03] :: F=0x1542 :: Inputs: (L02)  (x1)   (x1)   (x1)   
+  [LUT 06] :: F=0x5FD4 :: Inputs: (L02)  (x2)   (x1)   (x0)   
+  [LUT 07] :: F=0xEE2B :: Inputs: (L01)  (L03)  (L00)  (L02)  
+  [LUT 09] :: F=0xB4A6 :: Inputs: (L06)  (L01)  (x1)   (L01)  
+  [LUT 10] :: F=0x870F :: Inputs: (L03)  (L00)  (L03)  (L07)  
+  [LUT 19] :: F=0x78C2 :: Inputs: (L01)  (L01)  (L09)  (L10)  
+---------------------------------------------------------------
+Utilization: 9/30 LUTs.
+---------------------------------------------------------------
+
+
+--------------- EXTRACTED LOGICAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 19]
+  y1 <=== Logic Gate  [LUT 00]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0x8AAE :: Inputs: (x0)   (x0)   (x0)   (x1)   
+  [LUT 01] :: F=0x5145 :: Inputs: (L00)  (x2)   (x1)   (x1)   
+  [LUT 02] :: F=0xF870 :: Inputs: (x0)   (x1)   (L01)  (x1)   
+  [LUT 03] :: F=0x1542 :: Inputs: (L02)  (x1)   (x1)   (x1)   
+  [LUT 06] :: F=0x5FD4 :: Inputs: (L02)  (x2)   (x1)   (x0)   
+  [LUT 07] :: F=0xEE2B :: Inputs: (L01)  (L03)  (L00)  (L02)  
+  [LUT 09] :: F=0xB4A6 :: Inputs: (L06)  (L01)  (x1)   (L01)  
+  [LUT 10] :: F=0x870F :: Inputs: (L03)  (L00)  (L03)  (L07)  
+  [LUT 19] :: F=0x78C2 :: Inputs: (L01)  (L01)  (L09)  (L10)  
+---------------------------------------------------------------
+Utilization: 9/30 LUTs.
+---------------------------------------------------------------
+
+--- [PHASE 2]Hardware Evolution (ES 1+1) ---
+
+
+========================= BASELINE ==============================
+
+--------------- EXTRACTED STRUCTURAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 00]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x0)   (x1)   (x2)   (x1)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (x0)   (x1)   (x2)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (x2)   (x0)   
+---------------------------------------------------------------
+Utilization: 3/30 LUTs.
+---------------------------------------------------------------
+
+
+--------------- EXTRACTED LOGICAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 00]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x0)   (x1)   (x2)   (--)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (--)   (--)   (--)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (--)   (--)   
+---------------------------------------------------------------
+Utilization: 3/30 LUTs.
+---------------------------------------------------------------
+
+
+
+======================================================
+--- Initiating test 1 ---
+======================================================
+Output of LUT 0 - Stuck-At-0
+
+Hardware (1+1)-ES
+
+Fitness dropped to 19. Starting (1+1)-ES evolution.
+
+[SUCCESS] Max fitness achieved in Generation 256!
+Time taken: 17350 clock cycles | ~347 us
+67 clock cycles per generation | ~1 us
+
+--------------- EXTRACTED STRUCTURAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 23]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x1)   (x0)   (x2)   (x0)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (x1)   (x1)   (x2)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (x0)   (x0)   
+  [LUT 03] :: F=0x8AF7 :: Inputs: (x2)   (L01)  (x1)   (L00)  
+  [LUT 04] :: F=0x25F8 :: Inputs: (L03)  (L03)  (L01)  (L03)  
+  [LUT 05] :: F=0x64EA :: Inputs: (L01)  (x0)   (x2)   (x2)   
+  [LUT 23] :: F=0x142B :: Inputs: (x1)   (L05)  (L02)  (L04)  
+---------------------------------------------------------------
+Utilization: 7/30 LUTs.
+---------------------------------------------------------------
+
+
+--------------- EXTRACTED LOGICAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 23]
+  y1 <=== Logic Gate  [LUT 01]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x1)   (x0)   (x2)   (--)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (--)   (--)   (--)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (x1)   (--)   (--)   
+  [LUT 03] :: F=0x8AF7 :: Inputs: (x2)   (L01)  (x1)   (L00)  
+  [LUT 04] :: F=0x25F8 :: Inputs: (L03)  (L03)  (L01)  (L03)  
+  [LUT 05] :: F=0x64EA :: Inputs: (L01)  (x0)   (x2)   (x2)   
+  [LUT 23] :: F=0x142B :: Inputs: (x1)   (L05)  (L02)  (L04)  
+---------------------------------------------------------------
+Utilization: 7/30 LUTs.
+---------------------------------------------------------------
+
+Waiting 3 seconds before next test.
+
+
+
+======================================================
+--- Initiating test 2 ---
+======================================================
+I0 of LUT 1 - Stuck-At-1 
+
+Hardware (1+1)-ES
+
+Fitness dropped to 20. Starting (1+1)-ES evolution.
+
+[SUCCESS] Max fitness achieved in Generation 222!
+Time taken: 15072 clock cycles | ~301 us
+67 clock cycles per generation | ~1 us
+
+--------------- EXTRACTED STRUCTURAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 00]
+  y1 <=== Logic Gate  [LUT 12]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x0)   (x1)   (x2)   (x1)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (x0)   (x0)   (x2)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (L00)  (x2)   (L00)  
+  [LUT 03] :: F=0x695F :: Inputs: (L01)  (x1)   (x1)   (x2)   
+  [LUT 04] :: F=0xD1E8 :: Inputs: (L01)  (L02)  (x2)   (x1)   
+  [LUT 05] :: F=0x4692 :: Inputs: (L04)  (L04)  (x1)   (x2)   
+  [LUT 06] :: F=0x6E77 :: Inputs: (L05)  (L04)  (L02)  (x1)   
+  [LUT 07] :: F=0x0A68 :: Inputs: (L01)  (L02)  (L00)  (L04)  
+  [LUT 11] :: F=0xEBBE :: Inputs: (L06)  (L07)  (x1)   (L05)  
+  [LUT 12] :: F=0x7424 :: Inputs: (L11)  (x0)   (L03)  (x2)   
+---------------------------------------------------------------
+Utilization: 10/30 LUTs.
+---------------------------------------------------------------
+
+
+--------------- EXTRACTED LOGICAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 00]
+  y1 <=== Logic Gate  [LUT 12]
+  y2 <=== Logic Gate  [LUT 02]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xDCDC :: Inputs: (x0)   (x1)   (x2)   (--)   
+  [LUT 01] :: F=0x5555 :: Inputs: (x0)   (--)   (--)   (--)   
+  [LUT 02] :: F=0x2222 :: Inputs: (x0)   (L00)  (--)   (--)   
+  [LUT 03] :: F=0x695F :: Inputs: (L01)  (x1)   (x1)   (x2)   
+  [LUT 04] :: F=0xD1E8 :: Inputs: (L01)  (L02)  (x2)   (x1)   
+  [LUT 05] :: F=0x4692 :: Inputs: (L04)  (L04)  (x1)   (x2)   
+  [LUT 06] :: F=0x6E77 :: Inputs: (L05)  (L04)  (L02)  (x1)   
+  [LUT 07] :: F=0x0A68 :: Inputs: (L01)  (L02)  (L00)  (L04)  
+  [LUT 11] :: F=0xEBBE :: Inputs: (L06)  (L07)  (x1)   (L05)  
+  [LUT 12] :: F=0x7424 :: Inputs: (L11)  (x0)   (L03)  (x2)   
+---------------------------------------------------------------
+Utilization: 10/30 LUTs.
+---------------------------------------------------------------
+
+Waiting 3 seconds before next test.
+
+
+
+======================================================
+--- Initiating test 3 ---
+======================================================
+LUT 0, 1, 2 - MPBI.
+Full bitwise negation of truth table of LUT 0
+Negation of even-indexed bits in truth table of LUT 1
+Negation of odd-indexed bits in truth table 2
+
+Hardware (1+1)-ES
+
+Fitness dropped to 8. Starting (1+1)-ES evolution.
+
+[SUCCESS] Max fitness achieved in Generation 2414!
+Time taken: 161936 clock cycles | ~3238 us
+67 clock cycles per generation | ~1 us
+
+--------------- EXTRACTED STRUCTURAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 21]
+  y1 <=== Logic Gate  [LUT 09]
+  y2 <=== Logic Gate  [LUT 17]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xB513 :: Inputs: (x2)   (x2)   (x1)   (x2)   
+  [LUT 01] :: F=0x6CB5 :: Inputs: (x0)   (x1)   (x1)   (L00)  
+  [LUT 02] :: F=0x0A5A :: Inputs: (x0)   (L00)  (L00)  (L01)  
+  [LUT 03] :: F=0x8E13 :: Inputs: (x2)   (x0)   (x2)   (L01)  
+  [LUT 04] :: F=0x3C4E :: Inputs: (L03)  (x2)   (x1)   (L01)  
+  [LUT 05] :: F=0xA313 :: Inputs: (x0)   (L01)  (L00)  (L00)  
+  [LUT 08] :: F=0xD3A1 :: Inputs: (L04)  (L03)  (L04)  (L04)  
+  [LUT 09] :: F=0x7576 :: Inputs: (x0)   (L01)  (L03)  (x0)   
+  [LUT 11] :: F=0x8361 :: Inputs: (L02)  (L03)  (L08)  (L01)  
+  [LUT 12] :: F=0x195E :: Inputs: (L05)  (L05)  (L02)  (L11)  
+  [LUT 13] :: F=0xBDA8 :: Inputs: (x2)   (x2)   (L09)  (L01)  
+  [LUT 15] :: F=0x3AB1 :: Inputs: (L09)  (L05)  (L13)  (L00)  
+  [LUT 17] :: F=0x44EF :: Inputs: (L01)  (x0)   (L09)  (L01)  
+  [LUT 21] :: F=0x86D2 :: Inputs: (L04)  (L04)  (L15)  (L12)  
+---------------------------------------------------------------
+Utilization: 14/30 LUTs.
+---------------------------------------------------------------
+
+
+--------------- EXTRACTED LOGICAL NETLIST (DAG) ---------------------
+[EXTERNAL NODES]
+  y0 <=== Logic Gate  [LUT 21]
+  y1 <=== Logic Gate  [LUT 09]
+  y2 <=== Logic Gate  [LUT 17]
+
+[ACTIVE LOGIC GATES]
+  [LUT 00] :: F=0xB513 :: Inputs: (x2)   (x2)   (x1)   (x2)   
+  [LUT 01] :: F=0x6CB5 :: Inputs: (x0)   (x1)   (x1)   (L00)  
+  [LUT 02] :: F=0x0A5A :: Inputs: (x0)   (--)   (L00)  (L01)  
+  [LUT 03] :: F=0x8E13 :: Inputs: (x2)   (x0)   (x2)   (L01)  
+  [LUT 04] :: F=0x3C4E :: Inputs: (L03)  (x2)   (x1)   (L01)  
+  [LUT 05] :: F=0xA313 :: Inputs: (x0)   (L01)  (L00)  (L00)  
+  [LUT 08] :: F=0xD3A1 :: Inputs: (L04)  (L03)  (L04)  (L04)  
+  [LUT 09] :: F=0x7576 :: Inputs: (x0)   (L01)  (L03)  (x0)   
+  [LUT 11] :: F=0x8361 :: Inputs: (L02)  (L03)  (L08)  (L01)  
+  [LUT 12] :: F=0x195E :: Inputs: (L05)  (L05)  (L02)  (L11)  
+  [LUT 13] :: F=0xBDA8 :: Inputs: (x2)   (x2)   (L09)  (L01)  
+  [LUT 15] :: F=0x3AB1 :: Inputs: (L09)  (L05)  (L13)  (L00)  
+  [LUT 17] :: F=0x44EF :: Inputs: (L01)  (x0)   (L09)  (L01)  
+  [LUT 21] :: F=0x86D2 :: Inputs: (L04)  (L04)  (L15)  (L12)  
+---------------------------------------------------------------
+Utilization: 14/30 LUTs.
+---------------------------------------------------------------
+
+
