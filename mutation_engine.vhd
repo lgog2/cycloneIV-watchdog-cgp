@@ -4,9 +4,9 @@
 --		Asynchronous combinatorial mutation engine for CGP.
 
 -- TECHNICAL MECHANISM:
---		The engine dynamically maps 64-bit pseudo-random noise (PRNG) into a highly
---		structured mutation payload (gene index, node index, new payload data) in a
---		single clock-less combinational pass.
+--		The engine dynamically maps 64-bit pseudo-random noise (PRNG) into a
+--		structured mutation payload (gene index, node index, new payload data)
+--		in a single clock-less combinational pass.
 --
 -- 1. LEMIRE'S FAST SCALING:
 --		Instead of utilizing hardware-expensive modulo dividers (e.g., X mod 153),

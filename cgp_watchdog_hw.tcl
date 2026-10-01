@@ -18,7 +18,7 @@ package require -exact qsys 16.1
 # 
 # module cgp_watchdog
 # 
-set_module_property DESCRIPTION "CGP Watchdog with Avalon-MM interface. Version 1.0 supports dynamic reconfiguration via memory map. Fault injection not implemented yet"
+set_module_property DESCRIPTION "CGP Watchdog with Avalon-MM interface. Supports dynamic reconfiguration via memory map, hardware-accelerated (1+1)-ES evolution, and asynchronous fault injection."
 set_module_property NAME cgp_watchdog
 set_module_property VERSION 1.0
 set_module_property INTERNAL false
