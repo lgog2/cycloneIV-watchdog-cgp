@@ -1,0 +1,855 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 1480 980"
+   width="100%"
+   height="100%"
+   style="background-color: #0d1117; font-family: sans-serif;"
+   version="1.1"
+   id="svg1102"
+   sodipodi:docname="schematic.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1104"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="1.8862551"
+     inkscape:cx="1192.5746"
+     inkscape:cy="825.44508"
+     inkscape:window-width="2070"
+     inkscape:window-height="991"
+     inkscape:window-x="26"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1102" />
+  <defs
+     id="defs870">
+    <!-- Arrowheads -->
+    <marker
+       id="arrow-gray"
+       viewBox="0 0 10 10"
+       refX="9"
+       refY="5"
+       markerWidth="5.5"
+       markerHeight="5.5"
+       orient="auto-start-reverse">
+      <path
+         d="M 0 0 L 10 5 L 0 10 z"
+         fill="#8b949e"
+         id="path850" />
+    </marker>
+    <marker
+       id="arrow-green"
+       viewBox="0 0 10 10"
+       refX="9"
+       refY="5"
+       markerWidth="5.5"
+       markerHeight="5.5"
+       orient="auto-start-reverse">
+      <path
+         d="M 0 0 L 10 5 L 0 10 z"
+         fill="#3fb950"
+         id="path853" />
+    </marker>
+    <marker
+       id="arrow-blue"
+       viewBox="0 0 10 10"
+       refX="9"
+       refY="5"
+       markerWidth="5.5"
+       markerHeight="5.5"
+       orient="auto-start-reverse">
+      <path
+         d="M 0 0 L 10 5 L 0 10 z"
+         fill="#58a6ff"
+         id="path856" />
+    </marker>
+    <marker
+       id="arrow-red"
+       viewBox="0 0 10 10"
+       refX="9"
+       refY="5"
+       markerWidth="6"
+       markerHeight="6"
+       orient="auto-start-reverse">
+      <path
+         d="M 0 0 L 10 5 L 0 10 z"
+         fill="#f85149"
+         id="path859" />
+    </marker>
+    <marker
+       id="arrow-avalon-trunk"
+       viewBox="0 0 10 10"
+       refX="8"
+       refY="5"
+       markerWidth="3.8"
+       markerHeight="3.8"
+       orient="auto-start-reverse">
+      <path
+         d="M 0 0 L 10 5 L 0 10 z"
+         fill="#d2a8ff"
+         id="path862" />
+    </marker>
+    <marker
+       id="arrow-avalon-tap"
+       viewBox="0 0 10 10"
+       refX="9"
+       refY="5"
+       markerWidth="5"
+       markerHeight="5"
+       orient="auto-start-reverse">
+      <path
+         d="M 0 0 L 10 5 L 0 10 z"
+         fill="#d2a8ff"
+         id="path865" />
+    </marker>
+    <style
+       id="style868">
+      /* Backgrounds */
+      .bg-top { fill: none; stroke: #30363d; stroke-width: 3; stroke-dasharray: 8,4; rx: 10; }
+      .bg-qsys { fill: #1f1a24; stroke: #d2a8ff; stroke-width: 2; rx: 8; }
+      .bg-wrapper { fill: #121d17; stroke: #8b949e; stroke-width: 2; rx: 8; }
+      .bg-core { fill: #2a0a0a; stroke: #f85149; stroke-width: 2; rx: 4; stroke-dasharray: 4,4; }
+      
+      /* Boxes */
+      .box-standard { fill: #161b22; stroke: #8b949e; stroke-width: 1.5; rx: 4; }
+	  .box-process-gray { fill: #161b22; stroke: #8b949e; stroke-width: 1.5; stroke-dasharray: 4,3; rx: 4; }
+      .box-process { fill: #121d17; stroke: #3fb950; stroke-width: 1.5; stroke-dasharray: 4,3; rx: 4; }
+      .box-evo { fill: #121d17; stroke: #3fb950; stroke-width: 1.8; rx: 5; }
+      .box-fsm { fill: #131d2e; stroke: #58a6ff; stroke-width: 2; rx: 6; }
+      
+      /* Text Base Styles */
+      .text-title { font-size: 16px; font-weight: bold; font-family: 'Courier New', monospace; }
+      .text-label { font-size: 12.5px; text-anchor: middle; dominant-baseline: middle; font-weight: bold; font-family: sans-serif; }
+      .text-desc { font-size: 10.5px; text-anchor: middle; dominant-baseline: middle; font-family: sans-serif; }
+      .text-pin-ext { fill: #c9d1d9; font-size: 12px; font-weight: bold; font-family: 'Courier New', monospace; dominant-baseline: middle; }
+      
+      /* Colored Text Classes */
+      .txt-gray { fill: #8b949e; }
+      .txt-green { fill: #3fb950; }
+      .txt-blue { fill: #58a6ff; }
+      .txt-red { fill: #f85149; }
+      .txt-purple { fill: #d2a8ff; }
+      
+      /* Wire Text Classes */
+      .text-wire-gray { fill: #8b949e; font-size: 11px; font-weight: bold; font-family: 'Courier New', monospace; dominant-baseline: middle; }
+      .text-wire-green { fill: #3fb950; font-size: 11px; font-weight: bold; font-family: 'Courier New', monospace; dominant-baseline: middle; }
+      .text-wire-blue { fill: #58a6ff; font-size: 11px; font-weight: bold; font-family: 'Courier New', monospace; dominant-baseline: middle; }
+      .text-wire-red { fill: #f85149; font-size: 11px; font-weight: bold; font-family: 'Courier New', monospace; dominant-baseline: middle; }
+      .text-wire-purple { fill: #d2a8ff; font-size: 11px; font-weight: bold; font-family: 'Courier New', monospace; dominant-baseline: middle; }
+      
+      /* Wires */
+      .wire-gray { fill: none; stroke: #8b949e; stroke-width: 2; marker-end: url(#arrow-gray); stroke-linejoin: round; }
+      .wire-gray-bus { fill: none; stroke: #8b949e; stroke-width: 2.5; marker-end: url(#arrow-gray); stroke-linejoin: round; }
+      .wire-gray-bidir { fill: none; stroke: #8b949e; stroke-width: 2; marker-start: url(#arrow-gray); marker-end: url(#arrow-gray); stroke-linejoin: round; }
+      
+      .wire-green { fill: none; stroke: #3fb950; stroke-width: 2; marker-end: url(#arrow-green); stroke-linejoin: round; }
+      .wire-green-bus { fill: none; stroke: #3fb950; stroke-width: 2.5; marker-end: url(#arrow-green); stroke-linejoin: round; }
+      
+      .wire-blue { fill: none; stroke: #58a6ff; stroke-width: 2; marker-end: url(#arrow-blue); stroke-linejoin: round; }
+      .wire-blue-bus { fill: none; stroke: #58a6ff; stroke-width: 2.5; marker-end: url(#arrow-blue); stroke-linejoin: round; }
+      .wire-blue-ctrl { fill: none; stroke: #58a6ff; stroke-width: 2; marker-end: url(#arrow-blue); stroke-linejoin: round; stroke-dasharray: 4,3; }
+      
+      .wire-red { fill: none; stroke: #f85149; stroke-width: 2.5; marker-end: url(#arrow-red); stroke-linejoin: round; }
+      
+      .wire-avalon-trunk { fill: none; stroke: #d2a8ff; stroke-width: 5.5; marker-start: url(#arrow-avalon-trunk); marker-end: url(#arrow-avalon-trunk); stroke-linejoin: round; }
+      .wire-avalon-spine { fill: none; stroke: #d2a8ff; stroke-width: 3.5; stroke-linecap: round; }
+      .wire-avalon-tap { fill: none; stroke: #d2a8ff; stroke-width: 1.8; marker-end: url(#arrow-avalon-tap); stroke-linejoin: round; }
+      .wire-avalon-bidir { fill: none; stroke: #d2a8ff; stroke-width: 1.8; marker-start: url(#arrow-avalon-tap); marker-end: url(#arrow-avalon-tap); stroke-linejoin: round; }
+    </style>
+  </defs>
+  <!-- ==================== 1. BACKGROUND RECTANGLES ==================== -->
+  <rect
+     x="195"
+     y="15"
+     width="1120"
+     height="935"
+     class="bg-top"
+     id="rect872" />
+  <!-- Nios matches Y=130 (xorshift) to Y=320 (shadow_regs bottom) -->
+  <rect
+     x="230"
+     y="130"
+     width="250"
+     height="190"
+     class="bg-qsys"
+     id="rect874" />
+  <rect
+     x="535"
+     y="52.426121"
+     width="750"
+     height="869.60626"
+     class="bg-wrapper"
+     id="rect876" />
+  <!-- ==================== 2. COMPONENT BOXES ==================== -->
+  <!-- Column 1 (Width: 180) -->
+  <rect
+     x="580"
+     y="130"
+     width="180"
+     height="60"
+     class="box-evo"
+     id="rect878" />
+  <rect
+     x="580"
+     y="265"
+     width="180"
+     height="55"
+     class="box-standard"
+     id="rect880" />
+  <rect
+     x="580"
+     y="510"
+     width="180"
+     height="55"
+     class="box-standard"
+     id="rect882" />
+  <rect
+     x="580"
+     y="595"
+     width="180"
+     height="55"
+     class="box-standard"
+     id="rect884" />
+  <rect
+     x="580"
+     y="705"
+     width="180"
+     height="55"
+     class="box-standard"
+     id="rect886" />
+  <rect
+     x="580"
+     y="790"
+     width="180"
+     height="55"
+     class="box-standard"
+     id="rect888" />
+  <!-- Column 2 (Width: 180, starts X=840) -->
+  <rect
+     x="840"
+     y="130"
+     width="420"
+     height="60"
+     class="box-process"
+     id="rect890" />
+  <rect
+     x="840"
+     y="265"
+     width="180"
+     height="55"
+     class="box-standard"
+     id="rect892" />
+  <rect
+     x="840"
+     y="475"
+     width="180"
+     height="380"
+     class="box-fsm"
+     id="rect894" />
+  <!-- Column 3 (Width: 160, starts X=1100) -->
+  <rect
+     x="1100"
+     y="265"
+     width="160"
+     height="55"
+     class="box-process"
+     id="rect896" />
+  <rect
+     x="1099.9358"
+     y="569.93579"
+     width="160.12839"
+     height="227.50754"
+     class="bg-core"
+     id="rect898" />
+  <!-- ==================== 3. WIRES & BUSES ==================== -->
+  <!-- Clock & Reset (Gray External - Stopping EXACTLY at boundary X=195) -->
+  <path
+     d="M 145 150 L 195 150"
+     class="wire-gray"
+     marker-end="none"
+     id="path900" />
+  <path
+     d="M 145 190 L 195 190"
+     class="wire-gray"
+     marker-end="none"
+     id="path902" />
+  <!-- External Analog & UART Inputs -->
+  <path
+     d="M 165 732 L 580 732"
+     class="wire-gray"
+     id="path904" />
+  <path
+     d="M 165 817 L 580 817"
+     class="wire-gray"
+     id="path906" />
+  <!-- Avalon-MM Backbone (PURPLE) -->
+  <path
+     d="M 480 220 L 550 220"
+     class="wire-avalon-trunk"
+     id="path908" />
+  <path
+     d="M 550 160 L 550 675"
+     class="wire-avalon-spine"
+     id="path910" />
+  <!-- Avalon Taps -->
+  <path
+     d="M 556 160 L 580 160"
+     class="wire-avalon-bidir"
+     id="path912" />
+  <path
+     d="M 550 292 L 580 292"
+     class="wire-avalon-tap"
+     id="path914" />
+  <!-- Readback: Tapped securely from Active Regs bottom port -->
+  <path
+     d="m 880.12159,320.09992 v 41.92741 H 554.31428"
+     class="wire-avalon-tap"
+     id="path916" />
+  <!-- Fault Masks (Clean high entry dropping left of Core) -->
+  <path
+     d="m 549.97365,408.45607 h 516.36555 l 161.5898,-1.62059 -0.6988,161.88842"
+     class="wire-avalon-tap"
+     id="path918"
+     sodipodi:nodetypes="cccc" />
+  <path
+     d="M 554.31336,537 H 580"
+     class="wire-avalon-bidir"
+     id="path920" />
+  <!-- ctrl / status / irq -> safely between 3Hz Timer and Input Sync -->
+  <path
+     d="M 556 675 L 840 675"
+     class="wire-avalon-bidir"
+     id="path922" />
+  <!-- Hardware Evolution Internals (GREEN / GRAY) -->
+  <path
+     d="M 760 160 L 840 160"
+     class="wire-green-bus"
+     id="path924" />
+  <!-- mut_params directly down -->
+  <path
+     d="M 1180 190 L 1180 265"
+     class="wire-green-bus"
+     id="path926" />
+  <!-- Shadow to Active Regs -->
+  <path
+     d="M 760 292 L 840 292"
+     class="wire-gray"
+     id="path928" />
+  <!-- parent wire (Active Regs -> Child Comb) -->
+  <path
+     d="M 1020 280 L 1100 280"
+     class="wire-gray-bus"
+     id="path930" />
+  <!-- child_comb loopback (Child Comb -> Active Regs) -->
+  <path
+     d="m 1100.5281,301.53829 h -80"
+     class="wire-green-bus"
+     marker-end="url(#arrow-green)"
+     id="path932" />
+  <!-- ==================== CASCADING CONFIG LINES TO MUX ==================== -->
+  <!-- conf_regs: Exits RIGHT bottom of Active Regs, routes to MUX Top Left -->
+  <path
+     d="m 979.91782,319.85858 v 140.20153 l 134.06418,-0.2696 -0.468,55.34878"
+     class="wire-gray-bus"
+     marker-end="none"
+     id="path934"
+     sodipodi:nodetypes="cccc" />
+  <!-- child_comb: Exits bottom of Child Comb, straight down to MUX Top Right -->
+  <path
+     d="m 1157.6211,318.66219 v 195"
+     class="wire-green-bus"
+     marker-end="none"
+     id="path936" />
+  <!-- ==================== HARDWARE MUX TRAPEZOID ==================== -->
+  <!-- Top: 1140 to 1220. Bottom: 1160 to 1200. Height: 515 to 545. -->
+  <polygon
+     points="1140,515 1220,515 1200,545 1160,545 "
+     fill="#161b22"
+     stroke="#8b949e"
+     stroke-width="1.5"
+     id="polygon938"
+     transform="translate(-43.096257,0.64197753)" />
+  <!-- vrc_in: MUX output to Core Top -->
+  <path
+     d="m 1137.6189,545.91119 v 13.46022 11.53978"
+     class="wire-gray-bus"
+     id="path940"
+     sodipodi:nodetypes="ccc" />
+  <!-- FSM Control Lines (BLUE DASHED) -->
+  <!-- load_conf (Exits Left side of FSM) -->
+  <path
+     d="M 840 495 L 800 495 L 800 292"
+     class="wire-blue-ctrl"
+     id="path942" />
+  <!-- mut_step (Exits Middle FSM, goes UP, then left) -->
+  <path
+     d="M 930 475 L 930 210 L 670 210 L 670 190"
+     class="wire-blue-ctrl"
+     id="path944" />
+  <!-- latch_child (Exits Right side of FSM) -->
+  <path
+     d="m 1020.0299,494.99624 h 39.9474 V 303.66608"
+     class="wire-blue-ctrl"
+     id="path946" />
+  <!-- eval_child (Controls the internal multiplexer hitting slope) -->
+  <path
+     d="m 1020,530 h 85.6631"
+     class="wire-blue-ctrl"
+     id="path948"
+     sodipodi:nodetypes="cc" />
+  <!-- clear & reset_timer -->
+  <path
+     d="M 840 635 L 760 635"
+     class="wire-blue-ctrl"
+     id="path950" />
+  <path
+     d="m 839.68522,807.24191 h -80"
+     class="wire-blue-ctrl"
+     id="path952" />
+  <!-- Passive Data / Signals to FSM (GRAY) -->
+  <path
+     d="M 760 537 L 840 537"
+     class="wire-gray"
+     id="path954" />
+  <path
+     d="m 760.09079,611.52112 h 80"
+     class="wire-gray"
+     id="path956" />
+  <path
+     d="M 760 732 L 840 732"
+     class="wire-gray"
+     id="path958" />
+  <path
+     d="M 760 830 L 840 830"
+     class="wire-gray"
+     id="path960" />
+  <!-- Core I/O Data -->
+  <path
+     d="M 1020 670 L 1100 670"
+     class="wire-blue-bus"
+     id="path962" />
+  <path
+     d="M 1100 730 L 1020 730"
+     class="wire-red"
+     id="path964" />
+  <!-- latched_y -->
+  <path
+     d="M 1020 830 L 1380 830"
+     class="wire-blue-bus"
+     id="path966" />
+  <!-- ==================== 4. TEXT & LABELS ==================== -->
+  <!-- Boundary Texts -->
+  <text
+     x="220"
+     y="47"
+     class="text-title txt-gray"
+     id="text968">de2_115_top.vhd</text>
+  <text
+     x="220"
+     y="67"
+     class="text-desc txt-gray"
+     style="text-anchor: start;"
+     id="text970">Top-Level FPGA Entity (Cyclone IV E)</text>
+  <text
+     x="557.12402"
+     y="89.259178"
+     class="text-title txt-gray"
+     id="text972">wrapper.vhd</text>
+  <text
+     x="557.57507"
+     y="102.0253"
+     class="text-desc txt-gray"
+     style="text-anchor:start"
+     id="text974">Custom Avalon-MM Slave IP Core (50MHz)</text>
+  <!-- External Pins (UNIFIED GRAY/NEUTRAL COLOR) -->
+  <text
+     x="145"
+     y="150"
+     class="text-pin-ext"
+     style="text-anchor: end;"
+     id="text976">CLOCK_50</text>
+  <text
+     x="145"
+     y="190"
+     class="text-pin-ext"
+     style="text-anchor: end;"
+     id="text978">KEY[0] [Reset]</text>
+  <text
+     x="155"
+     y="732"
+     class="text-pin-ext"
+     style="text-anchor: end;"
+     id="text980">EX_I(1:0) [analog_x_in]</text>
+  <text
+     x="155"
+     y="817"
+     class="text-pin-ext"
+     style="text-anchor: end;"
+     id="text982">EX_I(2) [uart_rx_in]</text>
+  <text
+     x="1390"
+     y="830"
+     class="text-pin-ext"
+     style="text-anchor: start;"
+     id="text984">EX_O(2:0) [analog_y_out]</text>
+  <!-- Nios II -->
+  <text
+     x="355"
+     y="165"
+     class="text-title txt-purple"
+     style="text-anchor: middle;"
+     id="text986">Nios II Subsystem (Qsys)</text>
+  <text
+     x="355"
+     y="195"
+     class="text-label txt-purple"
+     id="text988">Nios II/e Processor</text>
+  <text
+     x="355"
+     y="215"
+     class="text-label txt-purple"
+     id="text990">On-Chip RAM &amp; Timer</text>
+  <text
+     x="355"
+     y="235"
+     class="text-label txt-purple"
+     id="text992">Clock &amp; Reset Bridge</text>
+  <!-- Component Box Texts -->
+  <!-- Col 1 -->
+  <text
+     x="670"
+     y="151"
+     class="text-title txt-green"
+     style="text-anchor:middle"
+     id="text994">xorshift64.vhd</text>
+  <text
+     x="670"
+     y="171"
+     class="text-desc txt-green"
+     id="text996">(64-bit PRNG)</text>
+  <text
+     x="670"
+     y="285"
+     class="text-label txt-gray"
+     id="text998">Shadow Regs</text>
+  <text
+     x="670"
+     y="303"
+     class="text-desc txt-gray"
+     id="text1000">(shadow_regs)</text>
+  <text
+     x="670"
+     y="530"
+     class="text-title txt-gray"
+     style="font-size:14px;text-anchor:middle"
+     id="text1002">TMR Regs &amp; Voter</text>
+  <text
+     x="670"
+     y="548"
+     class="text-desc txt-gray"
+     id="text1004">(3x Truth Tables)</text>
+  <text
+     x="670"
+     y="615"
+     class="text-title txt-gray"
+     style="text-anchor: middle; font-size:14px;"
+     id="text1006">3Hz Timer</text>
+  <text
+     x="670"
+     y="633"
+     class="text-desc txt-gray"
+     id="text1008">(timer_3hz_proc)</text>
+  <text
+     x="670"
+     y="725"
+     class="text-title txt-gray"
+     style="text-anchor: middle; font-size:14px;"
+     id="text1010">Input Sync &amp; CDC</text>
+  <text
+     x="670"
+     y="743"
+     class="text-desc txt-gray"
+     id="text1012">(10ms Debouncer)</text>
+  <text
+     x="670"
+     y="810"
+     class="text-title txt-gray"
+     style="font-size:14px;text-anchor:middle;white-space:pre;inline-size:199.678"
+     id="text1014"
+     transform="matrix(0.87316825,0,0,1,86.017909,-4.8811167)"
+     xml:space="preserve"><tspan
+       x="670"
+       y="810"
+       id="tspan9896">UART_detector &amp; Flag<tspan
+   y="810"
+   id="tspan9898"> </tspan></tspan><tspan
+       x="670"
+       y="827.50001"
+       id="tspan9900">Latch<tspan
+   y="827.50001"
+   id="tspan9902"> </tspan></tspan></text>
+  <text
+     x="671.90936"
+     y="835.66858"
+     class="text-desc txt-gray"
+     id="text1016">(Heartbeat Monitor)</text>
+  <!-- Col 2 -->
+  <text
+     x="1050"
+     y="151"
+     class="text-title txt-green"
+     style="text-anchor: middle;"
+     id="text1018">mutation_engine.vhd</text>
+  <text
+     x="1050"
+     y="171"
+     class="text-desc txt-green"
+     id="text1020">(1+1)-ES Combinatorial Mutator</text>
+  <text
+     x="930"
+     y="285"
+     class="text-label txt-gray"
+     id="text1022">Active Regs</text>
+  <text
+     x="930"
+     y="303"
+     class="text-desc txt-gray"
+     id="text1024">(conf_regs)</text>
+  <!-- Sync FSM Controller -->
+  <text
+     x="930"
+     y="515"
+     class="text-title txt-blue"
+     style="text-anchor: middle;"
+     id="text1026">FSM Controller</text>
+  <text
+     x="930"
+     y="535"
+     class="text-desc txt-blue"
+     id="text1028">(main_fsm_proc)</text>
+  <text
+     x="930"
+     y="585"
+     class="text-label txt-blue"
+     id="text1030">Fitness Evaluator</text>
+  <text
+     x="930"
+     y="605"
+     class="text-desc txt-blue"
+     id="text1032">(160ns Wait + Check)</text>
+  <text
+     x="930"
+     y="675"
+     class="text-label txt-blue"
+     id="text1034">Evolution Control</text>
+  <text
+     x="930"
+     y="695"
+     class="text-desc txt-blue"
+     id="text1036">((1+1)-ES State Machine)</text>
+  <text
+     x="930"
+     y="775"
+     class="text-label txt-blue"
+     id="text1038">Watchdog Latch</text>
+  <text
+     x="930"
+     y="795"
+     class="text-desc txt-blue"
+     id="text1040">(3Hz Update Rate)</text>
+  <!-- Col 3 -->
+  <text
+     x="1180"
+     y="285"
+     class="text-title txt-green"
+     style="text-anchor: middle;"
+     id="text1042">Child Comb.</text>
+  <text
+     x="1180"
+     y="305"
+     class="text-desc txt-green"
+     id="text1044">(Async Mutant Gen.)</text>
+  <text
+     x="1180"
+     y="615"
+     class="text-title txt-red"
+     style="text-anchor: middle;"
+     id="text1046">core.vhd</text>
+  <text
+     x="1180"
+     y="637"
+     class="text-label txt-red"
+     id="text1048">Asynchronous VRC</text>
+  <text
+     x="1180"
+     y="683"
+     class="text-label txt-red"
+     id="text1050">30-LUT DAG</text>
+  <text
+     x="1180"
+     y="703"
+     class="text-desc txt-red"
+     id="text1052">(Comb. Logic)</text>
+  <text
+     x="1180"
+     y="740"
+     class="text-desc txt-red"
+     id="text1054">(Zero-Clock Domain)</text>
+  <!-- ==================== EXACT 8PX WIRE TEXT OFFSETS ==================== -->
+  <!-- PURPLE TEXTS -->
+  <text
+     x="514"
+     y="204"
+     class="text-wire-purple"
+     style="text-anchor: middle;"
+     id="text1056">Avalon-MM</text>
+  <text
+     x="667.24084"
+     y="353.38507"
+     class="text-wire-purple"
+     style="text-anchor:middle"
+     id="text1058">readback</text>
+  <text
+     x="861.81403"
+     y="399.46561"
+     class="text-wire-purple"
+     style="text-anchor:middle"
+     id="text1060">fault_masks</text>
+  <text
+     x="695"
+     y="667"
+     class="text-wire-purple"
+     style="text-anchor: middle;"
+     id="text1062">ctrl / status / waitreq / irq</text>
+  <!-- BLUE TEXTS -->
+  <text
+     x="785"
+     y="202"
+     class="text-wire-blue"
+     style="text-anchor: middle;"
+     id="text1064">mut_step</text>
+  <text
+     x="734.20422"
+     y="440.03192"
+     class="text-wire-blue"
+     style="text-anchor:start"
+     id="text1066">load_conf</text>
+  <text
+     x="1065.7147"
+     y="361.43292"
+     class="text-wire-blue"
+     style="text-anchor:start"
+     id="text1068">latch_child</text>
+  <text
+     x="1056.6837"
+     y="521.93994"
+     class="text-wire-blue"
+     style="text-anchor:middle"
+     id="text1070">eval_child</text>
+  <text
+     x="800"
+     y="627"
+     class="text-wire-blue"
+     style="text-anchor: middle;"
+     id="text1072">reset_timer</text>
+  <text
+     x="800"
+     y="809"
+     class="text-wire-blue"
+     style="text-anchor:middle;white-space:pre;inline-size:61.6767"
+     id="text1074"
+     transform="translate(-0.08490699,-8.8676035)"
+     xml:space="preserve"><tspan
+       x="800"
+       y="809"
+       id="tspan9904">clear</tspan></text>
+  <text
+     x="1060"
+     y="662"
+     class="text-wire-blue"
+     style="text-anchor: middle;"
+     id="text1076">x_in</text>
+  <text
+     x="1200"
+     y="822"
+     class="text-wire-blue"
+     style="text-anchor:middle"
+     id="text1078">latched_y (3Hz)</text>
+  <!-- GRAY TEXTS -->
+  <text
+     x="1060"
+     y="272"
+     class="text-wire-gray"
+     style="text-anchor: middle;"
+     id="text1080">parent</text>
+  <text
+     x="1080"
+     y="452"
+     class="text-wire-gray"
+     style="text-anchor:middle;white-space:pre;inline-size:72.4284"
+     id="text1082"
+     transform="translate(-61.128893,-1.2446123)"
+     xml:space="preserve"><tspan
+       x="1080"
+       y="452"
+       id="tspan9906">conf_regs</tspan></text>
+  <text
+     x="1144.8646"
+     y="554.78827"
+     class="text-wire-gray"
+     style="text-anchor:start"
+     id="text1084">vrc_in</text>
+  <text
+     x="800"
+     y="529"
+     class="text-wire-gray"
+     style="text-anchor: middle;"
+     id="text1086">voted_y</text>
+  <text
+     x="801.10175"
+     y="604.41998"
+     class="text-wire-gray"
+     style="text-anchor:middle"
+     id="text1088">tick_3Hz</text>
+  <text
+     x="800"
+     y="724"
+     class="text-wire-gray"
+     style="text-anchor: middle;"
+     id="text1090">final_x</text>
+  <text
+     x="800"
+     y="822"
+     class="text-wire-gray"
+     style="text-anchor: middle;"
+     id="text1092">uart_alive</text>
+  <!-- GREEN TEXTS -->
+  <text
+     x="800"
+     y="152"
+     class="text-wire-green"
+     style="text-anchor: middle;"
+     id="text1094">rand_64</text>
+  <text
+     x="1190"
+     y="215"
+     class="text-wire-green"
+     style="text-anchor: start;"
+     id="text1096">mut_params</text>
+  <!-- RED TEXTS -->
+  <text
+     x="1060"
+     y="722"
+     class="text-wire-red"
+     style="text-anchor: middle;"
+     id="text1100">y_out</text>
+</svg>

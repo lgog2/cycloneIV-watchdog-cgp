@@ -1,12 +1,12 @@
 ### CGP Self-Healing Watchdog
 
-A hardware-based, self-healing watchdog implemented on an Intel Cyclone IV FPGA (Terasic DE2-115). It monitors a target device's heartbeat and triggers a hard power reset if the signal is lost.
+A hardware-based, self-healing watchdog implemented on an Altera Cyclone IV FPGA (Terasic DE2-115). It monitors a target device's heartbeat and triggers a hard power reset if the signal is lost.
 
-The core combinational logic runs on a [Virtual Reconfigurable Circuit (VRC)](core.vhd) — an unclocked matrix of 30 custom [LUT4Cell](LUT4Cell.vhd) nodes constituting a Directed Acyclic Graph (DAG). A Cartesian Genetic Programming (CGP) algorithm dynamically reconfigures this matrix to bypass physical hardware faults.
+The core combinational logic runs on a [Virtual Reconfigurable Circuit (VRC)](core.vhd) — an unclocked matrix of 30 custom [LUT4Cell](LUT4Cell.vhd) nodes constituting a Directed Acyclic Graph (DAG). A Cartesian Genetic Programming (CGP) algorithm dynamically reconfigures this matrix to bypass hardware faults.
 A [Synchronous Wrapper](wrapper.vhd) encapsulates the VRC, integrating the Avalon-MM slave interface, TMR reference oracle, sequential fitness evaluator, and [control FSM](doc/FSM.svg). It bridges the 50&nbsp;MHz system clock with the 3&nbsp;Hz control rate of the external analog RC circuit, executing real-time watchdog supervision (3&nbsp;Hz) while concurrently driving background evaluations and the evolutionary repair loop (50&nbsp;MHz).
 
 ### Key Architecture
-* **Hardware-In-The-Loop (HIL):** A direct VHDL continuation of the [previous iCE40 VERILOG project](https://github.com/lgog2/icesugar-watchdog-cgp), moving from off-chip software evaluation (loading only the final evolved genotype onto the FPGA) to real-time, on-chip hardware evaluation and fault injection.
+* **Hardware-In-The-Loop (HIL):** A direct VHDL continuation of the [previous iCE40 VERILOG project](https://github.com/lgog2/icesugar-watchdog-cgp), moving from off-chip software evolution (loading only the final evolved genotype onto the FPGA) to real-time, on-chip hardware evaluation, fault injection, and autonomous hardware evolution.
 * **Hardware-Software Co-Design:** The hardware watchdog (VRC and synchronous wrapper) operates autonomously as a custom Avalon-MM IP core. It is integrated with a Nios II softcore processor, which serves as a control tool, a fault-injection host, a telemetry logger, and a prototyping environment for evolutionary algorithms.
 * **Dual-Mode Evolution Engine:** The system features two independent recovery mechanisms:
   * **Hardware (1+1)-ES:** A hardware-driven evolution loop executing background repair without external intervention. Powered by a [64-bit PRNG](xorshift64.vhd) and an asynchronous, combinatorial [Mutation Engine](mutation_engine.vhd) utilizing DSP multipliers (Lemire's Fast Scaling), it evaluates 1 offspring per generation in ~67 clock cycles (~1.34&nbsp;µs).
@@ -14,7 +14,7 @@ A [Synchronous Wrapper](wrapper.vhd) encapsulates the VRC, integrating the Avalo
 * **16.6M Cycle Evolution Window:** The FPGA runs at 50&nbsp;MHz, while the external RC circuit is controlled at 3&nbsp;Hz. This decoupling provides a 16.6-million-cycle (333&nbsp;ms) window for *in-situ* background evaluation and reconfiguration without blocking watchdog operations.
 * **Massive Search Space & Graceful Degradation:** Besides rerouting flexibility, each of the 30 `LUT4Cell` nodes can be dynamically reprogrammed with any of the 65,536 (2<sup>16</sup>) 4-input Boolean functions. This allows the discovery of unconventional logic structures and provides a mechanism for self-healing by exploiting the residual functionality of partially damaged nodes instead of replacing them as in classical redundancy schemes.
 
-![System Architecture](doc/schema.svg)
+![System Architecture](doc/schematic.svg)
 
 ### Experimental Fault Injection Results
 
@@ -58,7 +58,7 @@ Probe the survival limits of the 30-LUT matrix under progressive fault accumulat
 
 A hybrid hardware system: a digital FPGA fabric operating alongside a custom-built analog circuit to monitor a target device.
 
-* **Logic Processing Subsystem (Digital):** Terasic DE2-115 Development Board (Intel Cyclone IV E) hosting the watchdog components, a Nios II softcore, and an Avalon-MM interconnect. Interfaces with the analog circuit via 50&nbsp;MHz debounced inputs and 3&nbsp;Hz latched outputs.
+* **Logic Processing Subsystem (Digital):** Terasic DE2-115 Development Board (Altera Cyclone IV E) hosting the watchdog components, a Nios II softcore, and an Avalon-MM interconnect. Interfaces with the analog circuit via 50&nbsp;MHz inputs (secured by 2-FF synchronizers and 10ms debouncers) and 3&nbsp;Hz latched outputs.
 * **Custom Watchdog Peripheral (Analog):** A hand-soldered dual RC circuit:
   * **Dual Timers:** The continuous capacitor charging voltages feed directly into the FPGA's GPIOs to implement two physical time constants — `watchdog timeout` (heartbeat monitoring) and `reset hold time` (power-cut duration).
   * **Power Control:** Features an AQV252G solid-state relay driven by the FPGA's 3&nbsp;Hz control logic, cutting the 5V power supply to the target device upon watchdog intervention.
@@ -70,7 +70,7 @@ A hybrid hardware system: a digital FPGA fabric operating alongside a custom-bui
 * **Target Device & Asynchronous Heartbeat:** Supervises a NanoPi SBC (substituted during tests by an external yellow LED load indicator and a manual wire-loop heartbeat). The asynchronous 1.5&nbsp;Mbps UART heartbeat is captured and filtered at 50&nbsp;MHz by the [UART Detector](UART_detector.vhd) and resolved within the 3&nbsp;Hz control domain.
 * **Live Demonstration (Video):** Shows baseline operation. Two onboard red LEDs indicate the 3&nbsp;Hz operational cycle and heartbeat registration, while four green LEDs indicate capacitor states and discharge control signals.
 
->*Note: Detailed schematics of the external analog circuit are available in the [iCE40 repository](https://github.com/lgog2/icesugar-watchdog-cgp).*
+>*[Detailed schematic of the external analog circuit and system integration.](doc/external_schematic.pdf)*
 
 https://github.com/user-attachments/assets/a17d88b5-d474-4fec-8ac6-e5ef11028020
 
