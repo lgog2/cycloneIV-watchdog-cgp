@@ -1,9 +1,13 @@
 ### CGP Self-Healing Watchdog
 
-A hardware-based, self-healing watchdog implemented on an Altera Cyclone IV FPGA (Terasic DE2-115). It monitors a target device's heartbeat and triggers a hard power reset if the signal is lost.
 
-The core combinational logic runs on a [Virtual Reconfigurable Circuit (VRC)](core.vhd) — an unclocked matrix of 30 custom [LUT4Cell](LUT4Cell.vhd) nodes constituting a Directed Acyclic Graph (DAG). A Cartesian Genetic Programming (CGP) algorithm dynamically reconfigures this matrix to bypass hardware faults.
-A [Synchronous Wrapper](wrapper.vhd) encapsulates the VRC, integrating the Avalon-MM slave interface, TMR reference oracle, sequential fitness evaluator, and [control FSM](doc/FSM.svg). It bridges the 50&nbsp;MHz system clock with the 3&nbsp;Hz control rate of the external analog RC circuit, executing real-time watchdog supervision (3&nbsp;Hz) while concurrently driving background evaluations and the evolutionary repair loop (50&nbsp;MHz).
+A hardware-based, self-healing watchdog implemented on an Altera Cyclone IV FPGA (Terasic DE2-115). It monitors a target device's heartbeat and triggers a hard power reset if the signal is lost. In the background, the system autonomously rewires its own internal logic via a Cartesian Genetic Programming (CGP) algorithm to bypass hardware faults.
+
+The ambition behind this project was to take a step toward biologically-inspired, self-organizing hardware — an electronic system that rebuilds itself like a living organism. However, the Cyclone IV architecture does not support Dynamic Partial Reconfiguration (DPR). Without DPR, evaluating each new offspring would require resynthesizing and reprogramming the entire chip, including the modules executing the evolutionary algorithm. Therefore, the evolution process would have to be performed off-chip. To avoid this, instead of directly mutating the physical FPGA bitstream, a virtualized logic matrix was implemented. It provides a deterministic environment for the autonomous evolution engine to operate. An additional, critical advantage of this virtualization is speed, as the bitstream upload overhead is eliminated.
+
+The core combinational logic runs on a [Virtual Reconfigurable Circuit (VRC)](core.vhd) — an unclocked matrix of 30 custom [LUT4Cell](LUT4Cell.vhd) nodes constituting a Directed Acyclic Graph (DAG). 
+
+A [Synchronous Wrapper](wrapper.vhd) encapsulates the VRC, integrating the Avalon-MM slave interface, TMR reference oracle, sequential fitness evaluator, and [control FSM](doc/FSM.svg). It bridges the 50 MHz system clock with the 3 Hz control rate of the external analog RC circuit, executing real-time watchdog supervision (3 Hz) while concurrently driving background evaluations and the evolutionary repair loop (50 MHz).
 
 ### Key Architecture
 * **Hardware-In-The-Loop (HIL):** A direct VHDL continuation of the [previous iCE40 VERILOG project](https://github.com/lgog2/icesugar-watchdog-cgp), moving from off-chip software evolution (loading only the final evolved genotype onto the FPGA) to real-time, on-chip hardware evaluation, fault injection, and autonomous hardware evolution.
@@ -30,13 +34,13 @@ Compares single-event recovery time from an undamaged baseline across three faul
 
 | Test 1 Scenario | SW (1+4)-ES Generations | SW Repair Time | HW (1+1)-ES Generations | HW Repair Time | HW Speedup |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **1. LUT 0 Output Stuck-At-0** | `133` | `106,617 µs` (5.33M cycles) | `256` | `347 µs` (17.3k cycles) | **`~307x`** |
-| **2. LUT 1 Input I0 Stuck-At-1** | `43` | `34,359 µs` (1.72M cycles) | `222` | `301 µs` (15.1k cycles) | **`~114x`** |
-| **3. LUT 0, 1, 2 MPBI** | `291` | `234,536 µs` (11.73M cycles) | `2,414` | `3,238 µs` (161.9k cycles) | **`~72x`** |
+| **1. LUT 0 Output Stuck-At-0** | `133` | `106.6 ms` (5.33M cycles) | `256` | `347 µs` (17.3k cycles) | **`~307x`** |
+| **2. LUT 1 Input I0 Stuck-At-1** | `43` | `34.4 ms` (1.72M cycles) | `222` | `301 µs` (15.1k cycles) | **`~114x`** |
+| **3. LUT 0, 1, 2 MPBI** | `291` | `234.5 ms` (11.73M cycles) | `2,414` | `3 238 µs` (161.9k cycles) | **`~72x`** |
 
 #### 2. Cumulative Fault Tests: Hardware (1+1)-ES (Tests 2–7)
 Probe the survival limits of the 30-LUT matrix under progressive fault accumulation across two injection regimes:
-* **Active-DAG Targeting (Tests 2–3):** The Nios II host extracts the active phenotype and injects faults exclusively into utilized logic paths (`Active DAG`), granting a fresh 333&nbsp;ms repair window (`Reset`) after each strike until a fault fails to heal within the deadline.
+* **Active-DAG Targeting (Tests 2–3):** The Nios II host extracts the active phenotype and injects faults exclusively into utilized logic paths (`Active DAG`), granting a fresh 333&nbsp;ms repair window (`Reset`) after each strike until a fault fails to heal within this deadline.
 * **Continuous Full-Matrix Injection (Tests 4–7):** Faults are injected randomly across the entire matrix (`Full Matrix`) every **15&nbsp;ms** — asynchronously to the ongoing hardware evolution and without resetting the 333&nbsp;ms window (`Cont.`). Each test draws from single-type or mixed (`16:4:1`) fault pools until the pool is exhausted or the system remains unrepaired for **5.0 consecutive seconds**.
 
 | Test | Fault Pool | Target | 333&nbsp;ms Window | Absorbed Faults | Active LUTs | Log |
@@ -67,7 +71,7 @@ A hybrid hardware system: a digital FPGA fabric operating alongside a custom-bui
   * 🟢 **Green:** Voltage on the `reset hold time` capacitor.
   * 🔵 **Blue:** Discharge control for the `watchdog timeout` capacitor, normally `LOW` (allowing charging), pulsing `HIGH` on valid heartbeats or at the end of a reset-hold cycle to re-arm the timer.
   * 🔴 **Red:** Discharge control for the `reset hold time` capacitor, held `HIGH` during normal operation to keep the capacitor discharged, dropping `LOW` upon timeout to initiate the power-cut interval.
-* **Target Device & Asynchronous Heartbeat:** Supervises a NanoPi SBC (substituted during tests by an external yellow LED load indicator and a manual wire-loop heartbeat). The asynchronous 1.5&nbsp;Mbps UART heartbeat is captured and filtered at 50&nbsp;MHz by the [UART Detector](UART_detector.vhd) and resolved within the 3&nbsp;Hz control domain.
+* **Target Device & Asynchronous Heartbeat:** Supervises a NanoPi SBC (substituted during tests by an external yellow LED load indicator and a manual wire-loop heartbeat). The asynchronous 1.5&nbsp;Mbps UART heartbeat is captured and filtered at 50&nbsp;MHz by the [UART Detector](UART_detector.vhd), while the control signals are latched into the 3&nbsp;Hz analog domain.
 * **Live Demonstration (Video):** Shows baseline operation. Two onboard red LEDs indicate the 3&nbsp;Hz operational cycle and heartbeat registration, while four green LEDs indicate capacitor states and discharge control signals.
 
 >*[Detailed schematic of the external analog circuit and system integration.](doc/external_schematic.pdf)*
@@ -91,3 +95,4 @@ https://github.com/user-attachments/assets/a17d88b5-d474-4fec-8ac6-e5ef11028020
 **Future Exploration**
 * Hardware Evolution Engine Extension (investigating multi-point mutation and alternative evolutionary algorithms).
 * Dual Fault Tolerance (combining CGP with TMR at the VRC output level).
+* Dynamic Partial Reconfiguration (DPR): Porting the system to a DPR-capable architecture to achieve direct reconfiguration without the VRC abstraction layer.
